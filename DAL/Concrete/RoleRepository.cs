@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using DAL.Interface.DTO;
 using DAL.Interface.Repository;
+using DAL.Mappers;
 using ORM;
 
 namespace DAL.Concrete
@@ -29,13 +30,24 @@ namespace DAL.Concrete
 
         public ICollection<DalRole> GetRolesByUserId(int userId)
         {
-            return _dbContext.Set<Role>()
-                .Where(role => role.Users.Any(user => user.UserId == userId))
-                .Select(role => new DalRole()
-                {
-                    Id = role.RoleId,
-                    RoleName = role.RoleName
-                }).ToList();
+            var roles = _dbContext.Set<User>()
+                .Where(u => u.UserId == userId)
+                .SelectMany(r => r.Roles)
+                .ToDalRoleCollection();
+                //.Select(role => new DalRole()
+                //{
+                //    Id = role.RoleId,
+                //    RoleName = role.RoleName
+                //});
+            //var roles = _dbContext.Set<Role>()
+            //    .Where(role => role.Users.Any(user => user.UserId == userId))
+            //    .Select(role => new DalRole()
+            //    {
+            //        Id = role.RoleId,
+            //        RoleName = role.RoleName
+            //    });
+            //return roles;
+            return roles;
         } 
 
         public DalRole GetById(int key)
@@ -57,7 +69,7 @@ namespace DAL.Concrete
         {
             var role = new Role()
             {
-                RoleId = entity.Id,
+                //RoleId = entity.Id,
                 RoleName = entity.RoleName
             };
             _dbContext.Set<Role>().Add(role);

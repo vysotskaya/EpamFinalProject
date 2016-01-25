@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using DAL.Interface.DTO;
 using DAL.Interface.Repository;
+using DAL.Mappers;
 using ORM;
 
 namespace DAL.Concrete
@@ -18,17 +19,22 @@ namespace DAL.Concrete
         public UserRepository(DbContext dbContext, IRoleRepository roleRepository)
         {
             _dbContext = dbContext;
-            _roleRepository = _roleRepository;
+            _roleRepository = roleRepository;
         }
 
         public IEnumerable<DalUser> GetAll()
         {
-            return _dbContext.Set<User>().Select(user => new DalUser()
+            var users = _dbContext.Set<User>()
+                .Select(user => new DalUser()
+                {
+                    Id = user.UserId,
+                    Email = user.Email,
+                }).ToList();
+            foreach (var user in users)
             {
-                Id = user.UserId,
-                Email = user.Email,
-                Roles = _roleRepository.GetRolesByUserId(user.UserId)
-            });
+                user.Roles = _roleRepository.GetRolesByUserId(user.Id);
+            }
+            return users;
         }
 
         public DalUser GetById(int key)
@@ -38,7 +44,7 @@ namespace DAL.Concrete
             {
                 Id = user.UserId,
                 Email = user.Email,
-                Roles = _roleRepository.GetRolesByUserId(user.UserId)
+                Roles = _roleRepository.GetRolesByUserId(user.UserId)   
             };
         }
 
@@ -51,9 +57,9 @@ namespace DAL.Concrete
         {
             var user = new User()
             {
-                UserId = entity.Id,
+                //UserId = entity.Id,
                 Email = entity.Email,
-                //////////////////Roles = entity.Roles.
+                Roles = entity.Roles.ToRoleCollection()
             };
             _dbContext.Set<User>().Add(user);
         }
@@ -68,8 +74,8 @@ namespace DAL.Concrete
             var user = new User()
             {
                 UserId = entity.Id,
-                Email = entity.Email
-                /////////////////
+                Email = entity.Email,
+                Roles = entity.Roles.ToRoleCollection()
             };
             user = _dbContext.Set<User>().Single(u => u.UserId == user.UserId);
             _dbContext.Set<User>().Remove(user);

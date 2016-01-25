@@ -1,4 +1,6 @@
-﻿using BLL.Interface.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BLL.Interface.Entities;
 using DAL.Interface.DTO;
 
 namespace BLL.Mappers
@@ -11,7 +13,7 @@ namespace BLL.Mappers
             {
                 Id = userEntity.Id,
                 Email = userEntity.Email,
-                //////////////Roles = userEntity.RoleId
+                Roles = userEntity.Roles.ToDalRoleCollection()
             };
         }
 
@@ -21,8 +23,28 @@ namespace BLL.Mappers
             {
                 Id = dalUser.Id,
                 Email = dalUser.Email,
-                ////////////RoleId = dalUser.RoleId
+                Roles = dalUser.Roles.ToRoleEntityCollection()
             };
+        }
+
+        public static ICollection<DalRole> ToDalRoleCollection(this ICollection<RoleEntity> roles)
+        {
+            var roleList = roles.Select(r => new DalRole()
+            {
+                Id = r.Id,
+                RoleName = r.RoleName
+            });
+            return roleList.ToList();
+        }
+
+        public static ICollection<RoleEntity> ToRoleEntityCollection(this ICollection<DalRole> roles)
+        {
+            var roleList = roles.Select(r => new RoleEntity()
+            {
+                Id = r.Id,
+                RoleName = r.RoleName
+            });
+            return roleList.ToList();
         }
     }
 }

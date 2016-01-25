@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BLL.Interface.Entities;
 using BLL.Interface.Services;
 using BLL.Mappers;
@@ -20,7 +21,7 @@ namespace BLL.ConcreteServices
 
         public IEnumerable<UserEntity> GetAllUserEntities()
         {
-            throw new System.NotImplementedException();
+            return _userRepository.GetAll().Select(user => user.ToBllUser());
         }
 
         public UserEntity GetUserEntity(int id)
