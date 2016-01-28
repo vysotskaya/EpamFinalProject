@@ -13,6 +13,11 @@ namespace MvcPL.Models
 
     public class UserRegisterViewModel
     {
+        public UserRegisterViewModel()
+        {
+            Roles = new HashSet<Role>();
+        }
+
         public int Id { get; set; }
 
         [Display(Name = "User E-mail")]
@@ -35,7 +40,7 @@ namespace MvcPL.Models
 
         [Display(Name = "User login")]
         [Required(ErrorMessage = "The field can not be empty.")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]", ErrorMessage = "Incorrect login.")]
+        //[RegularExpression(@"[A-Za-z0-9._%+-]", ErrorMessage = "Incorrect login.")]
         [StringLength(30, ErrorMessage = "The login must contain 3-30 characters.", MinimumLength = 3)]
         public string Login { get; set; }
 

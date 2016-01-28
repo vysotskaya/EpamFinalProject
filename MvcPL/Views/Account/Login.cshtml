@@ -1,0 +1,51 @@
+﻿@model MvcPL.Models.UserLoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Log on user</h4>
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        <div class="form-group">
+            @Html.LabelFor(m => m.Login, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Login, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(m => m.Login, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.RememberMe, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(m => m.RememberMe)
+                    @Html.ValidationMessageFor(m => m.RememberMe, "", new {@class = "text-danger"})
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Login" class="btn btn-default" />
+            </div>
+        </div>
+        <p>
+            @Html.ActionLink("Register", "Register")
+        </p>
+
+    </div>
+}

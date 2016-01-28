@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Security;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
@@ -8,21 +9,15 @@ namespace MvcPL.Providers
 {
     public class CustomRoleProvider : RoleProvider
     {
-        private readonly IUserService _userService;
-        private readonly IRoleService _roleService;
-
-        public CustomRoleProvider(IUserService userService, IRoleService roleService)
-        {
-            _userService = userService;
-            _roleService = roleService;
-        }
+        public IUserService UserService => (IUserService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IUserService));
+        public IRoleService RoleService => (IRoleService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IRoleService));
 
         public override bool IsUserInRole(string login, string roleName)
         {
-            var user = _userService.GetUserEntityByLogin(login);
+            var user = UserService.GetUserEntityByLogin(login);
 
             if (user == null) return false;
-            var userRoles = _roleService.GetAllRolesByUserId(user.Id);
+            var userRoles = RoleService.GetAllRolesByUserId(user.Id);
             if (userRoles != null)
             {
                 foreach (var role in userRoles)
@@ -39,20 +34,13 @@ namespace MvcPL.Providers
         public override string[] GetRolesForUser(string login)
         {
             var roles = new string[] { };
-            var user = _userService.GetUserEntityByLogin(login);
+            var user = UserService.GetUserEntityByLogin(login);
 
             if (user == null) return roles;
-            var userRoles = _roleService.GetAllRolesByUserId(user.Id);
-            int index = 0;
+            var userRoles = RoleService.GetAllRolesByUserId(user.Id);
             if (userRoles != null)
             {
-                foreach (var role in userRoles)
-                {
-                    if (role != null)
-                    {
-                        roles[index++] = role.RoleName;
-                    }
-                }
+                roles = userRoles.Select(r => r.RoleName).ToArray();
             }
             return roles;
         }
@@ -60,7 +48,7 @@ namespace MvcPL.Providers
         public override void CreateRole(string roleName)
         {
             var role = new RoleEntity() {RoleName = roleName};
-            _roleService.CreateRole(role);
+            RoleService.CreateRole(role);
         }
     
         #region Stabs

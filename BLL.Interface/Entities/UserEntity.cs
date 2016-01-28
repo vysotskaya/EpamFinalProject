@@ -4,6 +4,11 @@ namespace BLL.Interface.Entities
 {
     public class UserEntity
     {
+        public UserEntity()
+        {
+            Roles = new HashSet<RoleEntity>();
+        }
+
         public int Id { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }

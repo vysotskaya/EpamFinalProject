@@ -8,6 +8,7 @@ using MvcPL.Models;
 
 namespace MvcPL.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService service;
@@ -17,10 +18,10 @@ namespace MvcPL.Controllers
             this.service = service;
         }
 
+        [AllowAnonymous]
         [ActionName("Index")]
         public ActionResult GetAllUsers()
         {
-            //return View();
             var users = service.GetAllUserEntities().Select(user => user.ToMvcUser());
             return View(users);
         }

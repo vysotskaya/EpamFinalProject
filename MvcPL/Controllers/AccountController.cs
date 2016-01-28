@@ -22,50 +22,50 @@ namespace MvcPL.Controllers
             _userService = userService;
         }
 
-        //[AllowAnonymous]
-        //public ActionResult Login(string returnUrl)
-        //{
-        //    var type = HttpContext.User.GetType();
-        //    var iden = HttpContext.User.Identity.GetType();
-        //    ViewBag.ReturnUrl = returnUrl;
-        //    return View();
-        //}
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            var type = HttpContext.User.GetType();
+            var iden = HttpContext.User.Identity.GetType();
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Login(LogOnViewModel viewModel, string returnUrl)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (Membership.ValidateUser(viewModel.Email, viewModel.Password))
-        //        //Проверяет учетные данные пользователя и управляет параметрами пользователей
-        //        {
-        //            FormsAuthentication.SetAuthCookie(viewModel.Email, viewModel.RememberMe);
-        //            //Управляет службами проверки подлинности с помощью форм для веб-приложений
-        //            if (Url.IsLocalUrl(returnUrl))
-        //            {
-        //                return Redirect(returnUrl);
-        //            }
-        //            else
-        //            {
-        //                return RedirectToAction("Index", "Home");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("", "Incorrect login or password.");
-        //        }
-        //    }
-        //    return View(viewModel);
-        //}
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserLoginViewModel viewModel, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Membership.ValidateUser(viewModel.Login, viewModel.Password))
+                //Проверяет учетные данные пользователя и управляет параметрами пользователей
+                {
+                    FormsAuthentication.SetAuthCookie(viewModel.Login, viewModel.RememberMe);
+                    //Управляет службами проверки подлинности с помощью форм для веб-приложений
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "User");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Incorrect login or password.");
+                }
+            }
+            return View(viewModel);
+        }
 
-        //public ActionResult LogOff()
-        //{
-        //    FormsAuthentication.SignOut();
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
 
-        //    return RedirectToAction("Login", "Account");
-        //}
+            return RedirectToAction("Login", "Account");
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -100,7 +100,7 @@ namespace MvcPL.Controllers
 
                 if (membershipUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(viewModel.Email, false);
+                    FormsAuthentication.SetAuthCookie(viewModel.Login, false);
                     return RedirectToAction("Index", "User");
                 }
                 else
@@ -137,10 +137,10 @@ namespace MvcPL.Controllers
         //    return null;
         //}
 
-        //[ChildActionOnly]
-        //public ActionResult LoginPartial()
-        //{
-        //    return PartialView("_LoginPartial");
-        //}
+        [ChildActionOnly]
+        public ActionResult LoginPartial()
+        {
+            return PartialView("_LoginPartial");
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using BLL.ConcreteServices;
+using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
 using DAL.Concrete;
 using DAL.Interface.Repository;
@@ -36,6 +37,7 @@ namespace DependencyResolver
             }
 
             kernel.Bind<IRoleRepository>().To<RoleRepository>();
+            kernel.Bind<IRoleService>().To<RoleService>();
 
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
