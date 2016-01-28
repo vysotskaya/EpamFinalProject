@@ -13,6 +13,8 @@ namespace BLL.Mappers
             {
                 Id = userEntity.Id,
                 Email = userEntity.Email,
+                Login = userEntity.Login,
+                Password = userEntity.Password,
                 Roles = userEntity.Roles.ToDalRoleCollection()
             };
         }
@@ -23,7 +25,27 @@ namespace BLL.Mappers
             {
                 Id = dalUser.Id,
                 Email = dalUser.Email,
+                Login = dalUser.Login,
+                Password = dalUser.Password,
                 Roles = dalUser.Roles.ToRoleEntityCollection()
+            };
+        }
+
+        public static DalRole ToDalRole(this RoleEntity roleEntity)
+        {
+            return new DalRole()
+            {
+                Id = roleEntity.Id,
+                RoleName = roleEntity.RoleName
+            };
+        }
+
+        public static RoleEntity ToBllRole(this DalRole dalRole)
+        {
+            return new RoleEntity()
+            {
+                Id = dalRole.Id,
+                RoleName = dalRole.RoleName
             };
         }
 

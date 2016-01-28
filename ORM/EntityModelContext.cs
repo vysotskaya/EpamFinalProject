@@ -5,7 +5,7 @@ namespace ORM
     public class EntityModelContext : DbContext
     {
         public EntityModelContext() 
-            : base("EntityModelContext")
+            : base("name=EntityModelContext")
         {
             
         }

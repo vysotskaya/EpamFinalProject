@@ -33,10 +33,10 @@ namespace MvcPL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserViewModel userViewModel)
+        public ActionResult Create(UserRegisterViewModel userViewModel)
         {
             //UserViewModel model = new UserViewModel() {Email = "vys@mail.ru"};
-            UserViewModel model1 = new UserViewModel() { Email = "testMulti@mail.ru", Roles = new []{Role.Guest, Role.User} };
+            UserRegisterViewModel model1 = new UserRegisterViewModel() { Email = "testMulti@mail.ru", Roles = new []{Role.Guest, Role.User} };
             service.CreateUser(model1.ToBllUser());
             return RedirectToAction("Index");
         }

@@ -17,8 +17,16 @@ namespace ORM
         public int UserId { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string Email { get; set; }
+
+        [Required]
+        [MaxLength(100), MinLength(8)]
+        public string Password { get; set; }
+
+        [Required]
+        [MaxLength(30), MinLength(3)]
+        public string Login { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; }
          

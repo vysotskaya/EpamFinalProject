@@ -7,6 +7,7 @@ namespace BLL.Interface.InterfaceServices
     {
         IEnumerable<RoleEntity> GetAllRoleEntities();
         RoleEntity GetRoleEntity(int id);
+        IEnumerable<RoleEntity> GetAllRolesByUserId(int id);
         void CreateRole(RoleEntity role);
         void UpdateRole(RoleEntity role);
         void DeleteRole(RoleEntity role);

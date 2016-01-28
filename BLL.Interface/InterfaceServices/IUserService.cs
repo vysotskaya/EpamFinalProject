@@ -8,6 +8,7 @@ namespace BLL.Interface.Services
     {
         IEnumerable<UserEntity> GetAllUserEntities();
         UserEntity GetUserEntity(int id);
+        UserEntity GetUserEntityByLogin(string login);
         void CreateUser(UserEntity user);
         void UpdateUser(UserEntity user);
         void DeleteUser(UserEntity user);

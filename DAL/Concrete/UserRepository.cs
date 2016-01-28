@@ -29,6 +29,8 @@ namespace DAL.Concrete
                 {
                     Id = user.UserId,
                     Email = user.Email,
+                    Login = user.Login,
+                    Password = user.Password,
                 }).ToList();
             foreach (var user in users)
             {
@@ -44,6 +46,8 @@ namespace DAL.Concrete
             {
                 Id = user.UserId,
                 Email = user.Email,
+                Login = user.Login,
+                Password = user.Password,
                 Roles = _roleRepository.GetRolesByUserId(user.UserId)   
             };
         }
@@ -57,11 +61,17 @@ namespace DAL.Concrete
         {
             var user = new User()
             {
-                //UserId = entity.Id,
                 Email = entity.Email,
+                Login = entity.Login,
+                Password = entity.Password,
                 Roles = entity.Roles.ToRoleCollection()
             };
+            foreach (var role in user.Roles)
+            {
+                _dbContext.Set<Role>().Attach(role);
+            }
             _dbContext.Set<User>().Add(user);
+            
         }
 
         public void Update(DalUser entity)
@@ -79,6 +89,23 @@ namespace DAL.Concrete
             };
             user = _dbContext.Set<User>().Single(u => u.UserId == user.UserId);
             _dbContext.Set<User>().Remove(user);
+        }
+
+        public DalUser GetUserByLogin(string login)
+        {
+            var user = _dbContext.Set<User>().FirstOrDefault(u => u.Login == login);
+            if (user != null)
+            {
+                return new DalUser()
+                {
+                    Id = user.UserId,
+                    Email = user.Email,
+                    Login = user.Login,
+                    Password = user.Password,
+                    Roles = _roleRepository.GetRolesByUserId(user.UserId)
+                };
+            }
+            return null;
         }
     }
 }

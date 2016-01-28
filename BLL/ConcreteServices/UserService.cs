@@ -29,6 +29,16 @@ namespace BLL.ConcreteServices
             return _userRepository.GetById(id).ToBllUser();
         }
 
+        public UserEntity GetUserEntityByLogin(string login)
+        {
+            var user = _userRepository.GetUserByLogin(login);
+            if (user != null)
+            {
+                return user.ToBllUser();
+            }
+            return null;
+        }
+
         public void DeleteUser(UserEntity user)
         {
             throw new System.NotImplementedException();

@@ -7,22 +7,26 @@ namespace MvcPL.Infrastructure.Mappers
 {
     public static class MvcMappers
     {
-        public static UserViewModel ToMvcUser(this UserEntity userEntity)
+        public static UserRegisterViewModel ToMvcUser(this UserEntity userEntity)
         {
-            return new UserViewModel()
+            return new UserRegisterViewModel()
             {
                 Id = userEntity.Id,
                 Email = userEntity.Email,
+                Login = userEntity.Login,
+                Password = userEntity.Password,
                 Roles = userEntity.Roles.ToMvcRoleCollection()
             };
         }
 
-        public static UserEntity ToBllUser(this UserViewModel userViewModel)
+        public static UserEntity ToBllUser(this UserRegisterViewModel userViewModel)
         {
             return new UserEntity()
             {
                 Id = userViewModel.Id,
                 Email = userViewModel.Email,
+                Login = userViewModel.Login,
+                Password = userViewModel.Password,
                 Roles = userViewModel.Roles.ToRoleEntityCollection()
             };
         }
