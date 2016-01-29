@@ -5,13 +5,19 @@
 }
 
 <h2>All users</h2>
-<table>
+<table class="table table-bordered text-center">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Login)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Role)*@
+            @Html.DisplayNameFor(model => model.Roles)
+        </th>
+        <th>
+            
         </th>
         <th></th>
     </tr>
@@ -19,6 +25,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
@@ -29,17 +38,14 @@
                             @role    
                         </span>
                     }
-                @*@Html.DisplayTextFor(modelItem => item.Role)*@
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Add role", "Edit", "", new {@class = "btn-sm" })
             </td>
         </tr>
     }
 </table>
 
-<p>
+@*<p>
     @Html.ActionLink("Add new user", "Create")
-</p>
+</p>*@

@@ -18,7 +18,7 @@ namespace MvcPL.Controllers
             this.service = service;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [ActionName("Index")]
         public ActionResult GetAllUsers()
         {

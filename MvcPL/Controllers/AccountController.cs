@@ -85,16 +85,16 @@ namespace MvcPL.Controllers
             //    return View(viewModel);
             //}
 
-            var userWithSameLogin = _userService.GetAllUserEntities().Any(user => user.Login.Contains(viewModel.Login));
-
-            if (userWithSameLogin)
-            {
-                ModelState.AddModelError("", "User with this login already exist.");
-                return View(viewModel);
-            }
-
             if (ModelState.IsValid)
             {
+                var userWithSameLogin = _userService.GetAllUserEntities().Any(user => user.Login.Contains(viewModel.Login));
+
+                if (userWithSameLogin)
+                {
+                    ModelState.AddModelError("", "User with this login already exist.");
+                    return View(viewModel);
+                }
+
                 var membershipUser = ((CustomMembershipProvider) Membership.Provider)
                     .CreateUser(viewModel);
 
