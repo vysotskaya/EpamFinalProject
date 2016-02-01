@@ -15,6 +15,10 @@ namespace BLL.Mappers
                 Email = userEntity.Email,
                 Login = userEntity.Login,
                 Password = userEntity.Password,
+                CreationDate = userEntity.CreationDate,
+                IsBlocked = userEntity.IsBlocked,
+                BlockTime = userEntity.BlockTime,
+                BlockReason = userEntity.BlockReason,
                 Roles = userEntity.Roles.ToDalRoleCollection()
             };
         }
@@ -27,6 +31,10 @@ namespace BLL.Mappers
                 Email = dalUser.Email,
                 Login = dalUser.Login,
                 Password = dalUser.Password,
+                CreationDate = dalUser.CreationDate,
+                IsBlocked = dalUser.IsBlocked,
+                BlockTime = dalUser.BlockTime,
+                BlockReason = dalUser.BlockReason,
                 Roles = dalUser.Roles.ToRoleEntityCollection()
             };
         }

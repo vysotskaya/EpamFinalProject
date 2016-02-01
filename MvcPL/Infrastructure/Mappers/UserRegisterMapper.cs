@@ -5,7 +5,7 @@ using MvcPL.Models;
 
 namespace MvcPL.Infrastructure.Mappers
 {
-    public static class MvcMappers
+    public static partial class MvcMapper
     {
         public static UserRegisterViewModel ToMvcUser(this UserEntity userEntity)
         {
@@ -27,6 +27,7 @@ namespace MvcPL.Infrastructure.Mappers
                 Email = userViewModel.Email,
                 Login = userViewModel.Login,
                 Password = userViewModel.Password,
+                IsBlocked = false,
                 Roles = userViewModel.Roles.ToRoleEntityCollection()
             };
         }

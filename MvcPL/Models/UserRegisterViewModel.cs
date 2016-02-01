@@ -7,8 +7,7 @@ namespace MvcPL.Models
     {
         Administrator = 1,
         Moderator,
-        User,
-        Guest
+        User
     }
 
     public class UserRegisterViewModel

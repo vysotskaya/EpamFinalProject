@@ -13,7 +13,7 @@ h5,
 h6 {
   font-family: 'Roboto Condensed', sans-serif;
 }
-p {
+p, span, label {
   font-family: 'Roboto', sans-serif;
   line-height: 22px;
   font-size: 16px;
@@ -1096,4 +1096,55 @@ article {
 .form-inline a:link {
     color: #fff;
 }
+
+tr th {
+    text-align: center;
+}
+
+#userDetails label {
+    padding-top: 0px;
+    font-weight: 700;
+}
+
+#modal_form {
+    width: 500px;
+    height: 330px; /* –азмеры должны быть фиксированы */
+    border-radius: 5px;
+    border: 3px #000 solid;
+    background: #fff;
+    position: fixed; /* чтобы окно было в видимой зоне в любом месте */
+    top: 15%; /* отступаем сверху 45%, остальные 5% подвинет скрипт */
+    left: 40%; /* половина экрана слева */
+    margin-top: -250px;
+    margin-left: -150px; /* тут вс€ маги€ центровки css, отступаем влево и вверх минус половину ширины и высоты соответственно =) */
+    display: none; /* в обычном состо€нии окна не должно быть */
+    opacity: 0; /* полностью прозрачно дл€ анимировани€ */
+    z-index: 5; /* окно должно быть наиболее большем слое */
+    padding: 20px 10px;
+}
+    /*  нопка закрыть дл€ тех кто в танке) */
+    #modal_form #modal_close {
+        width: 21px;
+        height: 21px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        display: block;
+    }
+
+/* ѕодложка */
+#overlay {
+    z-index: 3; /* подложка должна быть выше слоев элементов сайта, но ниже сло€ модального окна */
+    position: fixed; /* всегда перекрывает весь сайт */
+    background-color: #000; /* черна€ */
+    opacity: 0.8; /* но немного прозрачна */
+    width: 100%;
+    height: 100%; /* размером во весь экран */
+    top: 0;
+    left: 0; /* сверху и слева 0, об€зательные свойства! */
+    cursor: pointer;
+    display: none; /* в обычном состо€нии еЄ нет) */
+}
+
 

@@ -87,7 +87,8 @@ namespace MvcPL.Controllers
 
             if (ModelState.IsValid)
             {
-                var userWithSameLogin = _userService.GetAllUserEntities().Any(user => user.Login.Contains(viewModel.Login));
+                var users = _userService.GetAllUserEntities().ToList();
+                var userWithSameLogin = users.Any(user => user.Login.Contains(viewModel.Login));
 
                 if (userWithSameLogin)
                 {
@@ -101,7 +102,7 @@ namespace MvcPL.Controllers
                 if (membershipUser != null)
                 {
                     FormsAuthentication.SetAuthCookie(viewModel.Login, false);
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

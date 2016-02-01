@@ -46,7 +46,8 @@ namespace BLL.ConcreteServices
 
         public void UpdateUser(UserEntity user)
         {
-            throw new System.NotImplementedException();
+            _userRepository.Update(user.ToDalUser());
+            _unitOfWorkuow.Commit();
         }
 
         public void CreateUser(UserEntity user)

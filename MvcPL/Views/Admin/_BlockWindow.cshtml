@@ -1,0 +1,25 @@
+﻿@model MvcPL.Models.UserBlockViewModel
+
+<div class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.BlockDate, new { @class = "control-label col-md-3" })
+        <div class="col-md-9 form-inline text-left ">
+            @Html.EditorFor(m => m.BlockDate, new { htmlAttributes = new { id = "blockDate", @class = "form-control"}})
+            @Html.ValidationMessageFor(m => m.BlockDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.BlockReason, new { @class = "control-label col-md-3" })
+        <div class="col-md-9 form-inline text-left">
+            <textarea class="form-control" name="BlockReason" id="BlockReason" placeholder="Enter block reason"></textarea>
+            @Html.ValidationMessageFor(m => m.BlockReason, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-12 form-inline">
+            <input type="submit" value="Save" class="btn btn-default" id="saveBlock"/>
+        </div>
+    </div>
+</div>

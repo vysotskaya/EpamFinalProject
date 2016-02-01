@@ -29,6 +29,8 @@ namespace MvcPL.Providers
             userModel.Roles.Add(Role.User);
             var userEntity = userModel.ToBllUser();
             userEntity.Password = Crypto.HashPassword(userEntity.Password);
+            userEntity.CreationDate = DateTime.Now;
+            userEntity.BlockTime = DateTime.Now;
             UserService.CreateUser(userEntity);
             membershipUser = GetUser(userModel.Login, false);
             return membershipUser;

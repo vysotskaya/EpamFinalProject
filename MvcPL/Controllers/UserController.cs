@@ -11,34 +11,27 @@ namespace MvcPL.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly IUserService service;
+        private readonly IUserService _userService;
 
-        public UserController(IUserService service)
+        public UserController(IUserService userService)
         {
-            this.service = service;
+            _userService = userService;
         }
 
-        [Authorize(Roles = "Administrator")]
-        [ActionName("Index")]
-        public ActionResult GetAllUsers()
+        [Authorize(Roles="Administrator")]
+        public ActionResult Details(int userId = 7)
         {
-            var users = service.GetAllUserEntities().Select(user => user.ToMvcUser());
-            return View(users);
-        }
-
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
+            var userInfo = _userService.GetUserEntity(userId).ToUserDetailsModel();
+            return View(userInfo);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserRegisterViewModel userViewModel)
         {
-            //UserViewModel model = new UserViewModel() {Email = "vys@mail.ru"};
-            UserRegisterViewModel model1 = new UserRegisterViewModel() { Email = "testMulti@mail.ru", Roles = new []{Role.Guest, Role.User} };
-            service.CreateUser(model1.ToBllUser());
+            ////UserViewModel model = new UserViewModel() {Email = "vys@mail.ru"};
+            //UserRegisterViewModel model1 = new UserRegisterViewModel() { Email = "testMulti@mail.ru", Roles = new []{Role.Guest, Role.User} };
+            //_userService.CreateUser(model1.ToBllUser());
             return RedirectToAction("Index");
         }
 
@@ -46,7 +39,7 @@ namespace MvcPL.Controllers
         [HttpGet]
         public ActionResult Delete(int id = 0)
         {
-            UserEntity user = service.GetUserEntity(id);
+            UserEntity user = _userService.GetUserEntity(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -61,7 +54,7 @@ namespace MvcPL.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(UserEntity user)
         {
-            service.DeleteUser(user);
+            _userService.DeleteUser(user);
             return RedirectToAction("Index");
         }
 

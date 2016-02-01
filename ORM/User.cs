@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 
 namespace ORM
 {
@@ -27,6 +29,15 @@ namespace ORM
         [Required]
         [MaxLength(30), MinLength(3)]
         public string Login { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public bool IsBlocked { get; set; }
+
+        public DateTime BlockTime { get; set; }
+
+        [MaxLength(300)]
+        public string BlockReason { get; set; } 
 
         public virtual ICollection<Role> Roles { get; set; }
          

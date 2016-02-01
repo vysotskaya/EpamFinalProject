@@ -7,7 +7,7 @@ namespace ORM
         public EntityModelContext() 
             : base("name=EntityModelContext")
         {
-            
+            Database.SetInitializer<EntityModelContext>(new OnlineAuctionDBInitializer());
         }
 
         public virtual DbSet<Role> Roles { get; set; }

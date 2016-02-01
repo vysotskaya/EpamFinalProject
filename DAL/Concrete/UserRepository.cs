@@ -27,10 +27,14 @@ namespace DAL.Concrete
             var users = _dbContext.Set<User>()
                 .Select(user => new DalUser()
                 {
-                    Id = user.UserId,
+                    BlockReason = user.BlockReason,
+                    BlockTime = user.BlockTime,
+                    CreationDate = user.CreationDate,
                     Email = user.Email,
+                    IsBlocked = user.IsBlocked,
                     Login = user.Login,
-                    Password = user.Password,
+                    Id = user.UserId,
+                    Password = user.Password
                 }).ToList();
             foreach (var user in users)
             {
@@ -42,14 +46,9 @@ namespace DAL.Concrete
         public DalUser GetById(int key)
         {
             var user = _dbContext.Set<User>().FirstOrDefault(u => u.UserId == key);
-            return new DalUser()
-            {
-                Id = user.UserId,
-                Email = user.Email,
-                Login = user.Login,
-                Password = user.Password,
-                Roles = _roleRepository.GetRolesByUserId(user.UserId)   
-            };
+            var dalUser = ToDalUser(user);
+            dalUser.Roles = _roleRepository.GetRolesByUserId(dalUser.Id);
+            return dalUser;
         }
 
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> expression)
@@ -59,34 +58,32 @@ namespace DAL.Concrete
 
         public void Create(DalUser entity)
         {
-            var user = new User()
-            {
-                Email = entity.Email,
-                Login = entity.Login,
-                Password = entity.Password,
-                Roles = entity.Roles.ToRoleCollection()
-            };
+            var user = entity.ToUser();
+            user.UserId = 0;
             foreach (var role in user.Roles)
             {
                 _dbContext.Set<Role>().Attach(role);
             }
             _dbContext.Set<User>().Add(user);
-            
         }
 
         public void Update(DalUser entity)
         {
-            throw new NotImplementedException();
+            var notUpdated = _dbContext.Set<User>().FirstOrDefault(u => u.UserId == entity.Id);
+            if (notUpdated !=null)
+            {
+                notUpdated.BlockTime = entity.BlockTime;
+                notUpdated.IsBlocked = entity.IsBlocked;
+                notUpdated.BlockReason = entity.BlockReason;
+            }
+            _dbContext.Entry(notUpdated).State = EntityState.Modified;
         }
+    
 
         public void Delete(DalUser entity)
         {
-            var user = new User()
-            {
-                UserId = entity.Id,
-                Email = entity.Email,
-                Roles = entity.Roles.ToRoleCollection()
-            };
+            var user = entity.ToUser();
+            user.Roles = _roleRepository.GetRolesByUserId(user.UserId).ToRoleCollection();
             user = _dbContext.Set<User>().Single(u => u.UserId == user.UserId);
             _dbContext.Set<User>().Remove(user);
         }
@@ -96,16 +93,26 @@ namespace DAL.Concrete
             var user = _dbContext.Set<User>().FirstOrDefault(u => u.Login == login);
             if (user != null)
             {
-                return new DalUser()
-                {
-                    Id = user.UserId,
-                    Email = user.Email,
-                    Login = user.Login,
-                    Password = user.Password,
-                    Roles = _roleRepository.GetRolesByUserId(user.UserId)
-                };
+                var dalUser = ToDalUser(user);
+                dalUser.Roles = _roleRepository.GetRolesByUserId(user.UserId);
+                return dalUser;
             }
             return null;
+        }
+
+        private DalUser ToDalUser(User user)
+        {
+            return new DalUser()
+            {
+                BlockReason = user.BlockReason,
+                BlockTime = user.BlockTime,
+                CreationDate = user.CreationDate,
+                Email = user.Email,
+                IsBlocked = user.IsBlocked,
+                Login = user.Login,
+                Id = user.UserId,
+                Password = user.Password
+            };
         }
     }
 }
