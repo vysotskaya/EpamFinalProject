@@ -22,11 +22,12 @@
 
             </div>
             <!-- main menu -->
-            <nav class="collapse navbar-collapse navbar-center" role="navigation" style="float: right; width: 60%;">
-                <div class="main-menu">
+            <nav class="collapse navbar-collapse navbar-right" role="navigation" style="float: right; width: 60%;">
+                <div class="main-menu form-inline">
                     <ul class="nav navbar-nav navbar-left">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("About", "About", "Home")</li>
+
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>

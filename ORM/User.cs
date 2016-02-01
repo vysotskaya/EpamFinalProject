@@ -12,6 +12,7 @@ namespace ORM
         public User()
         {
             Roles = new HashSet<Role>();
+            Sections = new HashSet<Section>();
         }
 
         [Key]
@@ -40,6 +41,6 @@ namespace ORM
         public string BlockReason { get; set; } 
 
         public virtual ICollection<Role> Roles { get; set; }
-         
+        public virtual ICollection<Section> Sections { get; set; } 
     }
 }

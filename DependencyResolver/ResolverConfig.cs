@@ -3,6 +3,7 @@ using BLL.ConcreteServices;
 using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
 using DAL.Concrete;
+using DAL.Interface.Repositories;
 using DAL.Interface.Repository;
 using Ninject;
 using Ninject.Web.Common;
@@ -38,6 +39,12 @@ namespace DependencyResolver
 
             kernel.Bind<IRoleRepository>().To<RoleRepository>();
             kernel.Bind<IRoleService>().To<RoleService>();
+
+            kernel.Bind<ICategoryRepository>().To<CategoryRepository>();
+            kernel.Bind<ICategoryService>().To<CategoryService>();
+
+            kernel.Bind<ISectionReposytory>().To<SectionRepository>();
+            kernel.Bind<ISectionService>().To<SectionService>();
 
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IUserRepository>().To<UserRepository>();

@@ -49,7 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Concrete\RoleRepository.cs" />
+    <Compile Include="Concrete\SectionRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
     <Compile Include="Mappers\DalDTOMapper.cs" />

@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcreteServices\CategoryService.cs" />
     <Compile Include="ConcreteServices\RoleService.cs" />
+    <Compile Include="ConcreteServices\SectionService.cs" />
     <Compile Include="ConcreteServices\UserService.cs" />
     <Compile Include="Mappers\BLLEntityMapper.cs" />
+    <Compile Include="Mappers\SectionCategoryMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

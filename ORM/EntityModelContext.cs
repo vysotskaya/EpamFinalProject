@@ -12,6 +12,8 @@ namespace ORM
 
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Section> Sections { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -29,6 +31,16 @@ namespace ORM
                     m.MapLeftKey("UserId");
                     m.MapRightKey("RoleId");
                 });
+
+            modelBuilder.Entity<Category>()
+                  .HasRequired<Section>(c => c.Section)
+                  .WithMany(s => s.Categories)
+                  .HasForeignKey(c => c.SectionRefId);
+
+            modelBuilder.Entity<Section>()
+                  .HasRequired<User>(s => s.User)
+                  .WithMany(u => u.Sections)
+                  .HasForeignKey(s => s.UserRefId);
         }
     }
 }

@@ -49,10 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="EntityModelContext.cs" />
     <Compile Include="OnlineAuctionDBInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="Section.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

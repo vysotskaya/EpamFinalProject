@@ -1147,4 +1147,19 @@ tr th {
     display: none; /* в обычном состоянии её нет) */
 }
 
+/*.nav > li > .welcomLink {
+    display: inline-block;
+}*/
+
+.welcomLink > span {
+    padding-left: 0;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-left-width: 8px;
+}
+
+.dropdown-menu {
+    padding: 0;
+}
+
 

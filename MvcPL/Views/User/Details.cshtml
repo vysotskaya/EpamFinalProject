@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using MvcPL.Models
 @model MvcPL.Models.UserDetailsViewModel
 
 @{
@@ -20,7 +21,7 @@
                 <span id="blockSign" class="glyphicon@(Model.IsBlocked ? " glyphicon-lock" : " glyphicon-ok-circle")" aria-hidden="true"></span>
                 <br/>
                 <span class="sm" id="blockUntil">@(Model.IsBlocked ? "until " + Model.BlockDate.ToString("dd/MM/yyyy") : "")</span>
-                @if (!User.IsInRole("Administrator"))
+                @if (!Model.Roles.Contains(Role.Administrator))
                 {
                     <button class="btn btn-sm" id="blockButton">@(Model.IsBlocked ? "Unblock " : "Block ")user</button>
                 }
