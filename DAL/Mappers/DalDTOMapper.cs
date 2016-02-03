@@ -125,5 +125,29 @@ namespace DAL.Mappers
                 SectionRefId = category.SectionRefId
             };
         }
+
+        public static Request ToRequest(this DalRequest dalRequest)
+        {
+            return new Request()
+            {
+                CategoryRefId = dalRequest.CategoryRefId,
+                ToConfirm = dalRequest.IsConfirm,
+                RequestId = dalRequest.Id,
+                SectionRefId = dalRequest.SectionRefId
+            };
+        }
+
+        public static DalRequest ToDalRequest(this Request request)
+        {
+            return new DalRequest()
+            {
+                IsConfirm = request.ToConfirm,
+                SectionRefId = request.SectionRefId,
+                Id = request.RequestId,
+                SectionName = request.Section.SectionName,
+                CategoryName = request.Category.CategoryName,
+                CategoryRefId = request.CategoryRefId
+            };
+        }
     }
 }

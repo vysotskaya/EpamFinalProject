@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
+using BLL.Mappers;
 using DAL.Interface.Repositories;
 using DAL.Interface.Repository;
 
@@ -20,7 +22,7 @@ namespace BLL.ConcreteServices
             
         public IEnumerable<CategoryEntity> GetAllCategoryEntities()
         {
-            throw new NotImplementedException();
+            return _categoryRepository.GetAll().Select(c => c.ToBllCategory());
         }
 
         public CategoryEntity GetCategoryEntity(int id)
@@ -28,9 +30,15 @@ namespace BLL.ConcreteServices
             throw new NotImplementedException();
         }
 
+        public IEnumerable<CategoryEntity> GetAllCategoriesBySectionId(int id)
+        {
+            return _categoryRepository.GetCategoriesBySectionId(id).Select(c => c.ToBllCategory());
+        }
+
         public void CreateCategory(CategoryEntity entity)
         {
-            throw new NotImplementedException();
+            _categoryRepository.Create(entity.ToDalCategory());
+            _unitOfWork.Commit();
         }
 
         public void UpdateCategory(CategoryEntity entity)

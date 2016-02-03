@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MvcPL.Models.CategoryDetailsViewModel>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<h2>
+    @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"})
+    / @Html.ActionLink("All Sections", "Sections", "Moderator", null, htmlAttributes: new {@style = "color: #666;"})
+    / Categories
+</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table text-center vcenter">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.)*@
+                        Unconfirmed lots
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                    <tr class="@(item.IsConfirmed ? "" : "warning")">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)&nbsp;
+                            @*<span class="glyphicon@(item.IsConfirmed ? " glyphicon-lock" : "")" id="span_@item.Id" aria-hidden="true"></span>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.SettedModeratorLogin)&nbsp;*@
+                            @*@Html.ActionLink("Change", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                        </td>
+                        <td class="form-inline">
+                            @*<button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">
+                                <span class="spanInButton glyphicon@(item.IsBlocked ? " glyphicon-ok-circle" : " glyphicon-lock")" style="padding-left: 0;" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-sm">
+                                <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
+                            </button>*@
+                            @*<input type="hidden" name="isBlocked" id="@item.Id" value="@item.IsBlocked"/>*@
+                            @*@Html.ActionLink(item.IsBlocked ? "Unblock " : "Block ", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.ActionLink("Create category", "CreateCategory", "Moderator", new {id = ViewBag.SectionId}, new {@class = "btn btn-default", @style = "color: #fff;" })

@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using BLL.Interface.Entities;
+using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
@@ -12,27 +13,20 @@ namespace MvcPL.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IRequestService _requestService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRequestService requestService)
         {
             _userService = userService;
+            _requestService = requestService;
         }
 
         [Authorize(Roles="Administrator")]
-        public ActionResult Details(int userId = 7)
+        public ActionResult Details(int userId)
         {
+            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             var userInfo = _userService.GetUserEntity(userId).ToUserDetailsModel();
             return View(userInfo);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(UserRegisterViewModel userViewModel)
-        {
-            ////UserViewModel model = new UserViewModel() {Email = "vys@mail.ru"};
-            //UserRegisterViewModel model1 = new UserRegisterViewModel() { Email = "testMulti@mail.ru", Roles = new []{Role.Guest, Role.User} };
-            //_userService.CreateUser(model1.ToBllUser());
-            return RedirectToAction("Index");
         }
 
         //GET-запрос к методу Delete несет потенциальную уязвимость!
@@ -58,6 +52,5 @@ namespace MvcPL.Controllers
             return RedirectToAction("Index");
         }
 
-        //etc.
     }
 }

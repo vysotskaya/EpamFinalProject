@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CategoryEntity.cs" />
+    <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\SectionEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="InterfaceServices\ICategoryService.cs" />
+    <Compile Include="InterfaceServices\IRequestService.cs" />
     <Compile Include="InterfaceServices\IRoleService.cs" />
     <Compile Include="InterfaceServices\ISectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

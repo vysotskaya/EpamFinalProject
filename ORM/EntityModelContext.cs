@@ -14,6 +14,7 @@ namespace ORM
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -40,7 +41,20 @@ namespace ORM
             modelBuilder.Entity<Section>()
                   .HasRequired<User>(s => s.User)
                   .WithMany(u => u.Sections)
-                  .HasForeignKey(s => s.UserRefId);
+                  .HasForeignKey(s => s.UserRefId)
+                  .WillCascadeOnDelete(false); 
+
+            modelBuilder.Entity<Request>()
+                  .HasRequired<Category>(r => r.Category)
+                  .WithMany(c => c.Requests)
+                  .HasForeignKey(r => r.CategoryRefId)
+                  .WillCascadeOnDelete(false); ;
+
+            modelBuilder.Entity<Request>()
+                  .HasRequired<Section>(r => r.Section)
+                  .WithMany(s => s.Requests)
+                  .HasForeignKey(r => r.SectionRefId)
+                  .WillCascadeOnDelete(false);
         }
     }
 }

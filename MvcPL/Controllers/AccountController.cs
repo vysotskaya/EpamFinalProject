@@ -49,7 +49,7 @@ namespace MvcPL.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else

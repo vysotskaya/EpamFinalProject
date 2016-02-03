@@ -12,7 +12,12 @@
                         @if (User.IsInRole("Administrator"))
                         {
                             <li>@Html.ActionLink("Manage users", "Index", "Admin")</li>
-                            <li>@Html.ActionLink("Manage sections", "CreateSection", "Admin")</li>
+                            <li>@Html.ActionLink("Manage sections", "AllSections", "Admin")</li>
+                            <li><a href="@Url.Action("Notifications", "Admin")"><span class="badge pull-right" style="padding-left: 10px;">@ViewBag.NotifCount</span>Notifications</a></li>
+                        }
+                        @if (User.IsInRole("Moderator"))
+                        {
+                            <li>@Html.ActionLink("Manage categories", "Sections", "Moderator")</li>
                         }
                         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                     </ul>

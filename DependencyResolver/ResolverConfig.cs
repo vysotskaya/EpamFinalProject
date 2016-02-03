@@ -40,6 +40,9 @@ namespace DependencyResolver
             kernel.Bind<IRoleRepository>().To<RoleRepository>();
             kernel.Bind<IRoleService>().To<RoleService>();
 
+            kernel.Bind<IRequestRepository>().To<RequestRepository>();
+            kernel.Bind<IRequestService>().To<RequestService>();
+
             kernel.Bind<ICategoryRepository>().To<CategoryRepository>();
             kernel.Bind<ICategoryService>().To<CategoryService>();
 

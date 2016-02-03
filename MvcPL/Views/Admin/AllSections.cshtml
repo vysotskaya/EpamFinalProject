@@ -1,0 +1,150 @@
+﻿@model IEnumerable<MvcPL.Models.SectionDetailsViewModel>
+
+@{
+    ViewBag.Title = "Sections";
+}
+
+<h2>@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" }) / All sections</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table text-center vcenter">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SectionName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SettedModeratorLogin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Categories)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.IsBlocked ? "danger" : "")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SectionName)&nbsp;
+                        <span class="glyphicon@(item.IsBlocked ? " glyphicon-lock" : "")" id="span_@item.Id" aria-hidden="true"></span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SettedModeratorLogin)&nbsp;
+                        @*@Html.ActionLink("Change", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                    </td>
+                    <td>
+                        <span>@String.Join("/n", item.Categories.Select(c => c.ToString()))</span>
+
+                    </td>
+                    <td class="form-inline">
+                        <button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">
+                            <span class="spanInButton glyphicon@(item.IsBlocked ? " glyphicon-ok-circle" : " glyphicon-lock")" style="padding-left: 0;" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
+                        </button>
+                        @*<input type="hidden" name="isBlocked" id="@item.Id" value="@item.IsBlocked"/>*@
+                        @*@Html.ActionLink(item.IsBlocked ? "Unblock " : "Block ", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p class="btn btn-default">@Html.ActionLink("Create section", "CreateSection", null, new {@style = "color: #fff;"})</p>
+
+<script>
+    $(document).ready(function() {
+
+        $("button[name='blockSection']").click(function(event) { // ловим клик по ссылки с id="go"
+            debugger;
+            var idNumber = parseInt(event.currentTarget.id);
+            var idSelector = '#' + idNumber;
+            var blockModel = {};
+            var detail = $(idSelector).find(':first-child').hasClass('glyphicon-ok-circle');
+            if (detail == true) {
+                blockModel.IsBlocked = false;
+            } else {
+                blockModel.IsBlocked = true;
+            }
+            blockModel.Id = idNumber;
+            $.ajax({
+                type: "Post",
+                url: '/Admin/BlockSection',
+                data: JSON.stringify({ 'blockModel': blockModel}),
+                contentType: 'application/json',
+                success: function (result) {
+                    debugger;
+                    if (result == 'True') {
+                        var detail = blockModel.IsBlocked;
+                        if (detail == true) {
+                            $(idSelector).find(':first-child').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
+                            $("#span_" + idNumber).addClass("glyphicon-lock");
+                            $(idSelector).parent().parent().addClass("danger");
+                        } else {
+                            $(idSelector).find(':first-child').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
+                            $("#span_" + idNumber).removeClass("glyphicon-lock");
+                            $(idSelector).parent().parent().removeClass("danger");
+                        }
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                }
+            });
+
+            //} else {
+            //    event.preventDefault(); // выключаем стандартную роль элемента
+            //    $('#overlay').fadeIn(400, // сначала плавно показываем темную подложку
+            //        function() { // после выполнения предъидущей анимации
+            //            $('#modal_form')
+            //                .css('display', 'block') // убираем у модального окна display: none;
+            //                .animate({ opacity: 1, top: '50%' }, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
+            //        });
+            //}
+        });
+
+        /* Закрытие модального окна, тут делаем то же самое но в обратном порядке */
+        @*$('#modal_close, #overlay').click(function() { // ловим клик по крестику или подложке
+            $('#modal_form')
+                .animate({ opacity: 0, top: '45%' }, 200, // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
+                    function() { // после анимации
+                        $(this).css('display', 'none'); // делаем ему display: none;
+                        $('#overlay').fadeOut(400); // скрываем подложку
+                    }
+                );
+        });
+
+        $('#saveBlock').click(function () {
+            $("#modal_close").trigger("click");
+            var blockModel = makeModel(true, $('#blockDate').val(), $('#BlockReason').val(), @Model.Id);
+            $.ajax({
+                type: "Post",
+                url: '/Admin/BlockUser',
+                data: JSON.stringify({ 'blockModel': blockModel}),
+                contentType: 'application/json',
+                success: function(result) {
+                    if (result == 'True') {
+                        $('#blockSign').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
+                        $('#blockButton').html('Unblock user');
+                        $('#blockUntil').text('until ' + $('#blockDate').val());
+                        $("#IsBlocked").val("True");
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                }
+            });
+        });*@
+    });
+</script>

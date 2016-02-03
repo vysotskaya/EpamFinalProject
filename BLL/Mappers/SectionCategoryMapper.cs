@@ -54,6 +54,7 @@ namespace BLL.Mappers
                 IsBlocked = sectionEntity.IsBlocked,
                 SectionName = sectionEntity.SectionName,
                 UserRefId = sectionEntity.UserRefId,
+                ModeratorLogin = sectionEntity.ModeratorLogin,
                 Categories = sectionEntity.Categories.ToDalCategoryCollection()
             };
         }
@@ -67,6 +68,7 @@ namespace BLL.Mappers
                 IsBlocked = dalSection.IsBlocked,
                 SectionName = dalSection.SectionName,
                 UserRefId = dalSection.UserRefId,
+                ModeratorLogin = dalSection.ModeratorLogin,
                 Categories = dalSection.Categories.ToCategoryEntityCollection()
             };
         }

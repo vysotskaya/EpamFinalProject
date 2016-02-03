@@ -31,5 +31,6 @@ namespace ORM
 
         public virtual ICollection<Category> Categories { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

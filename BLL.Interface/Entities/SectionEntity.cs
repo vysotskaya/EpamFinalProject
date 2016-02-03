@@ -14,8 +14,8 @@ namespace BLL.Interface.Entities
         public DateTime CreationDate { get; set; }
         public bool IsBlocked { get; set; }
         public int UserRefId { get; set; }
+        public string ModeratorLogin { get; set; }
 
         public virtual ICollection<CategoryEntity> Categories { get; set; }
-        public virtual UserEntity User { get; set; }
     }
 }

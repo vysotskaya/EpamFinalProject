@@ -1,33 +1,35 @@
-﻿using System.Data.Entity;
+﻿using System.Linq;
 using System.Web.Mvc;
+using BLL.Interface.InterfaceServices;
 
 namespace MvcPL.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IRequestService _requestService;
+
+        public HomeController(IRequestService requestService)
+        {
+            _requestService = requestService;
+        }
+
         public ActionResult Index()
         {
-            //DbContext db = new EntityModelContext();
-            //db.Set<Role>().Add(new Role()
-            //{
-            //    RoleId = 1,
-            //    RoleName = "Admin"
-            //});
-            //db.SaveChanges();
+            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
     }

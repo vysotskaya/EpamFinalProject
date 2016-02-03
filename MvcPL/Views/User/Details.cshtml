@@ -6,7 +6,11 @@
     ViewBag.Title = "Details";
 }
 
-<h2>User Details</h2>
+<h2>
+    @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" })
+    / @Html.ActionLink("All Users", "Index", "Admin", null, htmlAttributes: new { @style = "color: #666;" })
+    / User Details
+</h2>
 
 <div class="panel panel-default text-left">
     <div class="panel-body">

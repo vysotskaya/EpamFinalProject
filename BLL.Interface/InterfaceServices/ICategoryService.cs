@@ -7,6 +7,7 @@ namespace BLL.Interface.InterfaceServices
     {
         IEnumerable<CategoryEntity> GetAllCategoryEntities();
         CategoryEntity GetCategoryEntity(int id);
+        IEnumerable<CategoryEntity> GetAllCategoriesBySectionId(int id);
         void CreateCategory(CategoryEntity entity);
         void UpdateCategory(CategoryEntity entity);
         void DeleteCategory(CategoryEntity entity);

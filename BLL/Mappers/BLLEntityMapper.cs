@@ -5,7 +5,7 @@ using DAL.Interface.DTO;
 
 namespace BLL.Mappers
 {
-    public static partial class BllEntityMappers
+    public static partial class BllEntityMapper
     {
         public static DalUser ToDalUser(this UserEntity userEntity)
         {

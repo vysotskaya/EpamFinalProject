@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Security.Cryptography;
-using System.Web;
+using System.Web.Helpers;
 
 namespace ORM
 {
@@ -28,11 +27,11 @@ namespace ORM
                 BlockReason = "",
                 BlockTime = DateTime.Now,
                 Email = "admin@gmail.com",
-                Login = "Admin94",
-                Password = "notValid"
+                Login = "Admin",
+                Password = Crypto.HashPassword("admin1234")
             };
             user.Roles.Add(defaultRoles[0]);
-
+            //user.Roles.Add(defaultRoles[2]);
 
             context.Set<User>().Add(user);
 

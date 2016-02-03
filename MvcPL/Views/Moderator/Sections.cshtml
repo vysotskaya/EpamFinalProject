@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MvcPL.Models.SectionDetailsViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" }) / Sections</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table text-center vcenter">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SectionName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr class="@(item.IsBlocked ? "danger" : "")">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionName)&nbsp;
+                            <span class="glyphicon@(item.IsBlocked ? " glyphicon-lock" : "")" id="span_@item.Id" aria-hidden="true"></span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Categories", "Moderator", new {id = item.Id}, new { @class = "btn btn-sm"})*@
+                            <a href="@Url.Action("Categories", "Moderator", new {id = item.Id})" class="btn btn-sm" @(item.IsBlocked ? "disabled" : "")>
+                                <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

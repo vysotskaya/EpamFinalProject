@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MvcPL.Models.RequestViewModel>
+
+@{
+    ViewBag.Title = "ConfirmRequests";
+}
+
+<h2>Notifications</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table text-center vcenter">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SectionName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ToConfirm)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr class="@(item.ToConfirm ? "warning" : "danger")">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td class="form-inline">
+                            <button id="@item.Id" class="btn btn-sm">
+                                <span class="spanInButton glyphicon@(item.ToConfirm ? " glyphicon-check" : " glyphicon-lock")" style="padding-left: 0;" aria-hidden="true"></span>
+                            </button>
+                            @*
+                                <button class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
+                                </button>*@
+                            @*<input type="hidden" name="isBlocked" id="@item.Id" value="@item.IsBlocked"/>*@
+                            @*@Html.ActionLink(item.IsBlocked ? "Unblock " : "Block ", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

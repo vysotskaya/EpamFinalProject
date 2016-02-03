@@ -27,5 +27,6 @@ namespace ORM
         public bool IsConfirmed { get; set; }
 
         public virtual Section Section { get; set; }
+        public virtual ICollection<Request> Requests { get; set; } 
     }
 }

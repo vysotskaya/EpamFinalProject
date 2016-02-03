@@ -30,7 +30,8 @@ namespace DAL.Concrete
                     CreationDate = section.CreationDate,
                     IsBlocked = section.IsBlocked,
                     SectionName = section.SectionName,
-                    UserRefId = section.UserRefId
+                    UserRefId = section.UserRefId,
+                    ModeratorLogin = section.User.Login
                 }).ToList();
             //User 
             foreach (var section in sections)
@@ -66,6 +67,7 @@ namespace DAL.Concrete
             if (notUpdated != null)
             {
                 notUpdated.IsBlocked = entity.IsBlocked;
+                notUpdated.UserRefId = entity.UserRefId;
                 notUpdated.Categories = entity.Categories.ToCategoryCollection();
             }
             _dbContext.Entry(notUpdated).State = EntityState.Modified;

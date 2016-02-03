@@ -69,7 +69,6 @@ namespace DAL.Concrete
         {
             var role = new Role()
             {
-                //RoleId = entity.Id,
                 RoleName = entity.RoleName
             };
             _dbContext.Set<Role>().Add(role);

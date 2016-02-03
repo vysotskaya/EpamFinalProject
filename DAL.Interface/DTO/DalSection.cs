@@ -14,8 +14,8 @@ namespace DAL.Interface.DTO
         public DateTime CreationDate { get; set; }
         public bool IsBlocked { get; set; }
         public int UserRefId { get; set; }
+        public string ModeratorLogin { get; set; }
 
         public virtual ICollection<DalCategory> Categories { get; set; }
-        public virtual DalUser User { get; set; }
     }
 }

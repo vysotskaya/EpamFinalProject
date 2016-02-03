@@ -149,13 +149,22 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModeratorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Mappers\CategoryMapper.cs" />
+    <Compile Include="Infrastructure\Mappers\SectionMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserRegisterMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserDetailsMapper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\CategoryCreateViewModel.cs" />
+    <Compile Include="Models\CategoryDetailsViewModel.cs" />
+    <Compile Include="Models\RequestViewModel.cs" />
+    <Compile Include="Models\SectionCreateViewModel.cs" />
+    <Compile Include="Models\SectionDetailsViewModel.cs" />
     <Compile Include="Models\UserBlockViewModel.cs" />
     <Compile Include="Models\UserDetailsViewModel.cs" />
     <Compile Include="Models\UserLoginViewModel.cs" />
@@ -165,10 +174,6 @@
     <Compile Include="Providers\CustomRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\OnlineAuctionDB.mdf" />
-    <Content Include="App_Data\OnlineAuctionDB_log.ldf">
-      <DependentUpon>OnlineAuctionDB.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\default_avatar.jpg" />
@@ -202,7 +207,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_LayoutOrigin.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -215,8 +219,17 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Admin\_BlockWindow.cshtml" />
+    <Content Include="Views\Admin\AllSections.cshtml" />
+    <Content Include="Views\Admin\CreateSection.cshtml" />
+    <Content Include="Views\Moderator\Sections.cshtml" />
+    <Content Include="Views\Moderator\Categories.cshtml" />
+    <Content Include="Views\Moderator\CreateCategory.cshtml" />
+    <Content Include="Views\Admin\Notifications.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Validate\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
