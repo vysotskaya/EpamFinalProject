@@ -20,7 +20,7 @@ namespace ORM
                 context.Set<Role>().Add(role);
             }
 
-            var user = new User()
+            var admin = new User()
             {
                 IsBlocked = false,
                 CreationDate = DateTime.Now,
@@ -30,9 +30,22 @@ namespace ORM
                 Login = "Admin",
                 Password = Crypto.HashPassword("admin1234")
             };
-            user.Roles.Add(defaultRoles[0]);
+            admin.Roles.Add(defaultRoles[0]);
             //user.Roles.Add(defaultRoles[2]);
 
+            var user = new User()
+            {
+                IsBlocked = false,
+                CreationDate = DateTime.Now,
+                BlockReason = "",
+                BlockTime = DateTime.Now,
+                Email = "user@gmail.com",
+                Login = "User",
+                Password = Crypto.HashPassword("user1234")
+            };
+            user.Roles.Add(defaultRoles[1]);
+
+            context.Set<User>().Add(admin);
             context.Set<User>().Add(user);
 
             base.Seed(context);

@@ -53,7 +53,11 @@ namespace DAL.Concrete
 
         public void Update(DalCategory entity)
         {
-            throw new NotImplementedException();
+            var updatedCategory = entity.ToCategory();
+            var existedCategory = _dbContext.Entry<Category>(_dbContext.Set<Category>().Find(updatedCategory.CategoryId));
+            existedCategory.State = EntityState.Modified;
+            existedCategory.Entity.IsBlocked = entity.IsBlocked;
+            existedCategory.Entity.IsConfirmed = entity.IsConfirmed;
         }
 
         public void Delete(DalCategory entity)

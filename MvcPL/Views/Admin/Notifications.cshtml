@@ -10,42 +10,78 @@
     <div class="panel-body">
         <table class="table text-center vcenter">
             <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SectionName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CategoryName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ToConfirm)
-                    </th>
-                </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SectionName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ToConfirm)
+                </th>
+                <th>
+
+                </th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+            @foreach (var item in Model)
             {
-                    <tr class="@(item.ToConfirm ? "warning" : "danger")">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SectionName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoryName)
-                        </td>
-                        <td class="form-inline">
-                            <button id="@item.Id" class="btn btn-sm">
-                                <span class="spanInButton glyphicon@(item.ToConfirm ? " glyphicon-check" : " glyphicon-lock")" style="padding-left: 0;" aria-hidden="true"></span>
-                            </button>
-                            @*
-                                <button class="btn btn-sm">
-                                    <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
-                                </button>*@
-                            @*<input type="hidden" name="isBlocked" id="@item.Id" value="@item.IsBlocked"/>*@
-                            @*@Html.ActionLink(item.IsBlocked ? "Unblock " : "Block ", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
-                        </td>
-                    </tr>
-                }
+                <tr class="@(item.ToConfirm ? "warning" : "danger")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SectionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        <span>@(item.ToConfirm ? "To confirm" : "To block")</span>
+                    </td>
+                    <td class="form-inline">
+                        <button name="result" id="@item.Id-accept" class="btn btn-sm">
+                            <span class="spanInButton glyphicon glyphicon-ok-circle" style="padding-left: 0;" aria-hidden="true"></span>
+                        </button>
+                        <button name="result" id="@item.Id-decline" class="btn btn-sm">
+                            <span class="spanInButton glyphicon glyphicon-remove-circle" style="padding-left: 0;" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("button[name='result']").click(function (event) { // ловим клик по ссылки с id="go"
+            debugger;
+            var requestIdNumber = parseInt(event.currentTarget.id);
+            var idSelector = event.currentTarget.id;
+            var requestModel = {};
+            requestModel.Id = requestIdNumber;
+            var res = idSelector.substr(idSelector.length - 6);
+            if (res === "accept") {
+                requestModel.Result = true;
+            } else {
+                requestModel.Result = false;
+            }
+            $.ajax({
+                type: "Post",
+                url: '/Admin/HandleRequest',
+                data: JSON.stringify({ 'requestModel': requestModel }),
+                contentType: 'application/json',
+                success: function(result) {
+                    debugger;
+                    if (result === 'True') {
+                        idSelector = "#" + idSelector;
+                        $(idSelector).parent().parent().remove();
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                }
+            });
+        });
+    });
+</script>

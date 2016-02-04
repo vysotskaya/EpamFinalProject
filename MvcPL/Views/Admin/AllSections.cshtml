@@ -43,8 +43,13 @@
                         @*@Html.ActionLink("Change", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
                     </td>
                     <td>
-                        <span>@String.Join("/n", item.Categories.Select(c => c.ToString()))</span>
-
+                        <span name="showCategories" id="showCategories_@item.Id" class="glyphicon glyphicon-arrow-down"></span>
+                        <div hidden>
+                            @foreach (var category in item.Categories)
+                            {
+                                <span>@category.ToString()</span><br/>
+                            }
+                        </div>
                     </td>
                     <td class="form-inline">
                         <button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">
@@ -66,7 +71,19 @@
 <p class="btn btn-default">@Html.ActionLink("Create section", "CreateSection", null, new {@style = "color: #fff;"})</p>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+
+        $("span[name='showCategories']").click(function(event) {
+            var idSelector = "#" + event.currentTarget.id;
+            var hasClass = $(idSelector).hasClass('glyphicon-arrow-down');
+            if (hasClass === true) {
+                $(idSelector).parent().children('div').prop('hidden', false);
+                $(idSelector).removeClass('glyphicon-arrow-down').addClass('glyphicon-arrow-up');
+            } else {
+                $(idSelector).parent().children('div').prop('hidden', true);
+                $(idSelector).removeClass('glyphicon-arrow-up').addClass('glyphicon-arrow-down');
+            }
+        });
 
         $("button[name='blockSection']").click(function(event) { // ловим клик по ссылки с id="go"
             debugger;
@@ -74,7 +91,7 @@
             var idSelector = '#' + idNumber;
             var blockModel = {};
             var detail = $(idSelector).find(':first-child').hasClass('glyphicon-ok-circle');
-            if (detail == true) {
+            if (detail === true) {
                 blockModel.IsBlocked = false;
             } else {
                 blockModel.IsBlocked = true;
@@ -87,9 +104,9 @@
                 contentType: 'application/json',
                 success: function (result) {
                     debugger;
-                    if (result == 'True') {
+                    if (result === 'True') {
                         var detail = blockModel.IsBlocked;
-                        if (detail == true) {
+                        if (detail === true) {
                             $(idSelector).find(':first-child').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
                             $("#span_" + idNumber).addClass("glyphicon-lock");
                             $(idSelector).parent().parent().addClass("danger");

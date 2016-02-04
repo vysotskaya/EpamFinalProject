@@ -23,6 +23,9 @@ namespace ORM
         [Required]
         public string SectionName { get; set; }
 
+        [MaxLength(500)]
+        public string Discription { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public bool IsBlocked { get; set; }

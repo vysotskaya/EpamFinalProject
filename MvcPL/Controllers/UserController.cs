@@ -24,7 +24,6 @@ namespace MvcPL.Controllers
         [Authorize(Roles="Administrator")]
         public ActionResult Details(int userId)
         {
-            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             var userInfo = _userService.GetUserEntity(userId).ToUserDetailsModel();
             return View(userInfo);
         }

@@ -20,5 +20,7 @@ namespace MvcPL.Models
 
         [Display(Name = "Action")]
         public bool ToConfirm { get; set; }
+
+        public bool Result { get; set; }
     }
 }

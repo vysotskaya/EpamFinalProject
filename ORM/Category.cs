@@ -20,6 +20,9 @@ namespace ORM
 
         public int SectionRefId { get; set; }
 
+        [MaxLength(500)]
+        public string Discription { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public bool IsBlocked { get; set; }
@@ -28,5 +31,7 @@ namespace ORM
 
         public virtual Section Section { get; set; }
         public virtual ICollection<Request> Requests { get; set; } 
+        public virtual ICollection<Lot> Lots { get; set; } 
+        public virtual ICollection<LotRequest> LotRequests { get; set; } 
     }
 }

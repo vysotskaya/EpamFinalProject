@@ -63,14 +63,10 @@ namespace DAL.Concrete
 
         public void Update(DalSection entity)
         {
-            var notUpdated = _dbContext.Set<Section>().FirstOrDefault(s => s.SectionId == entity.Id);
-            if (notUpdated != null)
-            {
-                notUpdated.IsBlocked = entity.IsBlocked;
-                notUpdated.UserRefId = entity.UserRefId;
-                notUpdated.Categories = entity.Categories.ToCategoryCollection();
-            }
-            _dbContext.Entry(notUpdated).State = EntityState.Modified;
+            var existedSection = _dbContext.Entry<Section>(_dbContext.Set<Section>().Find(entity.Id));
+            existedSection.State = EntityState.Modified;
+            existedSection.Entity.IsBlocked = entity.IsBlocked;
+            existedSection.Entity.UserRefId = entity.UserRefId;
         }
 
         public void Delete(DalSection entity)

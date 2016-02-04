@@ -42,5 +42,7 @@ namespace ORM
 
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<Section> Sections { get; set; } 
+        public virtual ICollection<Lot> Lots { get; set; } 
+        public virtual ICollection<Bid> Bids { get; set; } 
     }
 }

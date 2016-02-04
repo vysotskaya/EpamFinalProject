@@ -27,7 +27,7 @@ namespace BLL.ConcreteServices
 
         public CategoryEntity GetCategoryEntity(int id)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.GetById(id).ToBllCategory();
         }
 
         public IEnumerable<CategoryEntity> GetAllCategoriesBySectionId(int id)
@@ -43,12 +43,14 @@ namespace BLL.ConcreteServices
 
         public void UpdateCategory(CategoryEntity entity)
         {
-            throw new NotImplementedException();
+            _categoryRepository.Update(entity.ToDalCategory());
+            _unitOfWork.Commit();
         }
 
         public void DeleteCategory(CategoryEntity entity)
         {
-            throw new NotImplementedException();
+            _categoryRepository.Delete(entity.ToDalCategory());
+            _unitOfWork.Commit();
         }
     }
 }

@@ -15,14 +15,12 @@ namespace ORM
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<Lot> Lots { get; set; }
+        public virtual DbSet<LotRequest> LotRequests { get; set; }
+        public virtual DbSet<Bid> Bids { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Role>()
-            //    .HasMany(e => e.Users)
-            //    .WithRequired(e => e.Role)
-            //    .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<User>()
                 .HasMany<Role>(u => u.Roles)
                 .WithMany(r => r.Users)
@@ -54,6 +52,42 @@ namespace ORM
                   .HasRequired<Section>(r => r.Section)
                   .WithMany(s => s.Requests)
                   .HasForeignKey(r => r.SectionRefId)
+                  .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LotRequest>()
+                  .HasRequired<Lot>(r => r.Lot)
+                  .WithMany(l => l.LotRequests)
+                  .HasForeignKey(r => r.LotRefId)
+                  .WillCascadeOnDelete(false); ;
+
+            modelBuilder.Entity<LotRequest>()
+                  .HasRequired<Category>(r => r.Category)
+                  .WithMany(c => c.LotRequests)
+                  .HasForeignKey(r => r.CategoryRefId)
+                  .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Bid>()
+                  .HasRequired<User>(b => b.User)
+                  .WithMany(u => u.Bids)
+                  .HasForeignKey(b => b.UserRefId)
+                  .WillCascadeOnDelete(false); ;
+
+            modelBuilder.Entity<Bid>()
+                  .HasRequired<Lot>(b => b.Lot)
+                  .WithMany(l => l.Bids)
+                  .HasForeignKey(b => b.LotRefId)
+                  .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Lot>()
+                  .HasRequired<User>(l => l.Seller)
+                  .WithMany(u => u.Lots)
+                  .HasForeignKey(l => l.SellerRefId)
+                  .WillCascadeOnDelete(false); ;
+
+            modelBuilder.Entity<Lot>()
+                  .HasRequired<Category>(l => l.Category)
+                  .WithMany(c => c.Lots)
+                  .HasForeignKey(l => l.CategoryRefId)
                   .WillCascadeOnDelete(false);
         }
     }

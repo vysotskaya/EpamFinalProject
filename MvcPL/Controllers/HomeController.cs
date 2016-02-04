@@ -15,21 +15,18 @@ namespace MvcPL.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-            ViewBag.NotifCount = _requestService.GetAllRequestEntities().Count();
             return View();
         }
     }

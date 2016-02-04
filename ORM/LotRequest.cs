@@ -3,18 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ORM
 {
-    [Table("CategoryRequests")]
-    public class Request
+    [Table("LotRequests")]
+    public class LotRequest
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RequestId { get; set; }
 
-        public int SectionRefId { get; set; }
         public int CategoryRefId { get; set; }
+        public int LotRefId { get; set; }
         public bool ToConfirm { get; set; }
 
-        public virtual Section Section { get; set; }
         public virtual Category Category { get; set; }
+        public virtual Lot Lot { get; set; }
     }
 }

@@ -13,7 +13,7 @@
                         {
                             <li>@Html.ActionLink("Manage users", "Index", "Admin")</li>
                             <li>@Html.ActionLink("Manage sections", "AllSections", "Admin")</li>
-                            <li><a href="@Url.Action("Notifications", "Admin")"><span class="badge pull-right" style="padding-left: 10px;">@ViewBag.NotifCount</span>Notifications</a></li>
+                            <li><a href="@Url.Action("Notifications", "Admin")"><span id="NotifCount" class="badge pull-right" style="padding-left: 10px;">0</span>Notifications</a></li>
                         }
                         @if (User.IsInRole("Moderator"))
                         {
@@ -33,3 +33,18 @@ else
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            type: "Post",
+            url: '/Admin/NotificationCount',
+            success: function (result) {
+                debugger;
+                $('#NotifCount').text(result);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+</script>
