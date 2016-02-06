@@ -27,7 +27,9 @@ namespace DAL.Concrete
                 UserRefId = bid.UserRefId,
                 LotRefId = bid.LotRefId,
                 LotName = bid.Lot.LotName,
-                UserLogin = bid.User.Login
+                UserLogin = bid.User.Login,
+                BidTime = bid.BidTime,
+                BidAmount = bid.BidAmount
             });
         }
 

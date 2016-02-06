@@ -1,0 +1,185 @@
+﻿@using MvcPL.Models
+@model MvcPL.Models.LotDetailsViewModel
+
+@{
+    ViewBag.Title = "Lot Details";
+}
+
+@section Body
+{
+
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#mainInfo" aria-controls="mainInfo" role="tab" data-toggle="tab">Lot info</a></li>
+            <li role="presentation"><a href="#addInfo" aria-controls="addInfo" role="tab" data-toggle="tab">Add. info</a></li>
+            <li role="presentation"><a href="#photo" aria-controls="photo" role="tab" data-toggle="tab">Photo</a></li>
+            @if (User.IsInRole("Moderator"))
+            {
+                <li role="presentation"><a href="#moderatorInfo" aria-controls="moderatorInfo" role="tab" data-toggle="tab">Moderator info</a></li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="mainInfo">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>@Model.Name</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img src="~/Content/images/lot.jpeg" class="thumbnail lotDetailsPhoto"/>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading form-group" style="height: 40px;">
+                                        @Html.LabelFor(m => m.CurrentBid, new {@class = "col-sm-5 control-label"})
+                                        <span class="col-sm-7"><b>@Model.CurrentBid BYR</b></span>
+                                    </div>
+                                    <div class="panel-body form-inline">
+                                            @Html.LabelFor(m => m.MakeBid, new { @class = "col-sm-4 control-label", @style = "margin-top: 5px;" })
+                                            @Html.TextBoxFor(m => m.MakeBid, new { id = "bid", @class = "form-control col-sm-5" })
+                                            <a href="@Url.Action("MakeBid", "Lot", new {viewModel = new BidViewModel() {} })" class="btn" id="saveBidButton">Save bid</a>
+                                            <p class="text-danger" id="textDangerBid" hidden></p>
+                                    </div>
+                                    <table class="table table-condensedv">
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.StartDate)</td>
+                                            <td>@Html.DisplayFor(m => m.StartDate)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.EndDate)</td>
+                                            <td>@Html.DisplayFor(m => m.EndDate)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.LabelFor(m => m.StartingBid)</td>
+                                            <td>@Html.DisplayFor(m => m.StartingBid) BYR</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row col-sm-10 col-sm-offset-1">
+                            <div class="panel panel-default text-left">
+                                <div class="panel-heading form-group" style="height: 40px;">
+                                    <span>Discription</span>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        @Html.DisplayFor(m => m.Discription)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="addInfo">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Additional information</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <span><b>About seller</b></span>
+                                    </div>
+                                    <div class="panel-body form-inline">
+                                        <p>
+                                            @Html.LabelFor(m => m.SellerEmail, new {@class = "col-sm-5 control-label"})
+                                            @Html.DisplayFor(m => m.SellerEmail, new {@class = "form-control col-sm-7"})
+                                        </p>
+                                        <p>
+                                            @Html.LabelFor(m => m.SellerLogin, new {@class = "col-sm-5 control-label"})
+                                            @Html.DisplayFor(m => m.SellerLogin, new {@class = "form-control col-sm-7"})
+                                        </p>
+                                        <p>
+                                            @Html.LabelFor(m => m.Bids, new {@class = "col-sm-5 control-label"})
+                                            @Model.Bids.Count()
+                                        </p>
+                                        <p>
+                                            @Html.LabelFor(m => m.SettedCategoryName, new { @class = "col-sm-5 control-label" })
+                                            @Html.DisplayFor(m => m.SettedCategoryName, new { @class = "form-control col-sm-7" })
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <span><b>Bids</b></span>
+                                    </div>
+                                    <div class="panel-body form-inline">
+                                        <table class="table table-condensedv">
+                                            <tr>
+                                                <th>User login</th>
+                                                <th>Bid amount</th>
+                                                <th>Date</th>
+                                            </tr>
+                                            @foreach (var item in Model.Bids)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(m => item.UserLogin)</td>
+                                                    <td>@Html.DisplayFor(m => item.BidAmount)</td>
+                                                    <td>@Html.DisplayFor(m => item.BidTime.ToString("U"))</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="photo">...</div>
+            <div role="tabpanel" class="tab-pane" id="moderatorInfo">...</div>
+        </div>
+
+    </div>
+}
+
+@section scripts
+{
+    @*<script>
+        $(document).ready(function() {
+            $('#saveBidButton').click(function(event) {
+                var viewModel = {};
+                viewModel.LotRefId = @Model.Id;
+                viewModel.UserRefId = @Model.SellerRefId;
+                viewModel.BidAmount = $('#bid').val();
+                $.ajax({
+                    type: "Post",
+                    url: '/Lot/MakeBid',
+                    data: JSON.stringify({ 'viewModel': viewModel }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        debugger;
+                        if (result === 'True') {
+                            var detail = blockModel.IsBlocked;
+                            if (detail === true) {
+                                $(idSelector).find(':first-child').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
+                                $("#span_" + idNumber).addClass("glyphicon-lock");
+                                $(idSelector).parent().parent().addClass("danger");
+                            } else {
+                                $(idSelector).find(':first-child').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
+                                $("#span_" + idNumber).removeClass("glyphicon-lock");
+                                $(idSelector).parent().parent().removeClass("danger");
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    }
+                });
+            });
+        });
+    </script>*@
+}
+

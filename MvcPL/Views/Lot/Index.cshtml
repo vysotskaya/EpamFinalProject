@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MvcPL.Models.LotRowViewModel>
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -25,14 +27,80 @@
                 <div class="panel-heading">
                     <h4>Sections</h4>
                 </div>
-                <div class="panel-body"></div>
+                <div class="panel-body">
+                    @foreach (var item in ViewBag.Sections)
+                    {
+                        <ul class="ulSection">
+                            <li><span name="sectionSpan" id="@item.Id:_sec" class="glyphicon glyphicon-plus"></span>  <a name="lotsInSection" href="#">@item.SectionName</a></li>
+                        </ul>
+                        <ul class="ulCategories" id="@item.Id" style="display: none;">
+                            @foreach (var category in item.Categories)
+                            {
+                                <li><span class="glyphicon glyphicon glyphicon-play"></span><a name="lotsInCategory" href="#">@category</a></li>
+                            }
+                        </ul>
+                    }
+                </div>
             </div>
         </div>
         <div id="centerSection" class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading"><h4>Last lots</h4></div>
-                <div class="panel-body"></div>
+                <div class="panel-body" id="Lots">@Html.Partial("_LotRows")</div>
             </div>
         </div>
     </div>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("span[name='sectionSpan']").click(function (event) {
+                debugger;
+                var id = "#" + parseInt(event.currentTarget.id);
+                if ($(this).hasClass('glyphicon-plus')) {
+                    $(this).removeClass('glyphicon-plus').addClass('glyphicon-minus');
+                    $(id).css('display', 'block');
+                } else {
+                    $(this).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+                    $(id).css('display', 'none');
+                }
+            });
+
+            $("a[name='lotsInCategory']").click(function (event) {
+                debugger;
+                var categoryName = $(this).text();
+                $.ajax({
+                    type: "Get",
+                    url: '/Lot/LotRows?categoryName=' + categoryName,
+                    //data: JSON.stringify({ 'sectionName': value }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        debugger;
+                        $("#Lots").html(result);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    }
+                });
+            });
+
+            $("a[name='lotsInSection']").click(function (event) {
+                debugger;
+                var sectionName = $(this).text();
+                $.ajax({
+                    type: "Get",
+                    url: '/Lot/LotRows?sectionName=' + sectionName,
+                    //data: JSON.stringify({ 'sectionName': value }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        debugger;
+                        $("#Lots").html(result);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    }
+                });
+            });
+        });
+    </script>
 }

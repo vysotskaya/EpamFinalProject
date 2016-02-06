@@ -13,7 +13,9 @@ namespace DAL.Mappers
                 UserRefId = bid.UserRefId,
                 LotRefId = bid.LotRefId,
                 LotName = bid.Lot.LotName,
-                UserLogin = bid.User.Login
+                UserLogin = bid.User.Login,
+                BidTime = bid.BidTime,
+                BidAmount = bid.BidAmount
             };
         }
 
@@ -23,7 +25,9 @@ namespace DAL.Mappers
             {
                 BidId = dalBid.Id,
                 LotRefId = dalBid.LotRefId,
-                UserRefId = dalBid.UserRefId
+                UserRefId = dalBid.UserRefId,
+                BidAmount = dalBid.BidAmount,
+                BidTime = dalBid.BidTime
             };
         }
     }

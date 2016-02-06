@@ -1180,4 +1180,70 @@ tr th {
     float: left;
 }
 
+.lotPost {
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px solid #cccccc;
+}
+
+.lotPhoto {
+    width: 90px;
+    margin-left: -10px;
+}
+
+.lotDetailsPhoto {
+    width: 300px;
+    margin-left: 20px;
+}
+
+.lotContent {
+    margin-top: -20px;
+    font-size: 14px;
+}
+
+#lotInfo label {
+    padding-top: 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#lotInfo span {
+    font-size: 13px;
+}
+
+#lotInfo .col-sm-6 {
+    padding-right: 10px;
+    padding-left: 0;
+}
+
+#lotInfo .form-group {
+    margin-bottom: 5px;
+}
+
+.auctionInfo {
+    padding-top: 0;
+}
+
+.ulSection {
+    list-style-type: square;
+    overflow: hidden;
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.ulCategories li {
+    margin-left: 20px;
+}
+
+li > a {
+    color: #727272;
+}
+
+.panel-body #saveBidButton {
+    margin-top: 0;
+    padding: 10px 30px;
+}
+
 

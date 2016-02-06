@@ -14,13 +14,18 @@ namespace MvcPL.Controllers
         private readonly ISectionService _sectionService;
         private readonly ICategoryService _categoryService;
         private readonly IRequestService _requestService;
+        private readonly ILotRequestService _lotRequestService;
+        private readonly ILotService _lotService;
 
         public ModeratorController(ISectionService sectionService, 
-            ICategoryService categoryService, IRequestService requestService)
+            ICategoryService categoryService, IRequestService requestService,
+            ILotRequestService lotRequestService, ILotService lotService)
         {
             _sectionService = sectionService;
             _categoryService = categoryService;
             _requestService = requestService;
+            _lotRequestService = lotRequestService;
+            _lotService = lotService;
         }
 
         public ActionResult Sections()
@@ -31,10 +36,18 @@ namespace MvcPL.Controllers
             return View(sections);
         }
 
-        public ActionResult Categories(int id)
+        public ActionResult Categories(int id = 0)
         {
-            var categories = _categoryService.GetAllCategoriesBySectionId(id).Select(c => c.ToCategoryDetailsViewModel());
+            var categories = _categoryService.GetAllCategoriesBySectionId(id).Select(c => c.ToCategoryDetailsViewModel()).ToList();
             ViewBag.SectionId = id;
+            for (int i = 0; i < categories.Count; i ++)
+            {
+                var lots = _lotRequestService.GetAllLotRequestEntities()
+                    .Where(r => r.CategoryRefId == categories[i].Id);
+                categories[i].UnconfirmedLots = lots.Count();
+                categories[i].TotalLotNumber =
+                    _lotService.GetAllLotEntities().Count(l => l.CategoryRefId == categories[i].Id);
+            }
             return View(categories.ToList());
         }
 

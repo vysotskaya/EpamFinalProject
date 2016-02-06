@@ -13,7 +13,9 @@ namespace BLL.Mappers
                 UserRefId = bidEntity.UserRefId,
                 LotRefId = bidEntity.LotRefId,
                 LotName = bidEntity.LotName,
-                UserLogin = bidEntity.UserLogin
+                UserLogin = bidEntity.UserLogin,
+                BidTime = bidEntity.BidTime,
+                BidAmount = bidEntity.BidAmount
             };
         }
 
@@ -25,7 +27,9 @@ namespace BLL.Mappers
                 UserRefId = dalBid.UserRefId,
                 LotRefId = dalBid.LotRefId,
                 LotName = dalBid.LotName,
-                UserLogin = dalBid.UserLogin
+                UserLogin = dalBid.UserLogin,
+                BidTime = dalBid.BidTime,
+                BidAmount = dalBid.BidAmount
             };
         }
     }

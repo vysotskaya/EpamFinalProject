@@ -29,7 +29,7 @@
                     </th>
                     <th>
                         @*@Html.DisplayNameFor(model => model.)*@
-                        Unconfirmed lots
+                        Unconfirmed / Total lots
                     </th>
                     <th>
 
@@ -47,9 +47,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.CreationDate)
                         </td>
-                        <td>
-                            @*@Html.DisplayFor(modelItem => item.SettedModeratorLogin)&nbsp;*@
-                            @*@Html.ActionLink("Change", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
+                        <td class="form-inline">
+                            @Html.ActionLink(item.UnconfirmedLots.ToString(), "ModeratorUnconfirmedLots", "Lot", new { categoryId = item.Id}, new {@style = "color: #000"}) /
+                            @Html.ActionLink(item.TotalLotNumber.ToString(), "", "", new {/*userId = item.Id*/}, new { @style = "color: #000" })
                         </td>
                         <td class="form-inline">
                             @*<button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">

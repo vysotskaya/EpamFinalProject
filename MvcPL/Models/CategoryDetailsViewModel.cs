@@ -16,5 +16,8 @@ namespace MvcPL.Models
         [Display(Name = "Confirm status")]
         public bool IsConfirmed { get; set; }
 
+        public int UnconfirmedLots { get; set; }
+        public int TotalLotNumber { get; set; }
+
     }
 }

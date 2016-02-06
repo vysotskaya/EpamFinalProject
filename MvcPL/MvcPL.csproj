@@ -157,15 +157,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Mappers\BidMapper.cs" />
     <Compile Include="Infrastructure\Mappers\CategoryMapper.cs" />
     <Compile Include="Infrastructure\Mappers\LotMapper.cs" />
     <Compile Include="Infrastructure\Mappers\SectionMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserRegisterMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserDetailsMapper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\BidViewModel.cs" />
     <Compile Include="Models\CategoryCreateViewModel.cs" />
     <Compile Include="Models\CategoryDetailsViewModel.cs" />
     <Compile Include="Models\LotCreateViewModel.cs" />
+    <Compile Include="Models\LotDetailsViewModel.cs" />
+    <Compile Include="Models\LotRowViewModel.cs" />
     <Compile Include="Models\RequestViewModel.cs" />
     <Compile Include="Models\SectionCreateViewModel.cs" />
     <Compile Include="Models\SectionDetailsViewModel.cs" />
@@ -181,6 +185,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\default_avatar.jpg" />
+    <Content Include="Content\images\lot.jpeg" />
     <Content Include="Content\images\slider.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="favicon.ico" />
@@ -231,6 +236,9 @@
     <Content Include="Views\Admin\Notifications.cshtml" />
     <Content Include="Views\Lot\CreateLot.cshtml" />
     <Content Include="Views\Lot\_CategoryInSection.cshtml" />
+    <Content Include="Views\Lot\_LotRows.cshtml" />
+    <Content Include="Views\Lot\LotDetails.cshtml" />
+    <Content Include="Views\Lot\ModeratorUnconfirmedLots.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

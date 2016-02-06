@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,22 +20,27 @@ namespace MvcPL.Controllers
         private readonly ILotService _lotService;
         private readonly IUserService _userService;
         private readonly ILotRequestService _lotRequestService;
+        private readonly IBidService _bidService;
 
         public LotController(ICategoryService categoryService, ISectionService sectionService,
-            ILotService lotService, IUserService userService, ILotRequestService lotRequestService)
+            ILotService lotService, IUserService userService, ILotRequestService lotRequestService,
+            IBidService bidService)
         {
             _sectionService = sectionService;
             _categoryService = categoryService;
             _lotService = lotService;
             _userService = userService;
             _lotRequestService = lotRequestService;
+            _bidService = bidService;
         }
 
         [AllowAnonymous]
         [ActionName("Index")]
         public ActionResult AllLots()
         {
-            return View();
+            ViewBag.Sections = _sectionService.GetAllSectionEntities().Select(s => s.ToSectionDetailsModel());
+            var lots = _lotService.GetAllLotEntities().Where(l => l.IsConfirm).Select(l => l.ToLotRowViewModel()).OrderByDescending(lot => lot.StartDate);
+            return View(lots);
         }
 
        
@@ -88,6 +94,70 @@ namespace MvcPL.Controllers
         {
             var lotViewModel = new LotCreateViewModel() {Categories = LoadCategories(sectionName)};
             return PartialView("_CategoryInSection", lotViewModel);
+        }
+
+        public ActionResult LotRows(string sectionName = null, string categoryName = null)
+        {
+            IList<LotRowViewModel> lots = new List<LotRowViewModel>();
+            if (categoryName == null)
+            {
+                SectionEntity section = _sectionService.GetAllSectionEntities().FirstOrDefault(s => s.SectionName == sectionName);
+                foreach (var category in section.Categories)
+                {
+                    var lotsTemp = _lotService.GetAllLotEntities()
+                        .Where(l => l.CategoryRefId == category.Id).ToList();
+                    foreach (var l in lotsTemp)
+                    {
+                        lots.Add(l.ToLotRowViewModel());
+                    }
+                }
+            }
+            else
+            {
+                lots = _lotService.GetAllLotEntities().Where(l => l.CategoryName == categoryName)
+                        .Select(l => l.ToLotRowViewModel())
+                        .ToList();
+            }
+            return PartialView("_LotRows", lots);
+        }
+
+        public ActionResult LotDetails(int id)
+        {
+            var lot = _lotService.GetLotEntity(id).ToLotDetailsViewModel();
+            var bids = _bidService.GetAllBidEntities().Where(b => b.LotRefId == lot.Id).Select(b => b.ToBidViewModel()).ToList();
+            if (bids.Count != 0)
+            {
+                lot.Bids = bids;
+                lot.CurrentBid = bids.Max(b => b.BidAmount);
+            }
+            else
+            {
+                lot.CurrentBid = lot.StartingBid;
+            }
+            return View(lot);
+        }
+
+
+        public ActionResult ModeratorUnconfirmedLots(int categoryId = 0)
+        {
+            var lots = _lotRequestService.GetAllLotRequestEntities()
+                    .Where(r => r.CategoryRefId == categoryId).ToList();
+            var lotRowView = new List<LotRowViewModel>();
+            int idx = 0;
+            foreach (var lot in lots)
+            {
+                lotRowView.Add(_lotService.GetLotEntity(lot.LotRefId).ToLotRowViewModel());
+            }
+            return View(lotRowView);
+        }
+
+        public ActionResult MakeBid(BidViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                
+            }
+            return RedirectToAction("Index", viewModel.LotRefId);
         }
 
         private IEnumerable<SelectListItem> LoadSections()

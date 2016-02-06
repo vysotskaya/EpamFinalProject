@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ORM
@@ -12,6 +13,8 @@ namespace ORM
 
         public int UserRefId { get; set; }
         public int LotRefId { get; set; }
+        public double BidAmount { get; set; }
+        public DateTime BidTime { get; set; }
 
         public virtual User User { get; set; }
         public virtual Lot Lot { get; set; }

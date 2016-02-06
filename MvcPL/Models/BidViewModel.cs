@@ -1,15 +1,20 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace BLL.Interface.Entities
+namespace MvcPL.Models
 {
-    public class BidEntity
+    public class BidViewModel
     {
         public int Id { get; set; }
         public int UserRefId { get; set; }
+
+        [Display(Name = "User login")]
         public string UserLogin { get; set; }
         public int LotRefId { get; set; }
-        public string LotName { get; set; }
+        [Display(Name = "Bid amount")]
         public double BidAmount { get; set; }
+
+        [Display(Name = "Bid time")]
         public DateTime BidTime { get; set; }
     }
 }
