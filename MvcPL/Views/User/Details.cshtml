@@ -6,137 +6,146 @@
     ViewBag.Title = "Details";
 }
 
-<h2>
-    @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" })
-    / @Html.ActionLink("All Users", "Index", "Admin", null, htmlAttributes: new { @style = "color: #666;" })
-    / User Details
-</h2>
+@section Header
+{
+    <h2>
+        @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"})
+        / @Html.ActionLink("All Users", "Index", "Admin", null, htmlAttributes: new {@style = "color: #666;"})
+        / User Details
+    </h2>
+}
 
-<div class="panel panel-default text-left">
-    <div class="panel-body">
-        <div class="col-md-4">
-            <div class="col-md-6">
-                <img src="~/Content/images/default_avatar.jpg" class="img-circle"/>
+@section Body
+{
+    <div class="panel panel-default text-left">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="col-md-6">
+                    <img src="~/Content/images/default_avatar.jpg" class="img-circle"/>
+                </div>
+                <div class="col-md-6">
+                    @Html.HiddenFor(m => m.IsBlocked, Model.IsBlocked)
+                    <br/>
+                    <span>User status : </span>
+                    <span id="blockSign" class="glyphicon@(Model.IsBlocked ? " glyphicon-lock" : " glyphicon-ok-circle")" aria-hidden="true"></span>
+                    <br/>
+                    <span class="sm" id="blockUntil">@(Model.IsBlocked ? "until " + Model.BlockDate.ToString("dd/MM/yyyy") : "")</span>
+                    @if (!Model.Roles.Contains(Role.Administrator))
+                    {
+                        <button class="btn btn-sm" id="blockButton">@(Model.IsBlocked ? "Unblock " : "Block ")user</button>
+                    }
+                </div>
             </div>
-            <div class="col-md-6">
-                @Html.HiddenFor(m => m.IsBlocked, Model.IsBlocked)
+            <div class="col-md-5 form-horizontal text-left" id="userDetails">
                 <br/>
-                <span>User status : </span>
-                <span id="blockSign" class="glyphicon@(Model.IsBlocked ? " glyphicon-lock" : " glyphicon-ok-circle")" aria-hidden="true"></span>
-                <br/>
-                <span class="sm" id="blockUntil">@(Model.IsBlocked ? "until " + Model.BlockDate.ToString("dd/MM/yyyy") : "")</span>
-                @if (!Model.Roles.Contains(Role.Administrator))
-                {
-                    <button class="btn btn-sm" id="blockButton">@(Model.IsBlocked ? "Unblock " : "Block ")user</button>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Login, new {@class = "col-sm-4 control-label"})
+                    <span class="col-sm-6">@Model.Login</span>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new {@class = "col-sm-4 control-label"})
+                    <a href="@Model.Email"><span class="col-sm-6">@Model.Email</span></a>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CreationDate, new {@class = "col-sm-4 control-label"})
+                    <span class="col-sm-6">@Model.CreationDate.ToString("dd/MM/yyyy")</span>
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <div id="modal_form">
+        <span id="modal_close">X</span>
+        <h4 class="modal-title" id="myModalLabel">Block user</h4>
+        <div class="modal-body">
+            @Html.Partial("~/Views/Admin/_BlockWindow.cshtml")
+        </div>
+    </div>
+
+    <div id="overlay"></div>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+            function makeModel(isBlock, date, reason, id) {
+                var blockModel = {};
+                blockModel.IsBlocked = isBlock;
+                blockModel.BlockDate = date;
+                blockModel.BlockReason = reason;
+                blockModel.Id = id;
+                return blockModel;
+            }
+
+            $('#blockButton').click(function(event) {
+                debugger;
+                if ($("#IsBlocked").val() === 'True') {
+                    var blockModel = makeModel(false, '@DateTime.Now.AddHours(1)', '-', @Model.Id);
+                    $.ajax({
+                        type: "Post",
+                        url: '/Admin/BlockUser',
+                        data: JSON.stringify({ 'blockModel': blockModel }),
+                        contentType: 'application/json',
+                        success: function(result) {
+                            if (result === 'True') {
+                                $('#blockSign').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
+                                $('#blockUntil').text('');
+                                $('#blockButton').html('Block user');
+                                $("#IsBlocked").val("False");
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                        }
+                    });
+
+                } else {
+                    event.preventDefault(); // выключаем стандартную роль элемента
+                    $('#overlay').fadeIn(400, // сначала плавно показываем темную подложку
+                        function() { // после выполнения предъидущей анимации
+                            $('#modal_form')
+                                .css('display', 'block') // убираем у модального окна display: none;
+                                .animate({ opacity: 1, top: '50%' }, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
+                        });
                 }
-            </div>
-        </div>
-        <div class="col-md-5 form-horizontal text-left" id="userDetails">
-            <br/>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Login, new {@class = "col-sm-4 control-label"})
-                <span class="col-sm-6">@Model.Login</span>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Email, new {@class = "col-sm-4 control-label"})
-                <a href="@Model.Email"><span class="col-sm-6">@Model.Email</span></a>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.CreationDate, new {@class = "col-sm-4 control-label"})
-                <span class="col-sm-6">@Model.CreationDate.ToString("dd/MM/yyyy")</span>
-            </div>
+            });
 
-        </div>
-        <div class="col-md-3"></div>
-    </div>
-</div>
+            /* Закрытие модального окна, тут делаем то же самое но в обратном порядке */
+            $('#modal_close, #overlay').click(function() { // ловим клик по крестику или подложке
+                $('#modal_form')
+                    .animate({ opacity: 0, top: '45%' }, 200, // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
+                        function() { // после анимации
+                            $(this).css('display', 'none'); // делаем ему display: none;
+                            $('#overlay').fadeOut(400); // скрываем подложку
+                        }
+                    );
+            });
 
-<div id="modal_form">
-    <span id="modal_close">X</span>
-    <h4 class="modal-title" id="myModalLabel">Block user</h4>
-    <div class="modal-body">
-        @Html.Partial("~/Views/Admin/_BlockWindow.cshtml")
-    </div>
-</div>
-
-<div id="overlay"></div>
-
-<script>
-    $(document).ready(function() {
-
-        function makeModel(isBlock, date, reason, id) {
-            var blockModel = {};
-            blockModel.IsBlocked = isBlock;
-            blockModel.BlockDate = date;
-            blockModel.BlockReason = reason;
-            blockModel.Id = id;
-            return blockModel;
-        }
-
-        $('#blockButton').click(function(event) { // ловим клик по ссылки с id="go"
-            debugger;
-            if ($("#IsBlocked").val() == 'True') {
-                var blockModel = makeModel(false, '@DateTime.Now.AddHours(1)', '-', @Model.Id);
+            $('#saveBlock').click(function() {
+                $("#modal_close").trigger("click");
+                var blockModel = makeModel(true, $('#blockDate').val(), $('#BlockReason').val(), @Model.Id);
                 $.ajax({
                     type: "Post",
                     url: '/Admin/BlockUser',
-                    data: JSON.stringify({ 'blockModel': blockModel}),
+                    data: JSON.stringify({ 'blockModel': blockModel }),
                     contentType: 'application/json',
                     success: function(result) {
-                        if (result == 'True') {
-                            $('#blockSign').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
-                            $('#blockUntil').text('');
-                            $('#blockButton').html('Block user');
-                            $("#IsBlocked").val("False");
+                        if (result === 'True') {
+                            $('#blockSign').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
+                            $('#blockButton').html('Unblock user');
+                            $('#blockUntil').text('until ' + $('#blockDate').val());
+                            $("#IsBlocked").val("True");
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                     }
                 });
-
-            } else {
-                event.preventDefault(); // выключаем стандартную роль элемента
-                $('#overlay').fadeIn(400, // сначала плавно показываем темную подложку
-                    function() { // после выполнения предъидущей анимации
-                        $('#modal_form')
-                            .css('display', 'block') // убираем у модального окна display: none;
-                            .animate({ opacity: 1, top: '50%' }, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
-                    });
-            }
-        });
-
-        /* Закрытие модального окна, тут делаем то же самое но в обратном порядке */
-        $('#modal_close, #overlay').click(function() { // ловим клик по крестику или подложке
-            $('#modal_form')
-                .animate({ opacity: 0, top: '45%' }, 200, // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
-                    function() { // после анимации
-                        $(this).css('display', 'none'); // делаем ему display: none;
-                        $('#overlay').fadeOut(400); // скрываем подложку
-                    }
-                );
-        });
-
-        $('#saveBlock').click(function () {
-            $("#modal_close").trigger("click");
-            var blockModel = makeModel(true, $('#blockDate').val(), $('#BlockReason').val(), @Model.Id);
-            $.ajax({
-                type: "Post",
-                url: '/Admin/BlockUser',
-                data: JSON.stringify({ 'blockModel': blockModel}),
-                contentType: 'application/json',
-                success: function(result) {
-                    if (result == 'True') {
-                        $('#blockSign').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
-                        $('#blockButton').html('Unblock user');
-                        $('#blockUntil').text('until ' + $('#blockDate').val());
-                        $("#IsBlocked").val("True");
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                }
             });
         });
-    });
-</script>
+    </script>
+}
 
 

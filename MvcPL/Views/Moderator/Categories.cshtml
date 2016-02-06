@@ -4,16 +4,22 @@
     ViewBag.Title = "Categories";
 }
 
-<h2>
-    @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"})
-    / @Html.ActionLink("All Sections", "Sections", "Moderator", null, htmlAttributes: new {@style = "color: #666;"})
-    / Categories
-</h2>
+@section Header
+{
+    <h2>
+        @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"})
+        / @Html.ActionLink("All Sections", "Sections", "Moderator", null, htmlAttributes: new {@style = "color: #666;"})
+        / Categories
+    </h2>
+}
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table text-center vcenter">
-            <thead>
+@section Body
+{
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table text-center vcenter">
+                <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.CategoryName)
@@ -29,10 +35,10 @@
 
                     </th>
                 </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-            {
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
                     <tr class="@(item.IsConfirmed ? "" : "warning")">
                         <td>
                             @Html.DisplayFor(modelItem => item.CategoryName)&nbsp;
@@ -57,9 +63,10 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-@Html.ActionLink("Create category", "CreateCategory", "Moderator", new {id = ViewBag.SectionId}, new {@class = "btn btn-default", @style = "color: #fff;" })
+    @Html.ActionLink("Create category", "CreateCategory", "Moderator", new {id = ViewBag.SectionId}, new {@class = "btn btn-default", @style = "color: #fff;"})
+}

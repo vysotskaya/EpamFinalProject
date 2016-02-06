@@ -7,10 +7,13 @@ namespace MvcPL.Attributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime date = (DateTime)value;
-            if (date >= DateTime.Now)
+            if (value != null)
             {
-                return ValidationResult.Success;
+                DateTime date = (DateTime)value;
+                if (date >= DateTime.Now)
+                {
+                    return ValidationResult.Success;
+                }
             }
             return new ValidationResult("Incorrect block date.");
         }

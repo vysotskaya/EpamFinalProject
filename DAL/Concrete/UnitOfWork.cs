@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using DAL.Interface.Repository;
 
 namespace DAL.Concrete
@@ -11,6 +12,7 @@ namespace DAL.Concrete
         {
             Context = context;
         }
+
         public void Commit()
         {
             Context?.SaveChanges();

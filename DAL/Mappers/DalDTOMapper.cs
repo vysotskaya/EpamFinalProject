@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DAL.Interface.DTO;
 using ORM;
 
 namespace DAL.Mappers
 {
-    public static class DalDTOMapper
+    public static partial class DalDtoMapper
     {
         public static ICollection<DalRole> ToDalRoleCollection(this IEnumerable<Role> roles)
         {

@@ -145,10 +145,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\BidValidationAttribute.cs" />
     <Compile Include="Attributes\DateTimeValidationAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LotController.cs" />
     <Compile Include="Controllers\ModeratorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
@@ -156,12 +158,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Mappers\CategoryMapper.cs" />
+    <Compile Include="Infrastructure\Mappers\LotMapper.cs" />
     <Compile Include="Infrastructure\Mappers\SectionMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserRegisterMapper.cs" />
     <Compile Include="Infrastructure\Mappers\UserDetailsMapper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\CategoryCreateViewModel.cs" />
     <Compile Include="Models\CategoryDetailsViewModel.cs" />
+    <Compile Include="Models\LotCreateViewModel.cs" />
     <Compile Include="Models\RequestViewModel.cs" />
     <Compile Include="Models\SectionCreateViewModel.cs" />
     <Compile Include="Models\SectionDetailsViewModel.cs" />
@@ -209,7 +213,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Lot\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
@@ -225,6 +229,8 @@
     <Content Include="Views\Moderator\Categories.cshtml" />
     <Content Include="Views\Moderator\CreateCategory.cshtml" />
     <Content Include="Views\Admin\Notifications.cshtml" />
+    <Content Include="Views\Lot\CreateLot.cshtml" />
+    <Content Include="Views\Lot\_CategoryInSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

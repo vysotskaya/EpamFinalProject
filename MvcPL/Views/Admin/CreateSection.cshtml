@@ -4,38 +4,44 @@
     ViewBag.Title = "Create section";
 }
 
-<h2>@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"}) 
-    / @Html.ActionLink("All Sections", "AllSections", "Admin", null, htmlAttributes: new { @style = "color: #666;" })
-     / Create Section</h2>
-
-@using (Html.BeginForm("CreateSection", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@section Header
 {
-    @Html.AntiForgeryToken()
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(m => m.SectionName, new { @class = "col-md-5 control-label" })
-        <div class="col-md-7 form-inline text-left">
-            @Html.TextBoxFor(m => m.SectionName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.SectionName, null, new { @class = "text-danger" })
+    <h2>@Html.ActionLink("Home", "Index", "Lot", null, htmlAttributes: new {@style = "color: #666;"})
+        / @Html.ActionLink("All Sections", "AllSections", "Admin", null, htmlAttributes: new {@style = "color: #666;"})
+        / Create Section</h2>
+}
+
+@section Body
+{
+    @using (Html.BeginForm("CreateSection", "Admin", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+    {
+        @Html.AntiForgeryToken()
+        <hr/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.SectionName, new {@class = "col-md-5 control-label"})
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextBoxFor(m => m.SectionName, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.SectionName, null, new {@class = "text-danger"})
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Discription, new { @class = "col-md-5 control-label" })
-        <div class="col-md-7 form-inline text-left">
-            @Html.TextAreaFor(m => m.Discription, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Discription, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Discription, new {@class = "col-md-5 control-label"})
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextAreaFor(m => m.Discription, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.Discription, null, new {@class = "text-danger"})
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.UsersLogin, new { @class = "col-md-5 control-label" })
-        <div class="col-md-7 form-inline text-left">
-            @Html.DropDownListFor(m => m.SettedModeratorLogin, Model.UsersLogin,new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.UsersLogin, new {@class = "col-md-5 control-label"})
+            <div class="col-md-7 form-inline text-left">
+                @Html.DropDownListFor(m => m.SettedModeratorLogin, Model.UsersLogin, new {@class = "form-control"})
+            </div>
         </div>
-    </div>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        <div class="col-md-12">
-            <input type="submit" class="btn btn-default" value="Save" />
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-default" value="Save"/>
+            </div>
         </div>
-    </div>
+    }
 }

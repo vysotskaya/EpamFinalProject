@@ -40,12 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\BidEntity.cs" />
     <Compile Include="Entities\CategoryEntity.cs" />
+    <Compile Include="Entities\LotEntity.cs" />
+    <Compile Include="Entities\LotRequestEntity.cs" />
     <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\SectionEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="InterfaceServices\IBidService.cs" />
     <Compile Include="InterfaceServices\ICategoryService.cs" />
+    <Compile Include="InterfaceServices\ILotRequestService.cs" />
+    <Compile Include="InterfaceServices\ILotService.cs" />
     <Compile Include="InterfaceServices\IRequestService.cs" />
     <Compile Include="InterfaceServices\IRoleService.cs" />
     <Compile Include="InterfaceServices\ISectionService.cs" />

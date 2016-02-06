@@ -4,11 +4,17 @@
     ViewBag.Title = "Index";
 }
 
-<h2>@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" }) / Sections</h2>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table text-center vcenter">
-            <thead>
+@section Header
+{
+    <h2>@Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new {@style = "color: #666;"}) / Sections</h2>
+}
+
+@section Body
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table text-center vcenter">
+                <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.SectionName)
@@ -20,10 +26,10 @@
 
                     </th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 @foreach (var item in Model)
-            {
+                {
                     <tr class="@(item.IsBlocked ? "danger" : "")">
                         <td>
                             @Html.DisplayFor(modelItem => item.SectionName)&nbsp;
@@ -40,7 +46,8 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}

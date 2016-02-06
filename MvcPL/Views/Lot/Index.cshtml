@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section Body
+{
+    <div id="mainPanel">
+        <div id="leftSidebar" class="col-lg-4">
+            @if (Request.IsAuthenticated)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>For user</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <a href="@Url.Action("CreateLot", "Lot")" class="btn btn-sm col-sm-4">Create lot</a>
+                            <button class="btn btn-sm col-sm-7 col-sm-offset-1">Show my lots</button>
+                        </div>
+
+                    </div>
+                </div>
+            }
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Sections</h4>
+                </div>
+                <div class="panel-body"></div>
+            </div>
+        </div>
+        <div id="centerSection" class="col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>Last lots</h4></div>
+                <div class="panel-body"></div>
+            </div>
+        </div>
+    </div>
+}

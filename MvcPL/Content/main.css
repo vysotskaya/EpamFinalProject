@@ -1162,5 +1162,22 @@ tr th {
     padding: 0;
 }
 
+#mainPanel {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+}
+
+#leftSidebar {
+    float: left;
+}
+
+#centerSection {
+    float: left;
+}
+
+#rightSection {
+    float: left;
+}
 
 

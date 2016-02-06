@@ -18,14 +18,14 @@
                     <span class="icon-bar"></span>
                 </button>
 
-            <span style="font-size: 4em;">@Html.ActionLink("OnlineAuction", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "font-size: 0.8em;" })</span>
+            <span style="font-size: 4em;">@Html.ActionLink("OnlineAuction", "Index", "Lot", new { area = "" }, new { @class = "navbar-brand", @style = "font-size: 0.8em;" })</span>
 
             </div>
             <!-- main menu -->
             <nav class="collapse navbar-collapse navbar-right" role="navigation" style="float: right; width: 60%;">
                 <div class="main-menu form-inline">
                     <ul class="nav navbar-nav navbar-left">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Home", "Index", "Lot")</li>
                         <li>@Html.ActionLink("About", "About", "Home")</li>
 
                     </ul>
@@ -40,7 +40,8 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="block wow fadeInUp">
-                        @RenderBody()
+                        @RenderSection(name: "Header", required:false)
+                        @RenderSection(name: "Body", required:true)
                     </div>
                 </div>
             </div>

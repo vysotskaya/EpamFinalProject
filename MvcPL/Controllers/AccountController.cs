@@ -49,7 +49,7 @@ namespace MvcPL.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Lot");
                     }
                 }
                 else
@@ -102,7 +102,7 @@ namespace MvcPL.Controllers
                 if (membershipUser != null)
                 {
                     FormsAuthentication.SetAuthCookie(viewModel.Login, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Lot");
                 }
                 else
                 {

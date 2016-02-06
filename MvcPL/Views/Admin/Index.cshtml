@@ -4,11 +4,17 @@
     ViewBag.Title = "Index";
 }
 
-<h2>All users</h2>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table text-center vcenter">
-            <thead>
+@section Header
+{
+    <h2>All users</h2>
+}
+
+@section Body
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table text-center vcenter">
+                <thead>
                 <tr>
                     <th>
                         Profile photo
@@ -26,36 +32,34 @@
 
                     </th>
                 </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="@(item.IsBlocked ? "danger" : "")">
-                    <td>
-                        <img style="height: 40px;" src="~/Content/images/default_avatar.jpg" class="img-circle"/>&nbsp;
-                        <span class="glyphicon@(item.IsBlocked ? " glyphicon-lock" : "")" aria-hidden="true"></span>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Login)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreationDate)
-                    </td>
-                    <td>
-                        <span>@String.Join(" | ", item.Roles.Select(t => t.ToString()))</span>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="@(item.IsBlocked ? "danger" : "")">
+                        <td>
+                            <img style="height: 40px;" src="~/Content/images/default_avatar.jpg" class="img-circle"/>&nbsp;
+                            <span class="glyphicon@(item.IsBlocked ? " glyphicon-lock" : "")" aria-hidden="true"></span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Login)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            <span>@String.Join(" | ", item.Roles.Select(t => t.ToString()))</span>
                         
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", "User", new {userId = item.Id}, new {@class = "btn-sm"})
-                    </td>
-                </tr>
-            }
-            </tbody>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "User", new {userId = item.Id}, new {@class = "btn-sm"})
+                        </td>
+                    </tr>
+                }
+                </tbody>
 
-            
-        </table>
+
+            </table>
+        </div>
     </div>
-</div>
-@*<p>
-        @Html.ActionLink("Add new user", "Create")
-    </p>*@
+}

@@ -49,13 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\BidRepository.cs" />
     <Compile Include="Concrete\CategoryRepository.cs" />
+    <Compile Include="Concrete\LotRepository.cs" />
+    <Compile Include="Concrete\LotRequestRepository.cs" />
     <Compile Include="Concrete\RequestRepository.cs" />
     <Compile Include="Concrete\RoleRepository.cs" />
     <Compile Include="Concrete\SectionRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
+    <Compile Include="Mappers\BidDalDtoMapper.cs" />
     <Compile Include="Mappers\DalDTOMapper.cs" />
+    <Compile Include="Mappers\LotDalDtoMapper.cs" />
+    <Compile Include="Mappers\LotRequestDalDtoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

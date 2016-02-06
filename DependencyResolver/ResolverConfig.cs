@@ -43,6 +43,15 @@ namespace DependencyResolver
             kernel.Bind<IRequestRepository>().To<RequestRepository>();
             kernel.Bind<IRequestService>().To<RequestService>();
 
+            kernel.Bind<ILotRepository>().To<LotRepository>();
+            kernel.Bind<ILotService>().To<LotService>();
+
+            kernel.Bind<ILotRequestRepository>().To<LotRequestRepository>();
+            kernel.Bind<ILotRequestService>().To<LotRequestService>();
+
+            kernel.Bind<IBidRepository>().To<BidRepository>();
+            kernel.Bind<IBidService>().To<BidService>();
+
             kernel.Bind<ICategoryRepository>().To<CategoryRepository>();
             kernel.Bind<ICategoryService>().To<CategoryService>();
 

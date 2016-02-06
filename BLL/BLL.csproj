@@ -40,12 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcreteServices\BidService.cs" />
     <Compile Include="ConcreteServices\CategoryService.cs" />
+    <Compile Include="ConcreteServices\LotRequestService.cs" />
+    <Compile Include="ConcreteServices\LotService.cs" />
     <Compile Include="ConcreteServices\RequestService.cs" />
     <Compile Include="ConcreteServices\RoleService.cs" />
     <Compile Include="ConcreteServices\SectionService.cs" />
     <Compile Include="ConcreteServices\UserService.cs" />
+    <Compile Include="Mappers\BidBllEntityMapper.cs" />
     <Compile Include="Mappers\BLLEntityMapper.cs" />
+    <Compile Include="Mappers\LotBllEntityMapper.cs" />
+    <Compile Include="Mappers\LotRequestBllEntityMapper.cs" />
     <Compile Include="Mappers\RequestMapper.cs" />
     <Compile Include="Mappers\SectionCategoryMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
