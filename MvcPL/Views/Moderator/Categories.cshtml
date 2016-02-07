@@ -49,7 +49,7 @@
                         </td>
                         <td class="form-inline">
                             @Html.ActionLink(item.UnconfirmedLots.ToString(), "ModeratorUnconfirmedLots", "Lot", new { categoryId = item.Id}, new {@style = "color: #000"}) /
-                            @Html.ActionLink(item.TotalLotNumber.ToString(), "", "", new {/*userId = item.Id*/}, new { @style = "color: #000" })
+                            @Html.ActionLink(item.TotalLotNumber.ToString(), "ModeratorTotalLots", "Lot", new { categoryId = item.Id}, new { @style = "color: #000" })
                         </td>
                         <td class="form-inline">
                             @*<button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">

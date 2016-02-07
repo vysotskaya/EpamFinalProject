@@ -65,7 +65,14 @@ namespace DAL.Concrete
             var updatedLot = entity.ToLot();
             var existedLot = _dbContext.Entry<Lot>(_dbContext.Set<Lot>().Find(updatedLot.LotId));
             existedLot.State = EntityState.Modified;
-            //fild to update
+            existedLot.Entity.BlockReason = entity.BlockReason;
+            existedLot.Entity.IsBlocked = entity.IsBlocked;
+            existedLot.Entity.IsConfirm = entity.IsConfirm;
+            existedLot.Entity.IsSold = entity.IsSold;
+            existedLot.Entity.CategoryRefId = entity.CategoryRefId;
+            existedLot.Entity.LotName = entity.LotName;
+            existedLot.Entity.Discription = entity.Discription;
+            existedLot.Entity.EndDate = entity.EndDate;
         }
 
         public void Delete(DalLot entity)

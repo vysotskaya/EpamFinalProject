@@ -1,0 +1,105 @@
+﻿@model MvcPL.Models.LotCreateViewModel
+
+@{
+    ViewBag.Title = "EditLot";
+}
+
+@section Header
+{
+    <h2>
+        Edit Lot
+    </h2>
+}
+
+@section Body
+{
+    @using (Html.BeginForm("EditLot", "Lot", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.StartingBid, Model.StartingBid)
+        @Html.AntiForgeryToken()
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Discription, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextAreaFor(model => model.Discription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Discription, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, new { @class = "control-label col-md-5" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Sections, new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.DropDownListFor(m => m.SettedSectionName, Model.Sections, new { id = "Sections", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Categories, new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left" id="tmp">
+                @Html.Partial("_CategoryInSection")
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-default" value="Save"/>
+            </div>
+        </div>
+    }
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $("#Sections").change(function (event) {
+                debugger;
+                var value = $("#Sections").val();
+                $.ajax({
+                    type: "Post",
+                    url: '/Lot/CategoryInSectionPartial',
+                    data: JSON.stringify({ 'sectionName': value }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        $("#tmp").html(result);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    }
+                });
+            });
+
+            //$("button[name='blockSection']").click(function (event) {
+            //    debugger;
+            //    var idNumber = parseInt(event.currentTarget.id);
+            //    var idSelector = '#' + idNumber;
+            //    var blockModel = {};
+            //    var detail = $(idSelector).find(':first-child').hasClass('glyphicon-ok-circle');
+            //    if (detail === true) {
+            //        blockModel.IsBlocked = false;
+            //    } else {
+            //        blockModel.IsBlocked = true;
+            //    }
+            //    blockModel.Id = idNumber;
+
+            //});
+        });
+    </script>
+}

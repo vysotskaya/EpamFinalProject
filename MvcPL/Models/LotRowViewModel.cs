@@ -21,13 +21,16 @@ namespace MvcPL.Models
         [Display(Name = "End time")]
         [DateTimeValidation(ErrorMessage = "Incorrect end time.")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
         
         [Display(Name = "Start time")]
         public DateTime StartDate { get; set; }
 
+        [Display(Name = "Category name")]
         public string SettedCategoryName { get; set; }
 
+        [Display(Name = "Seller login")]
         public string SellerLogin { get; set; }
         public bool IsSold { get; set; }
     }

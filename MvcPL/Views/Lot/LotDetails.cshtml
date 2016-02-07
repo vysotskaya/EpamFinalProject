@@ -13,7 +13,7 @@
             <li role="presentation" class="active"><a href="#mainInfo" aria-controls="mainInfo" role="tab" data-toggle="tab">Lot info</a></li>
             <li role="presentation"><a href="#addInfo" aria-controls="addInfo" role="tab" data-toggle="tab">Add. info</a></li>
             <li role="presentation"><a href="#photo" aria-controls="photo" role="tab" data-toggle="tab">Photo</a></li>
-            @if (User.IsInRole("Moderator"))
+            @if (Model.ModeratorLogin == User.Identity.Name)
             {
                 <li role="presentation"><a href="#moderatorInfo" aria-controls="moderatorInfo" role="tab" data-toggle="tab">Moderator info</a></li>
             }
@@ -28,19 +28,45 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-4">
-                                <img src="~/Content/images/lot.jpeg" class="thumbnail lotDetailsPhoto"/>
+                                <img src="~/Content/images/lot.jpeg" class="thumbnail lotDetailsPhoto" />
                             </div>
                             <div class="col-lg-8">
                                 <div class="panel panel-info">
                                     <div class="panel-heading form-group" style="height: 40px;">
-                                        @Html.LabelFor(m => m.CurrentBid, new {@class = "col-sm-5 control-label"})
+                                        @Html.LabelFor(m => m.CurrentBid, new { @class = "col-sm-5 control-label" })
                                         <span class="col-sm-7"><b>@Model.CurrentBid BYR</b></span>
                                     </div>
                                     <div class="panel-body form-inline">
-                                            @Html.LabelFor(m => m.MakeBid, new { @class = "col-sm-4 control-label", @style = "margin-top: 5px;" })
-                                            @Html.TextBoxFor(m => m.MakeBid, new { id = "bid", @class = "form-control col-sm-5" })
-                                            <a href="@Url.Action("MakeBid", "Lot", new {viewModel = new BidViewModel() {} })" class="btn" id="saveBidButton">Save bid</a>
-                                            <p class="text-danger" id="textDangerBid" hidden></p>
+                                        @if (User.Identity.Name == Model.SellerLogin)
+                                        {
+                                            <div class="form-inline">
+                                                <div class="form-group col-lg-12">
+                                                    <p class="col-sm-6">
+                                                        Lot status : @(!Model.IsConfirm ? "unconfirmed" :
+                                                                           (Model.IsBlocked ? "blocked" : "active") )
+
+                                                        @if (Model.IsBlocked)
+                                                        {
+                                                            <button class="btn btn-sm" style="margin-left: 30px;" id="showBlockReason">Reason</button>
+                                                        }
+                                                    </p>
+                                                    <a href="@Url.Action("EditLot", "Lot", new {id = Model.Id})" class="btn btn-sm">Edit lot</a>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                             using (Html.BeginForm("MakeBid", "Lot", FormMethod.Post, new {@class = "form-inline", role = "form"}))
+                                             {
+                                                 @Html.LabelFor(m => m.MakeBid, new {@class = "col-sm-4 control-label", @style = "margin-top: 5px;"})
+                                                 @Html.TextBoxFor(m => m.MakeBid, new {id = "bid", @class = "form-control col-sm-5"})
+                                                 <input type="submit" class="btn" value="Save bid" id="Button"
+                                                        @((Model.IsBlocked || !Model.IsConfirm) ? "disabled" : "")/>
+                                                 @Html.HiddenFor(m => m.Id, Model.Id)
+                                                 @Html.HiddenFor(m => m.CurrentBid, Model.CurrentBid)
+                                                 <p class="text-danger" id="textDangerBid" hidden></p>
+                                             }
+                                        }
                                     </div>
                                     <table class="table table-condensedv">
                                         <tr>
@@ -60,7 +86,7 @@
 
                             </div>
                         </div>
-                        <br/>
+                        <br />
                         <div class="row col-sm-10 col-sm-offset-1">
                             <div class="panel panel-default text-left">
                                 <div class="panel-heading form-group" style="height: 40px;">
@@ -91,15 +117,15 @@
                                     </div>
                                     <div class="panel-body form-inline">
                                         <p>
-                                            @Html.LabelFor(m => m.SellerEmail, new {@class = "col-sm-5 control-label"})
-                                            @Html.DisplayFor(m => m.SellerEmail, new {@class = "form-control col-sm-7"})
+                                            @Html.LabelFor(m => m.SellerEmail, new { @class = "col-sm-5 control-label" })
+                                            @Html.DisplayFor(m => m.SellerEmail, new { @class = "form-control col-sm-7" })
                                         </p>
                                         <p>
-                                            @Html.LabelFor(m => m.SellerLogin, new {@class = "col-sm-5 control-label"})
-                                            @Html.DisplayFor(m => m.SellerLogin, new {@class = "form-control col-sm-7"})
+                                            @Html.LabelFor(m => m.SellerLogin, new { @class = "col-sm-5 control-label" })
+                                            @Html.DisplayFor(m => m.SellerLogin, new { @class = "form-control col-sm-7" })
                                         </p>
                                         <p>
-                                            @Html.LabelFor(m => m.Bids, new {@class = "col-sm-5 control-label"})
+                                            @Html.LabelFor(m => m.Bids, new { @class = "col-sm-5 control-label" })
                                             @Model.Bids.Count()
                                         </p>
                                         <p>
@@ -126,7 +152,7 @@
                                                 <tr>
                                                     <td>@Html.DisplayFor(m => item.UserLogin)</td>
                                                     <td>@Html.DisplayFor(m => item.BidAmount)</td>
-                                                    <td>@Html.DisplayFor(m => item.BidTime.ToString("U"))</td>
+                                                    <td>@Html.DisplayFor(m => item.BidTime)</td>
                                                 </tr>
                                             }
                                         </table>
@@ -140,46 +166,128 @@
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="photo">...</div>
-            <div role="tabpanel" class="tab-pane" id="moderatorInfo">...</div>
+            <div role="tabpanel" class="tab-pane" id="moderatorInfo">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Moderator panel</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-10 col-lg-offset-1">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <span><b>Lot status management</b></span>
+                                </div>
+                                <div class="panel-body form-inline text-left">
+                                    <p id="moderatorPanel">Lot status : @(!Model.IsConfirm ? "unconfirmed" : (Model.IsBlocked ? "blocked" : "active") )</p>
+                                    @using (Html.BeginForm("ManageLotStatus", "Moderator", FormMethod.Post, new { @class = "form-inline ", role = "form" }))
+                                    {
+                                        @Html.HiddenFor(m => m.Id, Model.Id)
+                                        @Html.HiddenFor(m => m.IsConfirm, Model.IsConfirm)
+                                        <p class="form-inline" id="moderatorPanel">
+                                            <label class="control-label">Manage :</label>
+                                            @if (!Model.IsConfirm)
+                                            {
+                                                <input class="btn btn-sm" type="submit" value="Accept"/>
+                                                <button class="btn btn-sm" id="blockButton">Decline</button>
+                                            }
+                                            else
+                                            {
+                                                if (Model.IsBlocked)
+                                                {
+                                                    @Html.HiddenFor(m => m.IsBlocked, new {Value = "false"})
+                                                    <input class="btn btn-sm" type="submit" value="Unblocked"/>}
+                                                else
+                                                {
+                                                    <button class="btn btn-sm" id="blockButton">Block</button>
+                                                }
+                                            }
+                                        </p>
+                                        if (Model.IsBlocked && !Model.IsConfirm)
+                                        {
+                                            <p class="form-inline">
+                                                Block reason  <button class="btn btn-sm" style="margin-left: 30px;" id="showBlockReason">Show</button>
+                                            </p>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
+
+    <div class="modal_form" id="modal_form">
+        <span id="modal_close" class="modal_close">X</span>
+        <h4 class="modal-title" id="myModalLabel">Block reason</h4>
+        <div class="modal-body">
+            @Html.Partial("~/Views/Lot/_BlockWindow.cshtml", Model)
+        </div>
+    </div>
+
+    <div class="modal_form" id="blockReasonModal">
+        <span class="modal_close" id="modalCloseReason">X</span>
+        <h4 class="modal-title">Block reason</h4>
+        <div class="modal-body text-left">
+            <p style="word-wrap: break-word;">@Model.BlockReason</p>
+        </div>
+    </div>
+
+    <div id="overlay"></div>
 }
 
 @section scripts
 {
-    @*<script>
-        $(document).ready(function() {
-            $('#saveBidButton').click(function(event) {
-                var viewModel = {};
-                viewModel.LotRefId = @Model.Id;
-                viewModel.UserRefId = @Model.SellerRefId;
-                viewModel.BidAmount = $('#bid').val();
-                $.ajax({
-                    type: "Post",
-                    url: '/Lot/MakeBid',
-                    data: JSON.stringify({ 'viewModel': viewModel }),
-                    contentType: 'application/json',
-                    success: function (result) {
-                        debugger;
-                        if (result === 'True') {
-                            var detail = blockModel.IsBlocked;
-                            if (detail === true) {
-                                $(idSelector).find(':first-child').removeClass("glyphicon-lock").addClass("glyphicon-ok-circle");
-                                $("#span_" + idNumber).addClass("glyphicon-lock");
-                                $(idSelector).parent().parent().addClass("danger");
-                            } else {
-                                $(idSelector).find(':first-child').removeClass("glyphicon-ok-circle").addClass("glyphicon-lock");
-                                $("#span_" + idNumber).removeClass("glyphicon-lock");
-                                $(idSelector).parent().parent().removeClass("danger");
-                            }
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                    }
-                });
+    <script>
+        $('#blockButton').click(function (event) {
+            event.preventDefault(); // выключаем стандартную роль элемента
+            $('#overlay').fadeIn(400, // сначала плавно показываем темную подложку
+            function () { // после выполнения предъидущей анимации
+                $('#modal_form')
+                .css('display', 'block') // убираем у модального окна display: none;
+                .animate({ opacity: 1, top: '50%' }, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
             });
         });
-    </script>*@
+
+        $('#showBlockReason').click(function (event) {
+            event.preventDefault(); // выключаем стандартную роль элемента
+            $('#overlay').fadeIn(400, // сначала плавно показываем темную подложку
+            function () { // после выполнения предъидущей анимации
+                $('#blockReasonModal')
+                .css('display', 'block') // убираем у модального окна display: none;
+                .animate({ opacity: 1, top: '50%' }, 200); // плавно прибавляем прозрачность одновременно со съезжанием вниз
+            });
+        });
+
+        /* Закрытие модального окна, тут делаем то же самое но в обратном порядке */
+        $('#modal_close, #overlay').click(function () { // ловим клик по крестику или подложке
+            $('#modal_form')
+            .animate({ opacity: 0, top: '45%' }, 200, // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
+            function () { // после анимации
+                $(this).css('display', 'none'); // делаем ему display: none;
+                $('#overlay').fadeOut(400); // скрываем подложку
+            }
+            );
+        });
+
+        $('#modalCloseReason, #overlay').click(function () { // ловим клик по крестику или подложке
+            $('#blockReasonModal')
+            .animate({ opacity: 0, top: '45%' }, 200, // плавно меняем прозрачность на 0 и одновременно двигаем окно вверх
+            function () { // после анимации
+                $(this).css('display', 'none'); // делаем ему display: none;
+                $('#overlay').fadeOut(400); // скрываем подложку
+            }
+            );
+        });
+
+        $('#saveBlock').click(function () {
+            $("#modal_close").trigger("click");
+        });
+
+    </script>
 }
 

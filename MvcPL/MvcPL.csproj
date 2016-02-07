@@ -170,6 +170,7 @@
     <Compile Include="Models\LotCreateViewModel.cs" />
     <Compile Include="Models\LotDetailsViewModel.cs" />
     <Compile Include="Models\LotRowViewModel.cs" />
+    <Compile Include="Models\MakeBidViewModel.cs" />
     <Compile Include="Models\RequestViewModel.cs" />
     <Compile Include="Models\SectionCreateViewModel.cs" />
     <Compile Include="Models\SectionDetailsViewModel.cs" />
@@ -239,6 +240,9 @@
     <Content Include="Views\Lot\_LotRows.cshtml" />
     <Content Include="Views\Lot\LotDetails.cshtml" />
     <Content Include="Views\Lot\ModeratorUnconfirmedLots.cshtml" />
+    <Content Include="Views\Lot\_BlockWindow.cshtml" />
+    <Content Include="Views\Lot\EditLot.cshtml" />
+    <Content Include="Views\Lot\ModeratorTotalLots.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,24 @@
+﻿@model MvcPL.Models.LotDetailsViewModel
+
+<div class="form-horizontal">
+    @using (Html.BeginForm("ManageLotStatus", "Moderator", FormMethod.Post, new {role = "form"}))
+    {
+        <div class="form-group">
+            <label class="control-label col-md-3">Block reason</label>
+            <div class="col-md-9 form-inline text-left">
+                @Html.TextAreaFor(m => m.BlockReason, new {@class = "form-control",
+               placeholder = "Enter block reason", required = "",
+               rows = "6"
+           })
+            </div>
+            @Html.HiddenFor(m => m.Id, Model.Id)
+            @Html.HiddenFor(m => m.IsBlocked, new {Value = "true"})
+            @Html.HiddenFor(m => m.IsConfirm, Model.IsConfirm)
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 form-inline">
+                <input type="submit" value="Save" class="btn btn-default" id="saveBlock"/>
+            </div>
+        </div>
+    }
+</div>

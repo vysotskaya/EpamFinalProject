@@ -11,6 +11,7 @@ namespace MvcPL.Models
         [Display(Name = "User login")]
         public string UserLogin { get; set; }
         public int LotRefId { get; set; }
+
         [Display(Name = "Bid amount")]
         public double BidAmount { get; set; }
 

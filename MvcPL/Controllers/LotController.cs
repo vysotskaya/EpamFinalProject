@@ -39,7 +39,8 @@ namespace MvcPL.Controllers
         public ActionResult AllLots()
         {
             ViewBag.Sections = _sectionService.GetAllSectionEntities().Select(s => s.ToSectionDetailsModel());
-            var lots = _lotService.GetAllLotEntities().Where(l => l.IsConfirm).Select(l => l.ToLotRowViewModel()).OrderByDescending(lot => lot.StartDate);
+            var lots = _lotService.GetAllLotEntities().Where(l => l.IsConfirm && !l.IsBlocked)
+                .Select(l => l.ToLotRowViewModel()).OrderByDescending(lot => lot.StartDate);
             return View(lots);
         }
 
@@ -58,9 +59,6 @@ namespace MvcPL.Controllers
             if (ModelState.IsValid)
             {
                 var seller = _userService.GetUserEntityByLogin(User.Identity.Name);
-                var section =
-                    _sectionService.GetAllSectionEntities()
-                        .FirstOrDefault(s => s.SectionName == viewModel.SettedSectionName);
                 var category =
                     _categoryService.GetAllCategoryEntities()
                         .FirstOrDefault(c => c.CategoryName == viewModel.SettedCategoryName);
@@ -90,6 +88,49 @@ namespace MvcPL.Controllers
             return View(viewModel);
         }
 
+        public ActionResult EditLot(int id)
+        {
+            var lot = _lotService.GetLotEntity(id);
+            var sectionId = _categoryService.GetCategoryEntity(lot.CategoryRefId).SectionRefId;
+            var sections = LoadSections();
+            var section =
+                _sectionService.GetSectionEntity(_categoryService.GetCategoryEntity(lot.CategoryRefId).SectionRefId);
+            var lotViewModel = new LotCreateViewModel()
+            {
+                Sections = sections,
+                Categories = LoadCategories(section.SectionName),
+                Id = lot.Id,
+                Name = lot.LotName,
+                SettedSectionName = _sectionService.GetSectionEntity(sectionId).SectionName,
+                Discription = lot.Discription,
+                EndDate = lot.EndDate,
+                SettedCategoryName = lot.CategoryName,
+                StartingBid = lot.StartingBid
+            };
+            return View(lotViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditLot(LotCreateViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var lot = _lotService.GetLotEntity(viewModel.Id);
+                var category =
+                    _categoryService.GetAllCategoryEntities()
+                        .FirstOrDefault(c => c.CategoryName == viewModel.SettedCategoryName);
+                lot.CategoryRefId = category.Id;
+                lot.LotName = viewModel.Name;
+                lot.Discription = viewModel.Discription;
+                lot.EndDate = viewModel.EndDate;
+                lot.IsConfirm = false;
+                _lotService.UpdateLot(lot);
+                return RedirectToAction("LotDetails", "Lot", new { id = viewModel.Id });
+            }
+            return View(viewModel);
+
+        }
+
         public ActionResult CategoryInSectionPartial(string sectionName)
         {
             var lotViewModel = new LotCreateViewModel() {Categories = LoadCategories(sectionName)};
@@ -105,7 +146,7 @@ namespace MvcPL.Controllers
                 foreach (var category in section.Categories)
                 {
                     var lotsTemp = _lotService.GetAllLotEntities()
-                        .Where(l => l.CategoryRefId == category.Id).ToList();
+                        .Where(l => l.CategoryRefId == category.Id).Where(l => !l.IsBlocked && l.IsConfirm).ToList();
                     foreach (var l in lotsTemp)
                     {
                         lots.Add(l.ToLotRowViewModel());
@@ -114,7 +155,7 @@ namespace MvcPL.Controllers
             }
             else
             {
-                lots = _lotService.GetAllLotEntities().Where(l => l.CategoryName == categoryName)
+                lots = _lotService.GetAllLotEntities().Where(l => l.CategoryName == categoryName && !l.IsBlocked && l.IsConfirm)
                         .Select(l => l.ToLotRowViewModel())
                         .ToList();
             }
@@ -134,30 +175,46 @@ namespace MvcPL.Controllers
             {
                 lot.CurrentBid = lot.StartingBid;
             }
+            var sectionId = _categoryService.GetCategoryEntity(lot.CategoryRefId).SectionRefId;
+            lot.ModeratorLogin = _sectionService.GetAllSectionEntities()
+                .FirstOrDefault(s => s.Id == sectionId).ModeratorLogin;
             return View(lot);
         }
 
-
-        public ActionResult ModeratorUnconfirmedLots(int categoryId = 0)
+        public ActionResult ModeratorTotalLots(int categoryId)
         {
-            var lots = _lotRequestService.GetAllLotRequestEntities()
-                    .Where(r => r.CategoryRefId == categoryId).ToList();
-            var lotRowView = new List<LotRowViewModel>();
-            int idx = 0;
-            foreach (var lot in lots)
-            {
-                lotRowView.Add(_lotService.GetLotEntity(lot.LotRefId).ToLotRowViewModel());
-            }
-            return View(lotRowView);
+            var lots = _lotService.GetAllLotEntities()
+                .Where(l => l.CategoryRefId == categoryId)
+                .Select(l => l.ToLotRowViewModel());
+            return View(lots);
         }
 
-        public ActionResult MakeBid(BidViewModel viewModel)
+        public ActionResult ModeratorUnconfirmedLots(int categoryId)
+        {
+            var lots = _lotService.GetAllLotEntities()
+                .Where(l => l.CategoryRefId == categoryId && !l.IsConfirm)
+                .Select(l => l.ToLotRowViewModel());
+            return View(lots);
+        }
+
+        public ActionResult MakeBid(MakeBidViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                
+                var lot = _lotService.GetLotEntity(viewModel.Id);
+                if (lot.EndDate > DateTime.Now && viewModel.MakeBid > viewModel.CurrentBid)
+                {
+                    _bidService.CreateBid(new BidEntity()
+                    {
+                        BidAmount = viewModel.MakeBid,
+                        BidTime = DateTime.Now,
+                        LotRefId = viewModel.Id,
+                        UserRefId = _userService.GetUserEntityByLogin(User.Identity.Name).Id
+                    });
+                }
+                return RedirectToAction("LotDetails", new {id =  viewModel.Id});
             }
-            return RedirectToAction("Index", viewModel.LotRefId);
+            return RedirectToAction("LotDetails", new { id = viewModel.Id });
         }
 
         private IEnumerable<SelectListItem> LoadSections()

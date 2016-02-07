@@ -1106,7 +1106,7 @@ tr th {
     font-weight: 700;
 }
 
-#modal_form {
+.modal_form {
     width: 500px;
     height: 330px; /* Размеры должны быть фиксированы */
     border-radius: 5px;
@@ -1123,7 +1123,7 @@ tr th {
     padding: 20px 10px;
 }
     /* Кнопка закрыть для тех кто в танке) */
-    #modal_form #modal_close {
+    .modal_form .modal_close {
         width: 21px;
         height: 21px;
         position: absolute;
@@ -1241,9 +1241,13 @@ li > a {
     color: #727272;
 }
 
-.panel-body #saveBidButton {
+.panel-body #Button {
     margin-top: 0;
     padding: 10px 30px;
+}
+
+#moderatorPanel {
+    margin-left: 60px;
 }
 
 

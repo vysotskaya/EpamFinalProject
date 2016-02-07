@@ -16,6 +16,8 @@ namespace MvcPL.Models
 
         public int CategoryRefId { get; set; }
         public int SellerRefId { get; set; }
+
+        [Display(Name = "Seller email")]
         public string SellerEmail { get; set; }
         public bool IsBlocked { get; set; }
         public string BlockReason { get; set; }
@@ -25,8 +27,9 @@ namespace MvcPL.Models
         public double CurrentBid { get; set; }
 
         [Display(Name = "Make bid")]
-        [BidValidation(ErrorMessage = "Bid must be more than current bid.")]
         public double MakeBid { get; set; }
+
+        public string ModeratorLogin { get; set; }
 
         public IEnumerable<BidViewModel> Bids { get; set; } 
     }

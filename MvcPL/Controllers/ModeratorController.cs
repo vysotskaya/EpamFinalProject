@@ -42,9 +42,9 @@ namespace MvcPL.Controllers
             ViewBag.SectionId = id;
             for (int i = 0; i < categories.Count; i ++)
             {
-                var lots = _lotRequestService.GetAllLotRequestEntities()
+                var lots = _lotService.GetAllLotEntities()
                     .Where(r => r.CategoryRefId == categories[i].Id);
-                categories[i].UnconfirmedLots = lots.Count();
+                categories[i].UnconfirmedLots = lots.Count(l => !l.IsConfirm);
                 categories[i].TotalLotNumber =
                     _lotService.GetAllLotEntities().Count(l => l.CategoryRefId == categories[i].Id);
             }
@@ -90,6 +90,27 @@ namespace MvcPL.Controllers
                 return RedirectToAction("Categories", "Moderator", new {id = viewModel.SectionRefId});
             }
             return View(viewModel);
+        }
+
+        public ActionResult ManageLotStatus(LotDetailsViewModel viewModel)
+        {
+            var lot = _lotService.GetLotEntity(viewModel.Id);
+            if (!viewModel.IsConfirm)
+            {
+                lot.IsConfirm = true;
+            }
+            if (viewModel.IsBlocked)
+            {
+                lot.IsBlocked = true;
+                lot.BlockReason = viewModel.BlockReason;
+            }
+            else
+            {
+                lot.IsBlocked = false;
+            }
+            _lotService.UpdateLot(lot);
+
+            return RedirectToAction("LotDetails", "Lot", new {id = lot.Id});
         }
     }
 }

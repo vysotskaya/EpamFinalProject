@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MvcPL.Models.LotRowViewModel>
+
+@{
+    ViewBag.Title = "ModeratorLots";
+}
+
+@section Header
+{
+    <h2>
+        @Html.ActionLink("Home", "Index", "Home", null, htmlAttributes: new { @style = "color: #666;" })
+        / @Html.ActionLink("All Sections", "Sections", "Moderator", null, htmlAttributes: new { @style = "color: #666;" })
+        / Total lots
+    </h2>
+}
+
+@section Body
+{
+    <div style="display: inline-block; width: 100%;">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>Lots</h2></div>
+                <div class="panel-body" id="Lots">@Html.Partial("_LotRows")</div>
+            </div>
+        </div>
+    </div>
+}
