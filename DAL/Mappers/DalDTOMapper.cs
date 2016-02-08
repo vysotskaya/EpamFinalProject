@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using DAL.Interface.DTO;
 using ORM;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DAL.Mappers
 {
@@ -82,7 +86,8 @@ namespace DAL.Mappers
                 Login = dalUser.Login,
                 UserId = dalUser.Id,
                 Password = dalUser.Password,
-                Roles = dalUser.Roles.ToRoleCollection()
+                Roles = dalUser.Roles.ToRoleCollection(),
+                Photo = dalUser.Photo
             };
         }
 

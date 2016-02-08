@@ -34,7 +34,8 @@ namespace DAL.Concrete
                     IsBlocked = user.IsBlocked,
                     Login = user.Login,
                     Id = user.UserId,
-                    Password = user.Password
+                    Password = user.Password,
+                    Photo = user.Photo
                 }).ToList();
             foreach (var user in users)
             {
@@ -59,7 +60,8 @@ namespace DAL.Concrete
         public void Create(DalUser entity)
         {
             var user = entity.ToUser();
-            user.UserId = 0;
+            user.Roles = user.Roles.Select(t => _dbContext.Set<Role>().Find(t.RoleId)).ToList();
+            //user.UserId = 0;
             AttachRoles(user.Roles);
             _dbContext.Set<User>().Add(user);
         }
@@ -82,6 +84,9 @@ namespace DAL.Concrete
             existedUser.Entity.BlockReason = entity.BlockReason;
             existedUser.Entity.BlockTime = entity.BlockTime;
             existedUser.Entity.IsBlocked = entity.IsBlocked;
+            existedUser.Entity.Photo = entity.Photo;
+            existedUser.Entity.Login = entity.Login;
+            existedUser.Entity.Email = entity.Email;
 
             #region update
 
@@ -149,7 +154,8 @@ namespace DAL.Concrete
                 IsBlocked = user.IsBlocked,
                 Login = user.Login,
                 Id = user.UserId,
-                Password = user.Password
+                Password = user.Password,
+                Photo = user.Photo
             };
         }
 
@@ -157,7 +163,8 @@ namespace DAL.Concrete
         {
             foreach (var role in roles)
             {
-                _dbContext.Set<Role>().Attach(role);
+                var existedRole = _dbContext.Set<Role>().Find(role.RoleId);
+                _dbContext.Set<Role>().Attach(existedRole);
             }
         }
     }

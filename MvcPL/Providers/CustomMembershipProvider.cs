@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
@@ -14,8 +15,8 @@ namespace MvcPL.Providers
 {
     public class CustomMembershipProvider : MembershipProvider
     {
-        public IUserService UserService => (IUserService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof (IUserService));
-        public IRoleService RoleService => (IRoleService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IRoleService));
+        private IUserService UserService => (IUserService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof (IUserService));
+        private IRoleService RoleService => (IRoleService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IRoleService));
 
         public MembershipUser CreateUser(UserRegisterViewModel userModel)
         {
@@ -31,6 +32,7 @@ namespace MvcPL.Providers
             userEntity.Password = Crypto.HashPassword(userEntity.Password);
             userEntity.CreationDate = DateTime.Now;
             userEntity.BlockTime = DateTime.Now;
+            userEntity.Photo = userModel.Photo != null ?Image.FromStream(userModel.Photo.InputStream) : null;
             UserService.CreateUser(userEntity);
             membershipUser = GetUser(userModel.Login, false);
             return membershipUser;
@@ -40,7 +42,6 @@ namespace MvcPL.Providers
         {
             var user = UserService.GetUserEntityByLogin(login);
             if (user != null && Crypto.VerifyHashedPassword(user.Password, password))
-            //Определяет, соответствуют ли заданный хэш RFC 2898 и пароль друг другу
             {
                 return true;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace DAL.Interface.DTO
 {
@@ -18,6 +19,7 @@ namespace DAL.Interface.DTO
         public bool IsBlocked { get; set; }
         public DateTime BlockTime { get; set; }
         public string BlockReason { get; set; }
+        public Byte[] Photo { get; set; }
 
         public ICollection<DalRole> Roles { get; set; } 
     }

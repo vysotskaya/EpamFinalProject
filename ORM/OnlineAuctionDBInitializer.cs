@@ -11,7 +11,7 @@ namespace ORM
         {
             IList<Role> defaultRoles = new List<Role>();
 
-            defaultRoles.Add(new Role() {RoleName = "Administrator"});
+            defaultRoles.Add(new Role() { RoleName = "Administrator"});
             defaultRoles.Add(new Role() { RoleName = "Moderator" });
             defaultRoles.Add(new Role() { RoleName = "User" });
 
@@ -31,7 +31,7 @@ namespace ORM
                 Password = Crypto.HashPassword("admin1234")
             };
             admin.Roles.Add(defaultRoles[0]);
-            //user.Roles.Add(defaultRoles[2]);
+            //admin.Roles.Add(defaultRoles[2]);
 
             var user = new User()
             {
@@ -43,10 +43,39 @@ namespace ORM
                 Login = "User",
                 Password = Crypto.HashPassword("user1234")
             };
+            //ser.Roles.Add(defaultRoles[1]);
             user.Roles.Add(defaultRoles[1]);
+
+            //admin.Roles.Add(defaultRoles[2]);
+            //user.Roles.Add(defaultRoles[2]);
 
             context.Set<User>().Add(admin);
             context.Set<User>().Add(user);
+
+            //var section = new Section()
+            //{
+            //    CreationDate = DateTime.Now,
+            //    Discription = "Section1 discription",
+            //    IsBlocked = false,
+            //    SectionId = 1,
+            //    SectionName = "Section1",
+            //    UserRefId = 2
+            //};
+
+            //context.Set<Section>().Add(section);
+
+            //var category = new Category()
+            //{
+            //    CategoryId = 1,
+            //    CategoryName = "Category1",
+            //    CreationDate = DateTime.Now,
+            //    Discription = "Category1 discription",
+            //    IsBlocked = false,
+            //    IsConfirmed = true,
+            //    SectionRefId = 1
+            //};
+
+            //context.Set<Category>().Add(category);
 
             base.Seed(context);
         }

@@ -19,6 +19,10 @@
                         {
                             <li>@Html.ActionLink("Manage categories", "Sections", "Moderator")</li>
                         }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Edit profile", "EditUserProfile", "User")</li>
+                        }
                         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                     </ul>
                 </div>

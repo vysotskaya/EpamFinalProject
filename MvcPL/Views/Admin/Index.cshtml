@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MvcPL.Models.UserDetailsViewModel>
+﻿@using MvcPL.Infrastructure.Mappers
+@model IEnumerable<MvcPL.Models.UserDetailsViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -38,7 +39,15 @@
                 {
                     <tr class="@(item.IsBlocked ? "danger" : "")">
                         <td>
-                            <img style="height: 40px;" src="~/Content/images/default_avatar.jpg" class="img-circle"/>&nbsp;
+                            @if (item.Photo != null)
+                            {
+                                @Html.Raw("<img class=\"img-circle\" style = \"height: 40px; width: 40px;\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.Photo.ImageToByteArray()) + "\" />")
+                            }
+                            else
+                            {
+                                <img style="height: 40px;" src="~/Content/images/default_avatar.jpg" class="img-circle" />
+                            }
+                            &nbsp;
                             <span class="glyphicon@(item.IsBlocked ? " glyphicon-lock" : "")" aria-hidden="true"></span>
                         </td>
                         <td>

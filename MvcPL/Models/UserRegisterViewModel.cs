@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.Web;
 
 namespace MvcPL.Models
 {
@@ -45,5 +47,8 @@ namespace MvcPL.Models
 
         [Display(Name = "User roles")]
         public ICollection<Role> Roles { get; set; }
+
+        public HttpPostedFileBase Photo { get; set; }
+        public Image SettedPhoto { get; set; }
     }
 }

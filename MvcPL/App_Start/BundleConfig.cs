@@ -22,12 +22,14 @@ namespace MvcPL
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/upload-button.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/main.css"));
+                      "~/Content/main.css",
+                      "~/Content/upload-button.css"));
         }
     }
 }

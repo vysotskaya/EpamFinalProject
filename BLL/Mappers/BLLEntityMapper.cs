@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using BLL.Interface.Entities;
 using DAL.Interface.DTO;
@@ -19,7 +23,8 @@ namespace BLL.Mappers
                 IsBlocked = userEntity.IsBlocked,
                 BlockTime = userEntity.BlockTime,
                 BlockReason = userEntity.BlockReason,
-                Roles = userEntity.Roles.ToDalRoleCollection()
+                Roles = userEntity.Roles.ToDalRoleCollection(),
+                Photo = userEntity.Photo.ImageToByteArray()
             };
         }
 
@@ -35,7 +40,8 @@ namespace BLL.Mappers
                 IsBlocked = dalUser.IsBlocked,
                 BlockTime = dalUser.BlockTime,
                 BlockReason = dalUser.BlockReason,
-                Roles = dalUser.Roles.ToRoleEntityCollection()
+                Roles = dalUser.Roles.ToRoleEntityCollection(),
+                Photo = dalUser.Photo.ByteArrayToImage()
             };
         }
 
@@ -78,5 +84,26 @@ namespace BLL.Mappers
         }
 
 
+        public static Byte[] ImageToByteArray(this Image imageIn)
+        {
+            if (imageIn != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                imageIn.Save(ms, ImageFormat.Jpeg);
+                return ms.ToArray();
+            }
+            return null;
+        }
+
+        public static Image ByteArrayToImage(this Byte[] byteArrayIn)
+        {
+            if (byteArrayIn != null)
+            {
+                MemoryStream ms = new MemoryStream(byteArrayIn);
+                Image returnImage = Image.FromStream(ms);
+                return returnImage;
+            }
+            return null;
+        }
     }
 }

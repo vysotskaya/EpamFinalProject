@@ -1,0 +1,22 @@
+﻿@model MvcPL.Models.UserBlockViewModel
+
+@{
+    ViewBag.Title = "UserBlocked";
+}
+
+@section Header
+{
+    <h2>User Info</h2>
+}
+
+@section Body
+{
+    <div>
+        <hr/>
+        <p>Sorry, you were banned to @Model.BlockDate.ToShortDateString().</p>
+        <p>Block reason : @Model.BlockReason</p>
+
+    </div>
+    @Html.ActionLink("Exit", "LogOff", "Account", null, new {@class="btn"})
+}
+

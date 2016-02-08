@@ -40,6 +40,8 @@ namespace ORM
         [MaxLength(300)]
         public string BlockReason { get; set; } 
 
+        public Byte[] Photo { get; set; }
+
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<Section> Sections { get; set; } 
         public virtual ICollection<Lot> Lots { get; set; } 

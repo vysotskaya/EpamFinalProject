@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +6,7 @@ using System.Web.Mvc;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
+using MvcPL.Attributes;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
 
@@ -54,7 +54,7 @@ namespace MvcPL.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateLot(LotCreateViewModel viewModel)
+        public ActionResult CreateLot(LotCreateViewModel viewModel, IEnumerable<HttpPostedFileBase> images)
         {
             if (ModelState.IsValid)
             {
@@ -137,6 +137,7 @@ namespace MvcPL.Controllers
             return PartialView("_CategoryInSection", lotViewModel);
         }
 
+        [AllowAnonymous]
         public ActionResult LotRows(string sectionName = null, string categoryName = null)
         {
             IList<LotRowViewModel> lots = new List<LotRowViewModel>();
@@ -162,6 +163,7 @@ namespace MvcPL.Controllers
             return PartialView("_LotRows", lots);
         }
 
+        [AllowAnonymous]
         public ActionResult LotDetails(int id)
         {
             var lot = _lotService.GetLotEntity(id).ToLotDetailsViewModel();
@@ -189,6 +191,14 @@ namespace MvcPL.Controllers
             return View(lots);
         }
 
+        public ActionResult UserLots()
+        {
+            var lots = _lotService.GetAllLotEntities()
+                .Where(l => l.SellerLogin == User.Identity.Name)
+                .Select(l => l.ToLotRowViewModel());
+            return View(lots);
+        }
+
         public ActionResult ModeratorUnconfirmedLots(int categoryId)
         {
             var lots = _lotService.GetAllLotEntities()
@@ -197,8 +207,10 @@ namespace MvcPL.Controllers
             return View(lots);
         }
 
+        [HttpPost]
         public ActionResult MakeBid(MakeBidViewModel viewModel)
         {
+            
             if (ModelState.IsValid)
             {
                 var lot = _lotService.GetLotEntity(viewModel.Id);

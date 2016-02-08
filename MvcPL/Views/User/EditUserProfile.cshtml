@@ -1,0 +1,82 @@
+﻿@using MvcPL.Infrastructure.Mappers
+@model MvcPL.Models.UserRegisterViewModel
+
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+@section Header
+{
+<h2>
+    @if (Model.SettedPhoto != null)
+    {
+        @Html.Raw("<img class=\"img-circle\" style = \"height: 200px; width: 200px;\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.SettedPhoto.ImageToByteArray()) + "\" />")
+    }
+    else
+    {
+        <img src="~/Content/images/default_avatar.jpg" class="img-circle" />
+    }
+    &nbsp;Edit profile
+</h2>
+<hr />
+}
+
+@section Body
+{
+    @using (Html.BeginForm("EditUserProfile", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.Login, new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Login, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new {@class = "col-md-5 control-label"})
+            <div class="col-md-7 form-inline text-left">
+                @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.Email, null, new {@class = "text-danger"})
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Password, new {Value = Model.Password})
+        @Html.HiddenFor(m => m.ConfirmPassword, new { Value = Model.Password })
+        @Html.HiddenFor(m => m.Id, new { Value = Model.Id })
+        @*<div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, null, new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.Label("Avatar", new { @class = "col-md-5 control-label" })
+            <div class="col-md-7 form-inline text-left">
+                <div class="fileupload fileupload-new col-md-5" data-provides="fileupload">
+                    <span class="btn btn-file btn-sm">
+                        <span class="fileupload-new" style="padding-left: 0;">Select new photo</span>
+                        <span class="fileupload-exists" style="padding-left: 0;">Change uploaded photo</span> <input type="file" id="logo" name="Photo" />
+                    </span>
+                    <span class="fileupload-preview"></span>
+                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" id="removeLogoSmallButton" style="float: none; color: black;">×</a>
+                </div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-default" value="Save" />
+            </div>
+        </div>
+    }
+}

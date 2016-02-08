@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace BLL.Interface.Entities
 {
@@ -18,6 +19,7 @@ namespace BLL.Interface.Entities
         public bool IsBlocked { get; set; }
         public DateTime BlockTime { get; set; }
         public string BlockReason { get; set; }
+        public Image Photo { get; set; }
 
         public ICollection<RoleEntity> Roles { get; set; } 
     }

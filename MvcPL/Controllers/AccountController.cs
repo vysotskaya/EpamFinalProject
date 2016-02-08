@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using BLL.Interface.Services;
+using MvcPL.Attributes;
 using MvcPL.Models;
 using MvcPL.Providers;
 
@@ -41,9 +38,19 @@ namespace MvcPL.Controllers
                 if (Membership.ValidateUser(viewModel.Login, viewModel.Password))
                 //Проверяет учетные данные пользователя и управляет параметрами пользователей
                 {
+                    var user = _userService.GetUserEntityByLogin(viewModel.Login);
+                    if (user.IsBlocked)
+                    {
+                        if (user.BlockTime > DateTime.Now)
+                        {
+                            return RedirectToAction("UserBlocked", "User", new { userLogin = viewModel.Login });
+                        }
+                        user.IsBlocked = false;
+                        _userService.UpdateUser(user);
+                    }
                     FormsAuthentication.SetAuthCookie(viewModel.Login, viewModel.RememberMe);
                     //Управляет службами проверки подлинности с помощью форм для веб-приложений
-                    if (Url.IsLocalUrl(returnUrl))
+                    if (Url.IsLocalUrl(returnUrl) && !returnUrl.Contains("/Lot/MakeBid"))
                     {
                         return Redirect(returnUrl);
                     }

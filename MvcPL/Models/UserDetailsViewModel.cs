@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 
@@ -19,5 +20,7 @@ namespace MvcPL.Models
 
         [Display(Name = "User roles")]
         public ICollection<Role> Roles { get; set; }
+
+        public Image Photo { get; set; }
     }
 }

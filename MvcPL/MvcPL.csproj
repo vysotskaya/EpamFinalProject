@@ -146,6 +146,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\BidValidationAttribute.cs" />
+    <Compile Include="Attributes\CustomAuthorize.cs" />
     <Compile Include="Attributes\DateTimeValidationAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -183,12 +184,17 @@
     <Compile Include="Providers\CustomRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\OnlineAuctionDB.mdf" />
+    <Content Include="App_Data\OnlineAuctionDB_log.ldf">
+      <DependentUpon>OnlineAuctionDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\default_avatar.jpg" />
     <Content Include="Content\images\lot.jpeg" />
     <Content Include="Content\images\slider.jpg" />
     <Content Include="Content\main.css" />
+    <Content Include="Content\upload-button.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -206,6 +212,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\upload-button.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -243,9 +250,11 @@
     <Content Include="Views\Lot\_BlockWindow.cshtml" />
     <Content Include="Views\Lot\EditLot.cshtml" />
     <Content Include="Views\Lot\ModeratorTotalLots.cshtml" />
+    <Content Include="Views\Lot\UserLots.cshtml" />
+    <Content Include="Views\User\UserBlocked.cshtml" />
+    <Content Include="Views\User\EditUserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Validate\" />
   </ItemGroup>
   <ItemGroup>

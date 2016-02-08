@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using BLL.Interface.Entities;
 using MvcPL.Models;
@@ -15,7 +17,8 @@ namespace MvcPL.Infrastructure.Mappers
                 Email = userEntity.Email,
                 Login = userEntity.Login,
                 Password = userEntity.Password,
-                Roles = userEntity.Roles.ToMvcRoleCollection()
+                Roles = userEntity.Roles.ToMvcRoleCollection(),
+                SettedPhoto = userEntity.Photo
             };
         }
 
@@ -28,7 +31,8 @@ namespace MvcPL.Infrastructure.Mappers
                 Login = userViewModel.Login,
                 Password = userViewModel.Password,
                 IsBlocked = false,
-                Roles = userViewModel.Roles.ToRoleEntityCollection()
+                Roles = userViewModel.Roles.ToRoleEntityCollection(),
+                Photo = userViewModel.Photo != null ? Image.FromStream(userViewModel.Photo.InputStream) : null
             };
         }
 

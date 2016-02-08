@@ -1,4 +1,4 @@
-﻿@using System.Drawing
+﻿@using MvcPL.Infrastructure.Mappers
 @using MvcPL.Models
 @model MvcPL.Models.UserDetailsViewModel
 
@@ -19,9 +19,16 @@
 {
     <div class="panel panel-default text-left">
         <div class="panel-body">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="col-md-6">
-                    <img src="~/Content/images/default_avatar.jpg" class="img-circle"/>
+                    @if (Model.Photo != null)
+                    {
+                        @Html.Raw("<img class=\"img-circle\" style = \"height: 200px; width: 200px;\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.Photo.ImageToByteArray()) + "\" />")
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/default_avatar.jpg" class="img-circle" />
+                    }
                 </div>
                 <div class="col-md-6">
                     @Html.HiddenFor(m => m.IsBlocked, Model.IsBlocked)

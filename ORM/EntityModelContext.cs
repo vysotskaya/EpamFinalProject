@@ -18,6 +18,7 @@ namespace ORM
         public virtual DbSet<Lot> Lots { get; set; }
         public virtual DbSet<LotRequest> LotRequests { get; set; }
         public virtual DbSet<Bid> Bids { get; set; }
+        public virtual DbSet<LotImage> Images { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -88,6 +89,12 @@ namespace ORM
                   .HasRequired<Category>(l => l.Category)
                   .WithMany(c => c.Lots)
                   .HasForeignKey(l => l.CategoryRefId)
+                  .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LotImage>()
+                  .HasRequired<Lot>(i => i.Lot)
+                  .WithMany(l => l.Images)
+                  .HasForeignKey(i => i.LotRefId)
                   .WillCascadeOnDelete(false);
         }
     }

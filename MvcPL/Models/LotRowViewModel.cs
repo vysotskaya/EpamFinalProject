@@ -6,6 +6,11 @@ namespace MvcPL.Models
 {
     public class LotRowViewModel
     {
+        public LotRowViewModel()
+        {
+            EndDate = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         [Display(Name = "Name")]
