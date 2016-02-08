@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
@@ -21,30 +23,67 @@ namespace BLL.ConcreteServices
 
         public IEnumerable<BidEntity> GetAllBidEntities()
         {
-            return _bidRepository.GetAll().Select(b => b.ToBidEntity());
+            try
+            {
+                return _bidRepository.GetAll().Select(b => b.ToBidEntity());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<BidEntity>();
+            }
         }
 
         public BidEntity GetBidEntity(int id)
         {
-            return _bidRepository.GetById(id).ToBidEntity();
+            try
+            {
+                return _bidRepository.GetById(id).ToBidEntity();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return null;
+            }
         }
 
         public void CreateBid(BidEntity entity)
         {
-            _bidRepository.Create(entity.ToDalBid());
-            _unitOfWork.Commit();
+            try
+            {
+                _bidRepository.Create(entity.ToDalBid());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void UpdateBid(BidEntity entity)
         {
-            _bidRepository.Update(entity.ToDalBid());
-            _unitOfWork.Commit();
+            try
+            {
+                _bidRepository.Update(entity.ToDalBid());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void DeleteBid(BidEntity entity)
         {
-            _bidRepository.Delete(entity.ToDalBid());
-            _unitOfWork.Commit();
+            try
+            {
+                _bidRepository.Delete(entity.ToDalBid());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
     }
 }

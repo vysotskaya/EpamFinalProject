@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
@@ -21,30 +23,67 @@ namespace BLL.ConcreteServices
  
         public IEnumerable<SectionEntity> GetAllSectionEntities()
         {
-            return _sectionReposytory.GetAll().Select(s => s.ToBllSection());
+            try
+            {
+                return _sectionReposytory.GetAll().Select(s => s?.ToBllSection());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<SectionEntity>();
+            }
         }
 
         public SectionEntity GetSectionEntity(int id)
         {
-            return _sectionReposytory.GetById(id).ToBllSection();
+            try
+            {
+                return _sectionReposytory.GetById(id)?.ToBllSection();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return null;
+            }
         }
 
         public void CreateSection(SectionEntity entity)
         {
-            _sectionReposytory.Create(entity.ToDalSection());
-            _unitOfWorkuow.Commit();
+            try
+            {
+                _sectionReposytory.Create(entity.ToDalSection());
+                _unitOfWorkuow.Commit();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+            }
         }
 
         public void UpdateSection(SectionEntity entity)
         {
-            _sectionReposytory.Update(entity.ToDalSection());
-            _unitOfWorkuow.Commit();
+            try
+            {
+                _sectionReposytory.Update(entity.ToDalSection());
+                _unitOfWorkuow.Commit();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+            }
         }
 
         public void DeleteSection(SectionEntity entity)
         {
-            _sectionReposytory.Delete(entity.ToDalSection());
-            _unitOfWorkuow.Commit();
+            try
+            {
+                _sectionReposytory.Delete(entity.ToDalSection());
+                _unitOfWorkuow.Commit();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+            }
         }
     }
 }

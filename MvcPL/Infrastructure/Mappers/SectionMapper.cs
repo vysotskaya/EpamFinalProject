@@ -33,8 +33,22 @@ namespace MvcPL.Infrastructure.Mappers
             {
                 CreationDate = DateTime.Now,
                 UserRefId = viewModel.UserRefId,
-                IsBlocked = true,
-                SectionName = viewModel.SectionName
+                IsBlocked = false,
+                SectionName = viewModel.SectionName,
+                Id = viewModel.Id,
+                Discription = viewModel.Discription
+            };
+        }
+
+        public static SectionCreateViewModel ToSectionViewModel(this SectionEntity entity)
+        {
+            return new SectionCreateViewModel()
+            {
+                UserRefId = entity.UserRefId,
+                SectionName = entity.SectionName,
+                Discription = entity.Discription,
+                SettedModeratorLogin = entity.ModeratorLogin,
+                Id = entity.Id
             };
         }
     }

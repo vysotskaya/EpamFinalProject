@@ -61,9 +61,9 @@
                                 <button name="blockSection" id="@item.Id" class="btn btn-sm" value="@item.IsBlocked">
                                     <span class="spanInButton glyphicon@(item.IsBlocked ? " glyphicon-ok-circle" : " glyphicon-lock")" style="padding-left: 0;" aria-hidden="true"></span>
                                 </button>
-                                <button class="btn btn-sm">
+                                <a class="btn btn-sm" href="@Url.Action("EditSection", "Admin", new {id=  item.Id})">
                                     <span class="glyphicon glyphicon-edit" style="padding-left: 0;" aria-hidden="true"></span>
-                                </button>
+                                </a>
                                 @*<input type="hidden" name="isBlocked" id="@item.Id" value="@item.IsBlocked"/>*@
                                 @*@Html.ActionLink(item.IsBlocked ? "Unblock " : "Block ", "", "", new {/*userId = item.Id*/}, new {@class = "btn-sm"})*@
                             </td>

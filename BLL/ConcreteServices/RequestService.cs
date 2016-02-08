@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
@@ -21,30 +23,67 @@ namespace BLL.ConcreteServices
 
         public IEnumerable<RequestEntity> GetAllRequestEntities()
         {
-            return _requestRepository.GetAll().Select(r => r.ToRequestEntity());
+            try
+            {
+                return _requestRepository.GetAll().Select(r => r.ToRequestEntity());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<RequestEntity>();
+            }
         }
 
         public RequestEntity GetRequestEntity(int id)
         {
-            return _requestRepository.GetById(id).ToRequestEntity();
+            try
+            {
+                return _requestRepository.GetById(id).ToRequestEntity();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return null;
+            }
         }
 
         public void CreateRequest(RequestEntity entity)
         {
-            _requestRepository.Create(entity.ToDalRequest());
-            _unitOfWork.Commit();
+            try
+            {
+                _requestRepository.Create(entity.ToDalRequest());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void UpdateRequest(RequestEntity entity)
         {
-           _requestRepository.Update(entity.ToDalRequest());
-            _unitOfWork.Commit();
+            try
+            {
+                _requestRepository.Update(entity.ToDalRequest());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void DeleteRequest(RequestEntity entity)
         {
-            _requestRepository.Delete(entity.ToDalRequest());
-            _unitOfWork.Commit();
+            try
+            {
+                _requestRepository.Delete(entity.ToDalRequest());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
     }
 }

@@ -13,10 +13,12 @@ namespace MvcPL.Models
             UsersLogin = new HashSet<SelectListItem>();
         }
 
+        public int Id { get; set; }
+
         [Display(Name = "Section name")]
         [Required(ErrorMessage = "The field can not be empty.")]
         [StringLength(100, ErrorMessage = "The section name must contain 3-100 characters."), MinLength(3)]
-        [Remote("IsSectionNameAvailable", "Validate", ErrorMessage = "This name has already exist.")]
+        [Remote("IsSectionNameAvailable", "Validate", AdditionalFields = "Id", ErrorMessage = "This name has already exist.")]
         public string SectionName { get; set; }
 
         [StringLength(500, ErrorMessage = "The discription must contain no more 500 characters.")]

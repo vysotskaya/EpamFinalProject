@@ -25,6 +25,9 @@
                         @Html.DisplayNameFor(model => model.CategoryName)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.SectionName)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.CreationDate)
                     </th>
                     <th>
@@ -43,6 +46,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.CategoryName)&nbsp;
                             @*<span class="glyphicon@(item.IsConfirmed ? " glyphicon-lock" : "")" id="span_@item.Id" aria-hidden="true"></span>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionName)&nbsp;
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CreationDate)

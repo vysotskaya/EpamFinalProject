@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
@@ -21,32 +23,68 @@ namespace BLL.ConcreteServices
 
         public IEnumerable<LotEntity> GetAllLotEntities()
         {
-            return _lotRepository.GetAll().Select(l => l.ToLotEntity());
+            try
+            {
+                return _lotRepository.GetAll().Select(l => l.ToLotEntity());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<LotEntity>();
+            }
         }
 
         public LotEntity GetLotEntity(int id)
         {
-            return _lotRepository.GetById(id).ToLotEntity();
+            try
+            {
+                return _lotRepository.GetById(id).ToLotEntity();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return null;
+            }
         }
 
-        public int CreateLot(LotEntity entity)
+        public void CreateLot(LotEntity entity)
         {
-            var dalLot = entity.ToDalLot();
-            _lotRepository.Create(dalLot);
-            _unitOfWork.Commit();
-            return _lotRepository.LoadEntityID;
+            try
+            {
+                var dalLot = entity.ToDalLot();
+                _lotRepository.Create(dalLot);
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void UpdateLot(LotEntity entity)
         {
-            _lotRepository.Update(entity.ToDalLot());
-            _unitOfWork.Commit();
+            try
+            {
+                _lotRepository.Update(entity.ToDalLot());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void DeleteLot(LotEntity entity)
         {
-            _lotRepository.Delete(entity.ToDalLot());
-            _unitOfWork.Commit();
+            try
+            {
+                _lotRepository.Delete(entity.ToDalLot());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
     }
 }

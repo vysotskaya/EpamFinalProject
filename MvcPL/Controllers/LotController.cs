@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
@@ -73,14 +74,7 @@ namespace MvcPL.Controllers
                 lot.SellerEmail = seller.Email;
                 lot.SellerRefId = seller.Id;
 
-                int lotId = _lotService.CreateLot(lot);
-                var lotRequest = new LotRequestEntity()
-                {
-                    CategoryRefId = category.Id,
-                    LotRefId =lotId,
-                    ToConfirm = true
-                };
-                _lotRequestService.CreateLotRequest(lotRequest);
+                _lotService.CreateLot(lot);
                 return RedirectToAction("Index", "Lot");
             }
             viewModel.Sections = LoadSections();
@@ -119,7 +113,7 @@ namespace MvcPL.Controllers
                 var category =
                     _categoryService.GetAllCategoryEntities()
                         .FirstOrDefault(c => c.CategoryName == viewModel.SettedCategoryName);
-                lot.CategoryRefId = category.Id;
+                if (category != null) lot.CategoryRefId = category.Id;
                 lot.LotName = viewModel.Name;
                 lot.Discription = viewModel.Discription;
                 lot.EndDate = viewModel.EndDate;
@@ -144,15 +138,16 @@ namespace MvcPL.Controllers
             if (categoryName == null)
             {
                 SectionEntity section = _sectionService.GetAllSectionEntities().FirstOrDefault(s => s.SectionName == sectionName);
-                foreach (var category in section.Categories)
-                {
-                    var lotsTemp = _lotService.GetAllLotEntities()
-                        .Where(l => l.CategoryRefId == category.Id).Where(l => !l.IsBlocked && l.IsConfirm).ToList();
-                    foreach (var l in lotsTemp)
+                if (section != null)
+                    foreach (var category in section.Categories)
                     {
-                        lots.Add(l.ToLotRowViewModel());
+                        var lotsTemp = _lotService.GetAllLotEntities()
+                            .Where(l => l.CategoryRefId == category.Id).Where(l => !l.IsBlocked && l.IsConfirm).ToList();
+                        foreach (var l in lotsTemp)
+                        {
+                            lots.Add(l.ToLotRowViewModel());
+                        }
                     }
-                }
             }
             else
             {
@@ -178,8 +173,10 @@ namespace MvcPL.Controllers
                 lot.CurrentBid = lot.StartingBid;
             }
             var sectionId = _categoryService.GetCategoryEntity(lot.CategoryRefId).SectionRefId;
-            lot.ModeratorLogin = _sectionService.GetAllSectionEntities()
-                .FirstOrDefault(s => s.Id == sectionId).ModeratorLogin;
+            var entity = _sectionService.GetAllSectionEntities()
+                .FirstOrDefault(s => s.Id == sectionId);
+            if (entity != null)
+                lot.ModeratorLogin = entity.ModeratorLogin;
             return View(lot);
         }
 
@@ -191,11 +188,18 @@ namespace MvcPL.Controllers
             return View(lots);
         }
 
-        public ActionResult UserLots()
+        public ActionResult UserLots(int userId = 0)
         {
+            if (userId != 0)
+            {
+                var lotsForAdmin = _lotService.GetAllLotEntities()
+                    .Where(l => l.SellerRefId == userId)
+                    .Select(l => l.ToLotRowViewModel());
+                return View(lotsForAdmin);
+            }
             var lots = _lotService.GetAllLotEntities()
-                .Where(l => l.SellerLogin == User.Identity.Name)
-                .Select(l => l.ToLotRowViewModel());
+            .Where(l => l.SellerLogin == User.Identity.Name)
+            .Select(l => l.ToLotRowViewModel());
             return View(lots);
         }
 
@@ -241,8 +245,9 @@ namespace MvcPL.Controllers
         {
             var section = _sectionService.GetAllSectionEntities()
                 .FirstOrDefault(s => s.SectionName == sectionName);
+            if (section == null) return new List<SelectListItem>();
             var categories = section.Categories.
-                Select(c => new SelectListItem() { Value = c.CategoryName, Text = c.CategoryName });
+                Select(c => new SelectListItem() {Value = c.CategoryName, Text = c.CategoryName});
             return categories;
         } 
     }

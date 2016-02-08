@@ -34,30 +34,18 @@ namespace DAL.Concrete
                 .Where(u => u.UserId == userId)
                 .SelectMany(r => r.Roles)
                 .ToDalRoleCollection();
-                //.Select(role => new DalRole()
-                //{
-                //    Id = role.RoleId,
-                //    RoleName = role.RoleName
-                //});
-            //var roles = _dbContext.Set<Role>()
-            //    .Where(role => role.Users.Any(user => user.UserId == userId))
-            //    .Select(role => new DalRole()
-            //    {
-            //        Id = role.RoleId,
-            //        RoleName = role.RoleName
-            //    });
-            //return roles;
             return roles;
-        } 
+        }
 
         public DalRole GetById(int key)
         {
             var role = _dbContext.Set<Role>().FirstOrDefault(r => r.RoleId == key);
-            return new DalRole()
-            {
-                Id = role.RoleId,
-                RoleName = role.RoleName
-            };
+            return role != null ? new DalRole()
+                    {
+                        Id = role.RoleId,
+                        RoleName = role.RoleName
+                    }
+                : null;
         }
 
         public DalRole GetByPredicate(Expression<Func<DalRole, bool>> expression)
@@ -87,6 +75,10 @@ namespace DAL.Concrete
                 RoleName = entity.RoleName
             };
             role = _dbContext.Set<Role>().Single(r => r.RoleId == role.RoleId);
+            if (role == null)
+            {
+                return;
+            }
             _dbContext.Set<Role>().Remove(role);
         }
     }

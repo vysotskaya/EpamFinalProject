@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
@@ -22,35 +23,80 @@ namespace BLL.ConcreteServices
             
         public IEnumerable<CategoryEntity> GetAllCategoryEntities()
         {
-            return _categoryRepository.GetAll().Select(c => c.ToBllCategory());
+            try
+            {
+                return _categoryRepository.GetAll().Select(c => c.ToBllCategory());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<CategoryEntity>();
+            }
         }
 
         public CategoryEntity GetCategoryEntity(int id)
         {
-            return _categoryRepository.GetById(id).ToBllCategory();
+            try
+            {
+                return _categoryRepository.GetById(id).ToBllCategory();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return null;
+            }
         }
 
         public IEnumerable<CategoryEntity> GetAllCategoriesBySectionId(int id)
         {
-            return _categoryRepository.GetCategoriesBySectionId(id).Select(c => c.ToBllCategory());
+            try
+            {
+                return _categoryRepository.GetCategoriesBySectionId(id).Select(c => c.ToBllCategory());
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+                return new List<CategoryEntity>();
+            }
         }
 
         public void CreateCategory(CategoryEntity entity)
         {
-            _categoryRepository.Create(entity.ToDalCategory());
-            _unitOfWork.Commit();
+            try
+            {
+                _categoryRepository.Create(entity.ToDalCategory());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void UpdateCategory(CategoryEntity entity)
         {
-            _categoryRepository.Update(entity.ToDalCategory());
-            _unitOfWork.Commit();
+            try
+            {
+                _categoryRepository.Update(entity.ToDalCategory());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
 
         public void DeleteCategory(CategoryEntity entity)
         {
-            _categoryRepository.Delete(entity.ToDalCategory());
-            _unitOfWork.Commit();
+            try
+            {
+                _categoryRepository.Delete(entity.ToDalCategory());
+                _unitOfWork.Commit();
+            }
+            catch (Exception exception)
+            {
+                Log.LogError(exception);
+            }
         }
     }
 }

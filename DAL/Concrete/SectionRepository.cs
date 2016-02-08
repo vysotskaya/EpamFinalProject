@@ -44,7 +44,11 @@ namespace DAL.Concrete
         public DalSection GetById(int key)
         {
             var section = _dbContext.Set<Section>().FirstOrDefault(s => s.SectionId == key);
-            var dalSection = ToDalSection(section);
+            var dalSection = section?.ToDalSection();
+            if (dalSection == null)
+            {
+                return null;
+            }
             dalSection.Categories = _categoryRepository.GetCategoriesBySectionId(section.SectionId);
             return dalSection;
         }
@@ -64,9 +68,15 @@ namespace DAL.Concrete
         public void Update(DalSection entity)
         {
             var existedSection = _dbContext.Entry<Section>(_dbContext.Set<Section>().Find(entity.Id));
+            if (existedSection == null)
+            {
+                return;
+            }
             existedSection.State = EntityState.Modified;
             existedSection.Entity.IsBlocked = entity.IsBlocked;
             existedSection.Entity.UserRefId = entity.UserRefId;
+            existedSection.Entity.Discription = entity.Discription;
+            existedSection.Entity.SectionName = entity.SectionName;
         }
 
         public void Delete(DalSection entity)
@@ -77,16 +87,6 @@ namespace DAL.Concrete
             _dbContext.Set<Section>().Remove(section);
         }
 
-        private DalSection ToDalSection(Section section)
-        {
-            return new DalSection()
-            {
-                CreationDate = section.CreationDate,
-                Id = section.SectionId,
-                IsBlocked = section.IsBlocked,
-                SectionName = section.SectionName,
-                UserRefId = section.UserRefId
-            };
-        }
+        
     }
 }

@@ -18,6 +18,7 @@ namespace MvcPL.Models
 
         public int UnconfirmedLots { get; set; }
         public int TotalLotNumber { get; set; }
+        public string SectionName { get; set; }
 
     }
 }

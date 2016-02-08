@@ -1,12 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
-using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using BLL.Interface.Entities;
 using BLL.Interface.InterfaceServices;
 using BLL.Interface.Services;
-using MvcPL.Attributes;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
 
@@ -38,14 +38,30 @@ namespace MvcPL.Controllers
         [Authorize]
         public ActionResult EditUserProfile()
         {
-            var user = _userService.GetUserEntityByLogin(User.Identity.Name);
-            return View(user.ToMvcUser());
+            var user = _userService.GetUserEntityByLogin(User.Identity.Name).ToMvcEditUserModel();
+            return View(user);
+        }
+
+        public ActionResult EditUserPassword(PasswordChangeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userService.GetUserEntityByLogin(User.Identity.Name);
+                if (Crypto.VerifyHashedPassword(user.Password, model.OldPassword)
+                    && String.Compare(model.Password, model.ConfirmPassword) == 0)
+                {
+                    user.Password = Crypto.HashPassword(model.Password);
+                    _userService.UpdateUser(user);
+                    return RedirectToAction("Index", "Lot"); 
+                }
+            }
+            return RedirectToAction("EditUserProfile", "User");
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUserProfile(UserRegisterViewModel viewModel)
+        public ActionResult EditUserProfile(UserEditViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -61,36 +77,22 @@ namespace MvcPL.Controllers
                 user.Email = viewModel.Email;
                 if (user.Photo != null)
                 {
-                    if (viewModel.Photo == null)
+                    if (viewModel.Photo != null)
                     {
-                        user.Photo = user.Photo;
+                        user.Photo = Image.FromStream(viewModel.Photo.InputStream);
                     }
-                    user.Photo = Image.FromStream(viewModel.Photo.InputStream);
                 }
                 else
                 {
-                    user.Photo = Image.FromStream(viewModel.Photo.InputStream);
+                    user.Photo = viewModel.Photo != null ? Image.FromStream(viewModel.Photo.InputStream) : null;
                 }
                 _userService.UpdateUser(user);
-                //FormsAuthentication.SignOut();
                 FormsAuthentication.SetAuthCookie(viewModel.Login, true);
                 return RedirectToAction("Index", "Lot");
             }
             return View(viewModel);
         }
-
-        //public ActionResult UserBlocked()
-        //{
-        //    var user = _userService.GetUserEntityByLogin(User.Identity.Name);
-        //    var blockModel = new UserBlockViewModel()
-        //    {
-        //        Id = user.Id,
-        //        BlockDate = user.BlockTime,
-        //        BlockReason = user.BlockReason
-        //    };
-        //    return View(blockModel);
-        //}
-
+        
         [Authorize(Roles="Administrator")]
         public ActionResult Details(int userId)
         {
@@ -98,7 +100,6 @@ namespace MvcPL.Controllers
             return View(userInfo);
         }
 
-        //GET-запрос к методу Delete несет потенциальную уязвимость!
         [HttpGet]
         public ActionResult Delete(int id = 0)
         {
@@ -110,9 +111,6 @@ namespace MvcPL.Controllers
             return View(user.ToMvcUser());
         }
 
-        //Post/Redirect/Get (PRG) — модель поведения веб-приложений, используемая
-        //разработчиками для защиты от повторной отправки данных веб-форм
-        //(Double Submit Problem)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(UserEntity user)

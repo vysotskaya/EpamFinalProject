@@ -35,7 +35,7 @@ namespace DAL.Concrete
         public DalRequest GetById(int key)
         {
             var request = _dbContext.Set<Request>().FirstOrDefault(r => r.RequestId == key);
-            return request.ToDalRequest();
+            return request?.ToDalRequest();
         }
 
         public DalRequest GetByPredicate(Expression<Func<DalRequest, bool>> expression)

@@ -7,7 +7,7 @@ namespace BLL.Interface.InterfaceServices
     {
         IEnumerable<LotEntity> GetAllLotEntities();
         LotEntity GetLotEntity(int id);
-        int CreateLot(LotEntity entity);
+        void CreateLot(LotEntity entity);
         void UpdateLot(LotEntity entity);
         void DeleteLot(LotEntity entity);
     }

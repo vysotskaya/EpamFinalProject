@@ -35,7 +35,7 @@ namespace DAL.Concrete
         public DalLotRequest GetById(int key)
         {
             var lotRequest = _dbContext.Set<LotRequest>().FirstOrDefault(r => r.RequestId == key);
-            return lotRequest.ToDalLotRequest();
+            return lotRequest?.ToDalLotRequest();
         }
 
         public DalLotRequest GetByPredicate(Expression<Func<DalLotRequest, bool>> expression)
@@ -53,8 +53,11 @@ namespace DAL.Concrete
         {
             var updatedLotRequest = entity.ToLotRequest();
             var existedLotRequest = _dbContext.Entry<LotRequest>(_dbContext.Set<LotRequest>().Find(updatedLotRequest.RequestId));
+            if (existedLotRequest == null)
+            {
+                return;
+            }
             existedLotRequest.State = EntityState.Modified;
-            //field to update
         }
 
         public void Delete(DalLotRequest entity)

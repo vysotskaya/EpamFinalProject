@@ -144,7 +144,7 @@ a:hover {
   background: url('images/slider.jpg') no-repeat 50%;
   background-size: cover;
   background-attachment: fixed;
-  min-height: 705px;
+  min-height: 670px;
   padding: 90px 0;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -512,6 +512,13 @@ figure figcaption p {
   background-color: #CCC;
 }
 #footer {
+    bottom: 0;
+    position: fixed;
+    z-index: 1030;
+    right: 0;
+    left: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: 20px;
   background: #fff;
   padding: 25px 0;
   color: #555;
@@ -519,7 +526,7 @@ figure figcaption p {
 #footer .copyright {
   font-size: 15px;
   margin-bottom: 0;
-  margin-top: 10px;
+    margin-top: -10px;
 }
 
 .cd-headline.slide .cd-words-wrapper {

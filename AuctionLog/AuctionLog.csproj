@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B54BD013-2728-47A9-986C-6A037E600739}</ProjectGuid>
+    <ProjectGuid>{62FAE215-796E-4606-A57B-19FBF1779186}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BLL</RootNamespace>
-    <AssemblyName>BLL</AssemblyName>
+    <RootNamespace>AuctionLog</RootNamespace>
+    <AssemblyName>AuctionLog</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,35 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConcreteServices\BidService.cs" />
-    <Compile Include="ConcreteServices\CategoryService.cs" />
-    <Compile Include="ConcreteServices\LotRequestService.cs" />
-    <Compile Include="ConcreteServices\LotService.cs" />
-    <Compile Include="ConcreteServices\RequestService.cs" />
-    <Compile Include="ConcreteServices\RoleService.cs" />
-    <Compile Include="ConcreteServices\SectionService.cs" />
-    <Compile Include="ConcreteServices\UserService.cs" />
-    <Compile Include="Mappers\BidBllEntityMapper.cs" />
-    <Compile Include="Mappers\BLLEntityMapper.cs" />
-    <Compile Include="Mappers\LotBllEntityMapper.cs" />
-    <Compile Include="Mappers\LotRequestBllEntityMapper.cs" />
-    <Compile Include="Mappers\RequestMapper.cs" />
-    <Compile Include="Mappers\SectionCategoryMapper.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AuctionLog\AuctionLog.csproj">
-      <Project>{62FAE215-796E-4606-A57B-19FBF1779186}</Project>
-      <Name>AuctionLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BLL.Interface\BLL.Interface.csproj">
-      <Project>{9f3021b9-85ec-44fc-b72a-a8ff0725a1d9}</Project>
-      <Name>BLL.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAL.Interface\DAL.Interface.csproj">
-      <Project>{6be9458b-fec3-45ef-a429-41793a69439a}</Project>
-      <Name>DAL.Interface</Name>
-    </ProjectReference>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

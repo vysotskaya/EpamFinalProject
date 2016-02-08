@@ -100,6 +100,7 @@ namespace DAL.Mappers
                 IsBlocked = dalSection.IsBlocked,
                 SectionName = dalSection.SectionName,
                 UserRefId = dalSection.UserRefId,
+                Discription = dalSection.Discription,
                 Categories = dalSection.Categories.ToCategoryCollection()
             };
         }
@@ -151,6 +152,36 @@ namespace DAL.Mappers
                 SectionName = request.Section.SectionName,
                 CategoryName = request.Category.CategoryName,
                 CategoryRefId = request.CategoryRefId
+            };
+        }
+
+        public static DalSection ToDalSection(this Section section)
+        {
+            return new DalSection()
+            {
+                CreationDate = section.CreationDate,
+                Id = section.SectionId,
+                IsBlocked = section.IsBlocked,
+                SectionName = section.SectionName,
+                UserRefId = section.UserRefId,
+                Discription = section.Discription,
+                ModeratorLogin = section.User.Login
+            };
+        }
+
+        public static DalUser ToDalUser(this User user)
+        {
+            return new DalUser()
+            {
+                BlockReason = user.BlockReason,
+                BlockTime = user.BlockTime,
+                CreationDate = user.CreationDate,
+                Email = user.Email,
+                IsBlocked = user.IsBlocked,
+                Login = user.Login,
+                Id = user.UserId,
+                Password = user.Password,
+                Photo = user.Photo
             };
         }
     }

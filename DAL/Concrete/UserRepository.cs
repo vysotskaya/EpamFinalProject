@@ -47,7 +47,11 @@ namespace DAL.Concrete
         public DalUser GetById(int key)
         {
             var user = _dbContext.Set<User>().FirstOrDefault(u => u.UserId == key);
-            var dalUser = ToDalUser(user);
+            var dalUser = user ?. ToDalUser();
+            if (dalUser == null)
+            {
+                return null;
+            }
             dalUser.Roles = _roleRepository.GetRolesByUserId(dalUser.Id);
             return dalUser;
         }
@@ -61,7 +65,6 @@ namespace DAL.Concrete
         {
             var user = entity.ToUser();
             user.Roles = user.Roles.Select(t => _dbContext.Set<Role>().Find(t.RoleId)).ToList();
-            //user.UserId = 0;
             AttachRoles(user.Roles);
             _dbContext.Set<User>().Add(user);
         }
@@ -70,6 +73,10 @@ namespace DAL.Concrete
         {
             var updatedUser = entity.ToUser();
             var existedUser = _dbContext.Entry<User>(_dbContext.Set<User>().Find(updatedUser.UserId));
+            if (existedUser == null)
+            {
+                return;
+            }
             existedUser.State = EntityState.Modified;
             existedUser.Collection(u => u.Roles).Load();
 
@@ -87,39 +94,7 @@ namespace DAL.Concrete
             existedUser.Entity.Photo = entity.Photo;
             existedUser.Entity.Login = entity.Login;
             existedUser.Entity.Email = entity.Email;
-
-            #region update
-
-            //    var updated = entity.ToUser();
-            //    //var notUpdated = _dbContext.Set<User>().Include("Roles").FirstOrDefault(u => u.UserId == entity.Id);
-            //    var notUpdated = _dbContext.Set<User>().Include(u => u.Roles).SingleOrDefault(u => u.UserId == entity.Id);
-            //    if (notUpdated !=null)
-            //    {
-            //        notUpdated.BlockTime = entity.BlockTime;
-            //        notUpdated.IsBlocked = entity.IsBlocked;
-            //        notUpdated.BlockReason = entity.BlockReason;
-            //        //notUpdated.Roles = entity.Roles.ToRoleCollection();
-            //        //AttachRoles(notUpdated.Roles);
-            //        var addedRoles = updated.Roles.Except(notUpdated.Roles, new RoleEqualityComparer()).ToList<Role>();
-            //        //5- Add new courses
-            //        foreach (Role r in addedRoles)
-            //        {
-            //            /*6- Attach courses because it came from client 
-            //            as detached state in disconnected scenario*/
-            //            if (_dbContext.Entry(r).State == EntityState.Detached)
-            //            {
-            //                notUpdated.Roles.Add(r);
-            //                var loadRole = _dbContext.Set<Role>().FirstOrDefault(role => role.RoleId == r.RoleId);
-            //                _dbContext.Set<Role>().Attach(loadRole);
-            //            }
-            //            //7- Add course in existing student's course collection
-
-            //        }
-            //    }
-
-            //_dbContext.Entry(notUpdated).State = EntityState.Modified;
-
-            #endregion
+            existedUser.Entity.Password = entity.Password;
         }
 
 
@@ -128,37 +103,22 @@ namespace DAL.Concrete
             var user = entity.ToUser();
             user.Roles = _roleRepository.GetRolesByUserId(user.UserId).ToRoleCollection();
             user = _dbContext.Set<User>().Single(u => u.UserId == user.UserId);
+
             _dbContext.Set<User>().Remove(user);
         }
 
         public DalUser GetUserByLogin(string login)
         {
             var user = _dbContext.Set<User>().FirstOrDefault(u => u.Login == login);
-            if (user != null)
+            var dalUser = user?.ToDalUser();
+            if (dalUser == null)
             {
-                var dalUser = ToDalUser(user);
-                dalUser.Roles = _roleRepository.GetRolesByUserId(user.UserId);
-                return dalUser;
+                return null;
             }
-            return null;
+            dalUser.Roles = _roleRepository.GetRolesByUserId(user.UserId);
+            return dalUser;
         }
-
-        private DalUser ToDalUser(User user)
-        {
-            return new DalUser()
-            {
-                BlockReason = user.BlockReason,
-                BlockTime = user.BlockTime,
-                CreationDate = user.CreationDate,
-                Email = user.Email,
-                IsBlocked = user.IsBlocked,
-                Login = user.Login,
-                Id = user.UserId,
-                Password = user.Password,
-                Photo = user.Photo
-            };
-        }
-
+        
         private void AttachRoles(IEnumerable<Role> roles)
         {
             foreach (var role in roles)
@@ -166,19 +126,6 @@ namespace DAL.Concrete
                 var existedRole = _dbContext.Set<Role>().Find(role.RoleId);
                 _dbContext.Set<Role>().Attach(existedRole);
             }
-        }
-    }
-
-    class RoleEqualityComparer : IEqualityComparer<Role>
-    {
-        public bool Equals(Role x, Role y)
-        {
-            return x.RoleId == y.RoleId;
-        }
-
-        public int GetHashCode(Role obj)
-        {
-            return obj.RoleId.GetHashCode();
         }
     }
 }

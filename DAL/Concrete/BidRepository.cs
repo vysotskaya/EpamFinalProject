@@ -36,7 +36,7 @@ namespace DAL.Concrete
         public DalBid GetById(int key)
         {
             var bid = _dbContext.Set<Bid>().FirstOrDefault(b => b.BidId == key);
-            return bid.ToDalBid();
+            return bid?.ToDalBid();
         }
 
         public DalBid GetByPredicate(Expression<Func<DalBid, bool>> expression)
@@ -54,6 +54,10 @@ namespace DAL.Concrete
         {
             var updatedBid = entity.ToBid();
             var existedBid = _dbContext.Entry<Bid>(_dbContext.Set<Bid>().Find(updatedBid.BidId));
+            if (existedBid == null)
+            {
+                return;
+            }
             existedBid.State = EntityState.Modified;
             //field to update
         }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AuctionLog;
 using BLL.Interface.Entities;
 using BLL.Interface.Services;
 using BLL.Mappers;
@@ -21,22 +23,41 @@ namespace BLL.ConcreteServices
 
         public IEnumerable<UserEntity> GetAllUserEntities()
         {
-            return _userRepository.GetAll().Select(user => user.ToBllUser());
+            try
+            {
+                return _userRepository.GetAll().Select(user => user?.ToBllUser());
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return new List<UserEntity>();
+            }
         }
 
         public UserEntity GetUserEntity(int id)
         {
-            return _userRepository.GetById(id).ToBllUser();
+            try
+            {
+                return _userRepository.GetById(id).ToBllUser();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return null;
+            }
         }
 
         public UserEntity GetUserEntityByLogin(string login)
         {
-            var user = _userRepository.GetUserByLogin(login);
-            if (user != null)
+            try
             {
-                return user.ToBllUser();
+                return _userRepository.GetUserByLogin(login)?.ToBllUser();
             }
-            return null;
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return null;
+            }
         }
 
         public void DeleteUser(UserEntity user)
@@ -46,14 +67,28 @@ namespace BLL.ConcreteServices
 
         public void UpdateUser(UserEntity user)
         {
-            _userRepository.Update(user.ToDalUser());
-            _unitOfWorkuow.Commit();
+            try
+            {
+                _userRepository.Update(user.ToDalUser());
+                _unitOfWorkuow.Commit();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+            }
         }
 
         public void CreateUser(UserEntity user)
         {
-            _userRepository.Create(user.ToDalUser());
-            _unitOfWorkuow.Commit();
+            try
+            {
+                _userRepository.Create(user.ToDalUser());
+                _unitOfWorkuow.Commit();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+            }
         }
     }
 }

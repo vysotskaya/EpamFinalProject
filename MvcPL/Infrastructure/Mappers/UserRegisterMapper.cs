@@ -22,6 +22,17 @@ namespace MvcPL.Infrastructure.Mappers
             };
         }
 
+        public static UserEditViewModel ToMvcEditUserModel(this UserEntity userEntity)
+        {
+            return new UserEditViewModel()
+            {
+                Id = userEntity.Id,
+                Email = userEntity.Email,
+                Login = userEntity.Login,
+                SettedPhoto = userEntity.Photo
+            };
+        }
+
         public static UserEntity ToBllUser(this UserRegisterViewModel userViewModel)
         {
             return new UserEntity()

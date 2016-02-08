@@ -22,8 +22,6 @@ namespace MvcPL.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            var type = HttpContext.User.GetType();
-            var iden = HttpContext.User.Identity.GetType();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -36,7 +34,6 @@ namespace MvcPL.Controllers
             if (ModelState.IsValid)
             {
                 if (Membership.ValidateUser(viewModel.Login, viewModel.Password))
-                //Проверяет учетные данные пользователя и управляет параметрами пользователей
                 {
                     var user = _userService.GetUserEntityByLogin(viewModel.Login);
                     if (user.IsBlocked)
@@ -49,7 +46,6 @@ namespace MvcPL.Controllers
                         _userService.UpdateUser(user);
                     }
                     FormsAuthentication.SetAuthCookie(viewModel.Login, viewModel.RememberMe);
-                    //Управляет службами проверки подлинности с помощью форм для веб-приложений
                     if (Url.IsLocalUrl(returnUrl) && !returnUrl.Contains("/Lot/MakeBid"))
                     {
                         return Redirect(returnUrl);

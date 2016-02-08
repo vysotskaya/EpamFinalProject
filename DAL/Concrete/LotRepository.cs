@@ -44,7 +44,7 @@ namespace DAL.Concrete
         public DalLot GetById(int key)
         {
             var lot = _dbContext.Set<Lot>().FirstOrDefault(l => l.LotId == key);
-            return lot.ToDalLot();
+            return lot?.ToDalLot();
         }
 
         public DalLot GetByPredicate(Expression<Func<DalLot, bool>> expression)
@@ -56,14 +56,16 @@ namespace DAL.Concrete
         {
             var lot = entity.ToLot();
             _dbContext.Set<Lot>().Add(lot);
-            _dbContext.SaveChanges();
-            LoadEntityID = lot.LotId;
         }
 
         public void Update(DalLot entity)
         {
             var updatedLot = entity.ToLot();
             var existedLot = _dbContext.Entry<Lot>(_dbContext.Set<Lot>().Find(updatedLot.LotId));
+            if (existedLot == null)
+            {
+                return;
+            }
             existedLot.State = EntityState.Modified;
             existedLot.Entity.BlockReason = entity.BlockReason;
             existedLot.Entity.IsBlocked = entity.IsBlocked;
@@ -81,7 +83,5 @@ namespace DAL.Concrete
             lot = _dbContext.Set<Lot>().Single(l => l.LotId == lot.LotId);
             _dbContext.Set<Lot>().Remove(lot);
         }
-
-        public int LoadEntityID { get; set; }
     }
 }

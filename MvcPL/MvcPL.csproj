@@ -172,11 +172,13 @@
     <Compile Include="Models\LotDetailsViewModel.cs" />
     <Compile Include="Models\LotRowViewModel.cs" />
     <Compile Include="Models\MakeBidViewModel.cs" />
+    <Compile Include="Models\PasswordChangeViewModel.cs" />
     <Compile Include="Models\RequestViewModel.cs" />
     <Compile Include="Models\SectionCreateViewModel.cs" />
     <Compile Include="Models\SectionDetailsViewModel.cs" />
     <Compile Include="Models\UserBlockViewModel.cs" />
     <Compile Include="Models\UserDetailsViewModel.cs" />
+    <Compile Include="Models\UserEditViewModel.cs" />
     <Compile Include="Models\UserLoginViewModel.cs" />
     <Compile Include="Models\UserRegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -253,6 +255,7 @@
     <Content Include="Views\Lot\UserLots.cshtml" />
     <Content Include="Views\User\UserBlocked.cshtml" />
     <Content Include="Views\User\EditUserProfile.cshtml" />
+    <Content Include="Views\Admin\EditSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Validate\" />
@@ -266,6 +269,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AuctionLog\AuctionLog.csproj">
+      <Project>{62FAE215-796E-4606-A57B-19FBF1779186}</Project>
+      <Name>AuctionLog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BLL.Interface\BLL.Interface.csproj">
       <Project>{9f3021b9-85ec-44fc-b72a-a8ff0725a1d9}</Project>
       <Name>BLL.Interface</Name>

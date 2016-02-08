@@ -14,7 +14,7 @@ namespace MvcPL.Infrastructure.Mappers
                 IsBlocked = entity.IsBlocked,
                 Id = entity.Id,
                 IsConfirmed = entity.IsConfirmed,
-                SectionRefId = entity.SectionRefId
+                SectionRefId = entity.SectionRefId,
             };
             //foreach (var category in entity.Categories)
             //{

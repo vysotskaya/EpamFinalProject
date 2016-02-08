@@ -1,25 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MvcPL.Models
 {
-    public enum Role
-    {
-        Administrator = 1,
-        Moderator,
-        User
-    }
-
-    public class UserRegisterViewModel
-    {
-        public UserRegisterViewModel()
-        {
-            Roles = new HashSet<Role>();
-        }
-
+    public class UserEditViewModel
+    { 
         public int Id { get; set; }
 
         [Display(Name = "User E-mail")]
@@ -29,12 +19,12 @@ namespace MvcPL.Models
         public string Email { get; set; }
 
         [Display(Name = "User password")]
-        [Required(ErrorMessage = "Enter your password.")]
+        //[Required(ErrorMessage = "Enter your password.")]
         [StringLength(100, ErrorMessage = "The password must contain at least 8 characters.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Confirm the password.")]
+        //[Required(ErrorMessage = "Confirm the password.")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm the password")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Passwords must match.")]
@@ -47,10 +37,13 @@ namespace MvcPL.Models
         [Remote("IsUserLoginExist", "Validate", ErrorMessage = "This login has already exist.")]
         public string Login { get; set; }
 
-        [Display(Name = "User roles")]
-        public ICollection<Role> Roles { get; set; }
-
         public HttpPostedFileBase Photo { get; set; }
         public Image SettedPhoto { get; set; }
+
+        //[Required(ErrorMessage = "Enter old password.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Old password")]
+        [Remote("IsUserOldPasswordMatch", "Validate", AdditionalFields = "Id", ErrorMessage = "Incorrect old password.")]
+        public string OldPassword { get; set; }
     }
 }

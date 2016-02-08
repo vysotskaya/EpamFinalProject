@@ -38,6 +38,7 @@ namespace MvcPL.Controllers
 
         public ActionResult Categories(int id = 0)
         {
+            var sectionName = _sectionService.GetSectionEntity(id).SectionName;
             var categories = _categoryService.GetAllCategoriesBySectionId(id).Select(c => c.ToCategoryDetailsViewModel()).ToList();
             ViewBag.SectionId = id;
             for (int i = 0; i < categories.Count; i ++)
@@ -47,6 +48,7 @@ namespace MvcPL.Controllers
                 categories[i].UnconfirmedLots = lots.Count(l => !l.IsConfirm);
                 categories[i].TotalLotNumber =
                     _lotService.GetAllLotEntities().Count(l => l.CategoryRefId == categories[i].Id);
+                categories[i].SectionName = sectionName;
             }
             return View(categories.ToList());
         }
@@ -83,8 +85,10 @@ namespace MvcPL.Controllers
                         ToConfirm = true,
                         SectionRefId = bllCategory.SectionRefId
                     };
-                    request.CategoryRefId =_categoryService.GetAllCategoryEntities()
-                            .FirstOrDefault(c => c.CategoryName == bllCategory.CategoryName).Id;
+                    var entity = _categoryService.GetAllCategoryEntities()
+                        .FirstOrDefault(c => c.CategoryName == bllCategory.CategoryName);
+                    if (entity != null)
+                        request.CategoryRefId =entity.Id;
                     _requestService.CreateRequest(request);
                 }
                 return RedirectToAction("Categories", "Moderator", new {id = viewModel.SectionRefId});

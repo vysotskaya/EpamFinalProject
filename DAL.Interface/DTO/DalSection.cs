@@ -15,6 +15,7 @@ namespace DAL.Interface.DTO
         public bool IsBlocked { get; set; }
         public int UserRefId { get; set; }
         public string ModeratorLogin { get; set; }
+        public string Discription { get; set; }
 
         public virtual ICollection<DalCategory> Categories { get; set; }
     }

@@ -37,7 +37,7 @@ namespace DAL.Concrete
         public DalCategory GetById(int key)
         {
             var category = _dbContext.Set<Category>().FirstOrDefault(c => c.CategoryId == key);
-            return category.ToDalCategory();
+            return category?.ToDalCategory();
         }
 
         public DalCategory GetByPredicate(Expression<Func<DalCategory, bool>> expression)
@@ -55,6 +55,10 @@ namespace DAL.Concrete
         {
             var updatedCategory = entity.ToCategory();
             var existedCategory = _dbContext.Entry<Category>(_dbContext.Set<Category>().Find(updatedCategory.CategoryId));
+            if (existedCategory == null)
+            {
+                return;
+            }
             existedCategory.State = EntityState.Modified;
             existedCategory.Entity.IsBlocked = entity.IsBlocked;
             existedCategory.Entity.IsConfirmed = entity.IsConfirmed;
