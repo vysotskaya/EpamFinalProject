@@ -21,7 +21,7 @@ namespace MvcPL.Models
         [Remote("IsSectionNameAvailable", "Validate", AdditionalFields = "Id", ErrorMessage = "This name has already exist.")]
         public string SectionName { get; set; }
 
-        [StringLength(500, ErrorMessage = "The discription must contain no more 500 characters.")]
+        [StringLength(500, ErrorMessage = "The description must contain no more 500 characters.")]
         public string Discription { get; set; }
 
         [Display(Name = "Set moderator")]

@@ -86,10 +86,21 @@
                             idSelector = "#" + idSelector;
                             $(idSelector).parent().parent().remove();
                         }
+                        $.ajax({
+                            type: "Post",
+                            url: '/Admin/NotificationCount',
+                            success: function (result) {
+                                debugger;
+                                $('#NotifCount').text(result);
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                            }
+                        });
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                     }
                 });
+                
             });
         });
     </script>

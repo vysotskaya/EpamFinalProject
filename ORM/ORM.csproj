@@ -79,7 +79,6 @@
     <Compile Include="EntityModelContext.cs" />
     <Compile Include="LotImage.cs" />
     <Compile Include="Lot.cs" />
-    <Compile Include="LotRequest.cs" />
     <Compile Include="OnlineAuctionDBInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />

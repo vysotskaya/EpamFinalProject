@@ -14,9 +14,9 @@ namespace MvcPL.Models
             Categories = new HashSet<SelectListItem>();
         }
 
-        [Display(Name = "Discription (no more 4000 characters)")]
+        [Display(Name = "Description (no more 4000 characters)")]
         [Required(ErrorMessage = "The field can not be empty.")]
-        [StringLength(4000, ErrorMessage = "The discription must contain no more 4000 characters.")]
+        [StringLength(4000, ErrorMessage = "The description must contain no more 4000 characters.")]
         public string Discription { get; set; }
 
         [Display(Name = "Choose section")]

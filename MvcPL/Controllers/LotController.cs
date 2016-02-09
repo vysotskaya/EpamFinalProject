@@ -11,6 +11,9 @@ using BLL.Interface.Services;
 using MvcPL.Attributes;
 using MvcPL.Infrastructure.Mappers;
 using MvcPL.Models;
+using MvcPL.Schedule;
+using Quartz;
+using Quartz.Impl;
 
 namespace MvcPL.Controllers
 {
@@ -87,6 +90,8 @@ namespace MvcPL.Controllers
                 lot.SellerRefId = seller.Id;
 
                 _lotService.CreateLot(lot);
+                StartSchedulerJob(lot.EndDate);
+
                 return RedirectToAction("Index", "Lot");
             }
             viewModel.Sections = LoadSections();
@@ -131,6 +136,7 @@ namespace MvcPL.Controllers
                 lot.EndDate = viewModel.EndDate;
                 lot.IsConfirm = false;
                 _lotService.UpdateLot(lot);
+                StartSchedulerJob(lot.EndDate);
                 return RedirectToAction("LotDetails", "Lot", new { id = viewModel.Id });
             }
             return View(viewModel);
@@ -281,6 +287,19 @@ namespace MvcPL.Controllers
             var categories = section.Categories.
                 Select(c => new SelectListItem() {Value = c.CategoryName, Text = c.CategoryName});
             return categories;
-        } 
+        }
+
+        private void StartSchedulerJob(DateTime endTime)
+        {
+            var scheduler = StdSchedulerFactory.GetDefaultScheduler();
+
+            IJobDetail job = JobBuilder.Create<UserStatusJob>().Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .StartAt(new DateTimeOffset(new DateTime(endTime.Year, endTime.Month, endTime.Day)))
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
+        }
     }
 }
