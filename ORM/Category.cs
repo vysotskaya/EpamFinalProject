@@ -32,6 +32,5 @@ namespace ORM
         public virtual Section Section { get; set; }
         public virtual ICollection<Request> Requests { get; set; } 
         public virtual ICollection<Lot> Lots { get; set; } 
-        public virtual ICollection<LotRequest> LotRequests { get; set; } 
     }
 }

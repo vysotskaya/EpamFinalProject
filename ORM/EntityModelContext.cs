@@ -16,7 +16,7 @@ namespace ORM
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Lot> Lots { get; set; }
-        public virtual DbSet<LotRequest> LotRequests { get; set; }
+        //public virtual DbSet<LotRequest> LotRequests { get; set; }
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<LotImage> Images { get; set; }
 
@@ -55,17 +55,17 @@ namespace ORM
                   .HasForeignKey(r => r.SectionRefId)
                   .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<LotRequest>()
-                  .HasRequired<Lot>(r => r.Lot)
-                  .WithMany(l => l.LotRequests)
-                  .HasForeignKey(r => r.LotRefId)
-                  .WillCascadeOnDelete(false); ;
+            //modelBuilder.Entity<LotRequest>()
+            //      .HasRequired<Lot>(r => r.Lot)
+            //      .WithMany(l => l.LotRequests)
+            //      .HasForeignKey(r => r.LotRefId)
+            //      .WillCascadeOnDelete(false); ;
 
-            modelBuilder.Entity<LotRequest>()
-                  .HasRequired<Category>(r => r.Category)
-                  .WithMany(c => c.LotRequests)
-                  .HasForeignKey(r => r.CategoryRefId)
-                  .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<LotRequest>()
+            //      .HasRequired<Category>(r => r.Category)
+            //      .WithMany(c => c.LotRequests)
+            //      .HasForeignKey(r => r.CategoryRefId)
+            //      .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Bid>()
                   .HasRequired<User>(b => b.User)

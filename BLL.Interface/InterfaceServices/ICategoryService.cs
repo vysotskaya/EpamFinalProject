@@ -11,5 +11,6 @@ namespace BLL.Interface.InterfaceServices
         void CreateCategory(CategoryEntity entity);
         void UpdateCategory(CategoryEntity entity);
         void DeleteCategory(CategoryEntity entity);
+        CategoryEntity GetByCategoryName(string name);
     }
 }

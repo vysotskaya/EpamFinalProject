@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using DAL.Interface.DTO;
 using DAL.Interface.Repositories;
+using DAL.Interface.Visitor;
 using DAL.Mappers;
 using ORM;
 
@@ -50,6 +51,31 @@ namespace DAL.Concrete
         public DalLot GetByPredicate(Expression<Func<DalLot, bool>> expression)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<DalLot> GetByPredicateMany(Expression<Func<DalLot, bool>> expression)
+        {
+            var visitor = new ParameterTypeVisitor<DalLot, Lot>(expression);
+            var expr = visitor.Convert();
+            var lots = _dbContext.Set<Lot>().Where(expr);
+            return lots.Select(lot => new DalLot()
+            {
+                Id = lot.LotId,
+                IsBlocked = lot.IsBlocked,
+                CategoryName = lot.Category.CategoryName,
+                CategoryRefId = lot.CategoryRefId,
+                IsConfirm = lot.IsConfirm,
+                Discription = lot.Discription,
+                BlockReason = lot.BlockReason,
+                LotName = lot.LotName,
+                SellerRefId = lot.SellerRefId,
+                EndDate = lot.EndDate,
+                IsSold = lot.IsSold,
+                SellerEmail = lot.Seller.Email,
+                SellerLogin = lot.Seller.Login,
+                StartDate = lot.StartDate,
+                StartingBid = lot.StartingBid
+            });
         }
 
         public void Create(DalLot entity)

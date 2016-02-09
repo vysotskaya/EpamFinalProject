@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AuctionLog;
 using BLL.Interface.Entities;
+using BLL.Interface.Helper;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
+using DAL.Interface.DTO;
 using DAL.Interface.Repositories;
 using DAL.Interface.Repository;
 
@@ -96,6 +98,25 @@ namespace BLL.ConcreteServices
             catch (Exception exception)
             {
                 Log.LogError(exception);
+            }
+        }
+
+        public CategoryEntity GetByCategoryName(string name)
+        {
+            try
+            {
+                var creater = new ExpressionCreater<DalCategory>();
+                var query = creater.GetExpression(new[]
+                {
+                    new KeyValuePair<string, object>("CategoryName", name)
+                });
+                var res = _categoryRepository.GetByPredicate(query);
+                return res?.ToBllCategory();
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return null;
             }
         }
     }

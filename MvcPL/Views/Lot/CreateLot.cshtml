@@ -62,20 +62,6 @@
                 @Html.Partial("_CategoryInSection")
             </div>
         </div>
-        <div class="form-group">
-            @Html.Label("Images", new {@class = "col-md-5 control-label"})
-            <div class="col-md-7 form-inline text-left" id="tmp">
-                <div class="fileupload fileupload-new col-md-5" data-provides="fileupload">
-                    <span class="btn btn-primary btn-file btn-sm" style="padding-left: 0;">
-                        <span class="fileupload-new">Select new photo</span>
-                        <span class="fileupload-exists">Change uploaded photo</span> <input type="file" id="logo" name="images" />
-                    </span>
-                    <span class="fileupload-preview"></span>
-                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" id="removeLogoSmallButton" style="float: none; color: black;">×</a>
-                </div>
-            </div>
-        </div>
-
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})
         <div class="form-group">
             <div class="col-md-12">

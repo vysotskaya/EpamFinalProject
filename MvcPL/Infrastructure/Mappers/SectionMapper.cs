@@ -18,7 +18,8 @@ namespace MvcPL.Infrastructure.Mappers
                 Id = entity.Id,
                 SectionName = entity.SectionName,
                 UserRefId = entity.UserRefId,
-                SettedModeratorLogin = entity.ModeratorLogin
+                SettedModeratorLogin = entity.ModeratorLogin,
+                
             };
             foreach (var category in entity.Categories)
             {

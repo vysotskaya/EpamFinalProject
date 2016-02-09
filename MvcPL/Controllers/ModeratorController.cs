@@ -14,12 +14,12 @@ namespace MvcPL.Controllers
         private readonly ISectionService _sectionService;
         private readonly ICategoryService _categoryService;
         private readonly IRequestService _requestService;
-        private readonly ILotRequestService _lotRequestService;
+        private readonly ILotImageService _lotRequestService;
         private readonly ILotService _lotService;
 
         public ModeratorController(ISectionService sectionService, 
             ICategoryService categoryService, IRequestService requestService,
-            ILotRequestService lotRequestService, ILotService lotService)
+            ILotImageService lotRequestService, ILotService lotService)
         {
             _sectionService = sectionService;
             _categoryService = categoryService;

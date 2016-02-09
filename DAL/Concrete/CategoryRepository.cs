@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Interface.DTO;
 using DAL.Interface.Repositories;
+using DAL.Interface.Visitor;
 using DAL.Mappers;
 using ORM;
 
@@ -42,7 +43,11 @@ namespace DAL.Concrete
 
         public DalCategory GetByPredicate(Expression<Func<DalCategory, bool>> expression)
         {
-            throw new NotImplementedException();
+            var visitor = new ParameterTypeVisitor<DalCategory, Category>(expression);
+            var expr = visitor.Convert();
+            var category = _dbContext.Set<Category>().FirstOrDefault(expr);
+            var dalCategory = category?.ToDalCategory();
+            return dalCategory;
         }
 
         public void Create(DalCategory entity)

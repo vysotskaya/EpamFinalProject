@@ -10,5 +10,6 @@ namespace BLL.Interface.InterfaceServices
         void CreateLot(LotEntity entity);
         void UpdateLot(LotEntity entity);
         void DeleteLot(LotEntity entity);
+        IEnumerable<LotEntity> GetActiveLots();
     }
 }

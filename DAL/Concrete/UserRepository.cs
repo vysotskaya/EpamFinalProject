@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using DAL.Interface.DTO;
 using DAL.Interface.Repository;
+using DAL.Interface.Visitor;
 using DAL.Mappers;
 using ORM;
 
@@ -58,7 +59,16 @@ namespace DAL.Concrete
 
         public DalUser GetByPredicate(Expression<Func<DalUser, bool>> expression)
         {
-            throw new NotImplementedException();
+            var visitor = new ParameterTypeVisitor<DalUser, User>(expression);
+            var expr = visitor.Convert();
+            var user = _dbContext.Set<User>().FirstOrDefault(expr);
+            var dalUser = user?.ToDalUser();
+            if (dalUser == null)
+            {
+                return null;
+            }
+            dalUser.Roles = _roleRepository.GetRolesByUserId(user.UserId);
+            return dalUser;
         }
 
         public void Create(DalUser entity)

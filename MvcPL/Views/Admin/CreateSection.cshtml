@@ -16,6 +16,7 @@
     @using (Html.BeginForm("CreateSection", "Admin", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
         <hr/>
         <div class="form-group">
             @Html.LabelFor(m => m.SectionName, new {@class = "col-md-5 control-label"})

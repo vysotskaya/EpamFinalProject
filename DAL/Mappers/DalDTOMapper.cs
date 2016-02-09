@@ -165,7 +165,8 @@ namespace DAL.Mappers
                 SectionName = section.SectionName,
                 UserRefId = section.UserRefId,
                 Discription = section.Discription,
-                ModeratorLogin = section.User.Login
+                ModeratorLogin = section.User.Login,
+                CategoriesCount = section.Categories.Count
             };
         }
 

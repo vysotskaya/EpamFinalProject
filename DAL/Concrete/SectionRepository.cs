@@ -31,7 +31,8 @@ namespace DAL.Concrete
                     IsBlocked = section.IsBlocked,
                     SectionName = section.SectionName,
                     UserRefId = section.UserRefId,
-                    ModeratorLogin = section.User.Login
+                    ModeratorLogin = section.User.Login,
+                    CategoriesCount = section.Categories.Count
                 }).ToList();
             //User 
             foreach (var section in sections)

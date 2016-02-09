@@ -40,7 +40,6 @@ namespace ORM
 
         public virtual Category Category { get; set; }
         public virtual User Seller { get; set; }
-        public virtual ICollection<LotRequest> LotRequests { get; set; }
         public virtual ICollection<Bid> Bids { get; set;} 
         public virtual ICollection<LotImage> Images { get; set;} 
     }

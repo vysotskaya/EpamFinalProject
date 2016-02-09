@@ -44,7 +44,7 @@
     <Compile Include="DTO\DalBid.cs" />
     <Compile Include="DTO\DalCategory.cs" />
     <Compile Include="DTO\DalLot.cs" />
-    <Compile Include="DTO\DalLotRequest.cs" />
+    <Compile Include="DTO\DalLotImage.cs" />
     <Compile Include="DTO\DalRequest.cs" />
     <Compile Include="DTO\DalRole.cs" />
     <Compile Include="DTO\DalSection.cs" />
@@ -54,13 +54,14 @@
     <Compile Include="Repositories\IBidRepository.cs" />
     <Compile Include="Repositories\ICategoryRepository.cs" />
     <Compile Include="Repositories\ILotRepository.cs" />
-    <Compile Include="Repositories\ILotRequestRepository.cs" />
+    <Compile Include="Repositories\ILotImageRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IRequestRepository.cs" />
     <Compile Include="Repositories\IRoleRepository.cs" />
     <Compile Include="Repositories\ISectionReposytory.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Visitor\ParameterTypeVisitor.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

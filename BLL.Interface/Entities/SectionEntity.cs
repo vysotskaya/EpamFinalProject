@@ -16,6 +16,7 @@ namespace BLL.Interface.Entities
         public int UserRefId { get; set; }
         public string Discription { get; set; }
         public string ModeratorLogin { get; set; }
+        public int CategoriesCount { get; set; }
 
         public virtual ICollection<CategoryEntity> Categories { get; set; }
     }

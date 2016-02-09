@@ -8,6 +8,14 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jqueryval")
+    <style>
+        body .ui-autocomplete {
+            z-index: 9999;
+            height: 200px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <body>
     <header id="top-bar" class="navbar-fixed-top">

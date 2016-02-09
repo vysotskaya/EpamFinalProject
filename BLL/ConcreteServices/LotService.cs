@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AuctionLog;
 using BLL.Interface.Entities;
+using BLL.Interface.Helper;
 using BLL.Interface.InterfaceServices;
 using BLL.Mappers;
+using DAL.Interface.DTO;
 using DAL.Interface.Repositories;
 using DAL.Interface.Repository;
 
@@ -84,6 +86,26 @@ namespace BLL.ConcreteServices
             catch (Exception exception)
             {
                 Log.LogError(exception);
+            }
+        }
+
+        public IEnumerable<LotEntity> GetActiveLots()
+        {
+            var creater = new ExpressionCreater<DalLot>();
+            try
+            {
+                var query = creater.GetExpression(new[]
+                {
+                    new KeyValuePair<string, object>("IsConfirm", true),
+                    new KeyValuePair<string, object>("IsBlocked", false)
+                });
+                var result = _lotRepository.GetByPredicateMany(query);
+                return result.Select(t => t.ToLotEntity());
+            }
+            catch (Exception e)
+            {
+                Log.LogError(e);
+                return new List<LotEntity>();
             }
         }
     }

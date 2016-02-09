@@ -5,6 +5,9 @@
     {
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
+            <li>
+                <input style="padding: 22px 12px" type="text" id="SearchValue" name="SearchValue" class="form-control" />
+            </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle welcomLink" data-toggle="dropdown" title="Manage">Welcome, @User.Identity.Name <span class="caret"></span></a>
                 <div class="dropdown-menu">
@@ -33,8 +36,11 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>
+            <input style="padding: 22px 12px" type="text" id="SearchValue" name="SearchValue" class="form-control" />
+        </li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new {id = "registerLink"})</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
     </ul>
 }
 
@@ -50,5 +56,35 @@ else
             error: function (xhr, ajaxOptions, thrownError) {
             }
         });
+
+        $("#SearchValue").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("Search", "Search")?term=' + $("#SearchValue").val(),
+                    dataType: "json",
+                    contentType: 'application/json, charset=utf-8',
+                    data: {
+                        search: $("#SearchValue").val()
+                    },
+                    success: function (data) {
+                        debugger;
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.Type + ': ' + item.Title,
+                                value: item.Link
+                            };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            },
+            select: function (e, ui) {
+                location.href = ui.item.value;
+            },
+            minLength: 3
+        });
+
     });
 </script>

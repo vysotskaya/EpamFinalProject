@@ -3,7 +3,7 @@ using DAL.Interface.Repository;
 
 namespace DAL.Interface.Repositories
 {
-    public interface ILotRequestRepository : IRepository<DalLotRequest>
+    public interface ILotImageRepository : IRepository<DalLotImage>
     {
     }
 }

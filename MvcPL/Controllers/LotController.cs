@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,18 +21,18 @@ namespace MvcPL.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ILotService _lotService;
         private readonly IUserService _userService;
-        private readonly ILotRequestService _lotRequestService;
+        private readonly ILotImageService _lotImageService;
         private readonly IBidService _bidService;
 
         public LotController(ICategoryService categoryService, ISectionService sectionService,
-            ILotService lotService, IUserService userService, ILotRequestService lotRequestService,
+            ILotService lotService, IUserService userService, ILotImageService lotRequestService,
             IBidService bidService)
         {
             _sectionService = sectionService;
             _categoryService = categoryService;
             _lotService = lotService;
             _userService = userService;
-            _lotRequestService = lotRequestService;
+            _lotImageService = lotRequestService;
             _bidService = bidService;
         }
 
@@ -39,8 +40,10 @@ namespace MvcPL.Controllers
         [ActionName("Index")]
         public ActionResult AllLots()
         {
-            ViewBag.Sections = _sectionService.GetAllSectionEntities().Select(s => s.ToSectionDetailsModel());
-            var lots = _lotService.GetAllLotEntities().Where(l => l.IsConfirm && !l.IsBlocked)
+            ViewBag.Sections = _sectionService.GetAllSectionEntities()
+                .Select(s => s.ToSectionDetailsModel()).Where(s => s.Categories.Count != 0);
+            var lots = _lotService.GetActiveLots()
+                //GetAllLotEntities().Where(l => l.IsConfirm && !l.IsBlocked)
                 .Select(l => l.ToLotRowViewModel()).OrderByDescending(lot => lot.StartDate);
             return View(lots);
         }
@@ -48,10 +51,18 @@ namespace MvcPL.Controllers
        
         public ActionResult CreateLot()
         {
-            var sections = LoadSections();
-            var lotViewModel = new LotCreateViewModel() {Sections = sections,
-                Categories = LoadCategories(sections.First().Text)};
-            return View(lotViewModel);
+            try
+            {
+                var sections = LoadSections();
+                var lotViewModel = new LotCreateViewModel() {Sections = sections,
+                    Categories = LoadCategories(sections.First().Text)};
+                return View(lotViewModel);
+            }
+            catch (Exception EX_NAME)
+            {
+                Log.LogError(EX_NAME);
+                return RedirectToAction("Index", "Lot");
+            }
         }
 
         [HttpPost]
@@ -61,8 +72,9 @@ namespace MvcPL.Controllers
             {
                 var seller = _userService.GetUserEntityByLogin(User.Identity.Name);
                 var category =
-                    _categoryService.GetAllCategoryEntities()
-                        .FirstOrDefault(c => c.CategoryName == viewModel.SettedCategoryName);
+                    _categoryService.GetByCategoryName(viewModel.SettedCategoryName);
+                    //GetAllCategoryEntities()
+                        //.FirstOrDefault(c => c.CategoryName == viewModel.SettedCategoryName);
                 var lot = viewModel.ToLotEntity();
                 lot.BlockReason = String.Empty;
                 lot.CategoryRefId = category.Id;
@@ -162,6 +174,7 @@ namespace MvcPL.Controllers
         public ActionResult LotDetails(int id)
         {
             var lot = _lotService.GetLotEntity(id).ToLotDetailsViewModel();
+            lot.Photos = _lotImageService.GetAllLotImageEntities().Where(t => t.LotRefId == id).Select(t => t.Content);
             var bids = _bidService.GetAllBidEntities().Where(b => b.LotRefId == lot.Id).Select(b => b.ToBidViewModel()).ToList();
             if (bids.Count != 0)
             {
@@ -233,10 +246,29 @@ namespace MvcPL.Controllers
             return RedirectToAction("LotDetails", new { id = viewModel.Id });
         }
 
+        [HttpPost]
+        public ActionResult SaveImages(int lotId, IEnumerable<HttpPostedFileBase> logoFile)
+        {
+            var images = _lotImageService.GetAllLotImageEntities().Where(t => t.LotRefId == lotId);
+            foreach (var image in images)
+            {
+                _lotImageService.DeleteLotImage(image);
+            }
+            foreach (var postedFileBase in logoFile)
+            {
+                _lotImageService.CreateLotImage(new LotImageEntity()
+                {
+                    Content = postedFileBase.InputStream == null ? null : Image.FromStream(postedFileBase.InputStream),
+                    LotRefId = lotId
+                });
+            }
+            return RedirectToAction("LotDetails", new { id = lotId });
+        }
+
         private IEnumerable<SelectListItem> LoadSections()
         {
             var sections = _sectionService.GetAllSectionEntities()
-               .Where(s => !s.IsBlocked)
+               .Where(s => !s.IsBlocked && s.Categories.Count != 0)
                .Select(s => new SelectListItem() { Value = s.SectionName, Text = s.SectionName });
             return sections;
         }

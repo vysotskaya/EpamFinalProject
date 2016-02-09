@@ -150,9 +150,11 @@
     <Compile Include="Attributes\DateTimeValidationAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LotController.cs" />
     <Compile Include="Controllers\ModeratorController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,15 +188,12 @@
     <Compile Include="Providers\CustomRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\OnlineAuctionDB.mdf" />
-    <Content Include="App_Data\OnlineAuctionDB_log.ldf">
-      <DependentUpon>OnlineAuctionDB.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\default_avatar.jpg" />
     <Content Include="Content\images\lot.jpeg" />
     <Content Include="Content\images\slider.jpg" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\upload-button.css" />
     <Content Include="favicon.ico" />
@@ -207,6 +206,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -256,8 +256,12 @@
     <Content Include="Views\User\UserBlocked.cshtml" />
     <Content Include="Views\User\EditUserProfile.cshtml" />
     <Content Include="Views\Admin\EditSection.cshtml" />
+    <Content Include="Views\Error\Default.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Search\" />
     <Folder Include="Views\Validate\" />
   </ItemGroup>
   <ItemGroup>

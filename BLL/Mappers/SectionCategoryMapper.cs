@@ -56,6 +56,7 @@ namespace BLL.Mappers
                 UserRefId = sectionEntity.UserRefId,
                 ModeratorLogin = sectionEntity.ModeratorLogin,
                 Discription = sectionEntity.Discription,
+                CategoriesCount = sectionEntity.CategoriesCount,
                 Categories = sectionEntity.Categories.ToDalCategoryCollection()
             };
         }
@@ -71,6 +72,7 @@ namespace BLL.Mappers
                 UserRefId = dalSection.UserRefId,
                 ModeratorLogin = dalSection.ModeratorLogin,
                 Discription = dalSection.Discription,
+                CategoriesCount = dalSection.CategoriesCount,
                 Categories = dalSection.Categories.ToCategoryEntityCollection()
             };
         }

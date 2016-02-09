@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AuctionLog;
 using BLL.Interface.Entities;
+using BLL.Interface.Helper;
 using BLL.Interface.Services;
 using BLL.Mappers;
+using DAL.Interface.DTO;
 using DAL.Interface.Repository;
 
 namespace BLL.ConcreteServices
@@ -51,7 +53,12 @@ namespace BLL.ConcreteServices
         {
             try
             {
-                return _userRepository.GetUserByLogin(login)?.ToBllUser();
+                var exprCreater = new ExpressionCreater<DalUser>();
+                return
+                    _userRepository.GetByPredicate(
+                        exprCreater.GetExpression(new[] {new KeyValuePair<string, object>("Login", login)}))?
+                        .ToBllUser();
+                //_userRepository.GetUserByLogin(login)?.ToBllUser();
             }
             catch (Exception e)
             {
